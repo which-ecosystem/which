@@ -7,7 +7,7 @@ import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
 import Header from './Header/Header';
-import MediaCard from './poll-component/poll-component';
+import PollCard from './PollCard/PollCard';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,7 +28,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header page={page} setPage={setPage} />
-      <MediaCard/>
+      <PollCard/>
     </ThemeProvider>
   );
 };

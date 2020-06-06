@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function MediaCard() {
+const PollCard: React.FC  = () =>{
   const classes = useStyles();
 
   return (
@@ -41,3 +41,4 @@ export default function MediaCard() {
     </Card>
   );
 }
+export default PollCard;
