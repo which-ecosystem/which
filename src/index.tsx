@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(
-  <h1> Hello, world! </h1>,
-  document.getElementById('root')
-);
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
+import teal from '@material-ui/core/colors/teal';
+import 'typeface-roboto';
+
+import Header from './Header/Header';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: teal[700],
+    },
+    text: {
+      primary: '#000000',
+      secondary: 'rgba(255, 255, 255, 0.6)',
+    },
+  },
+});
+
+const App: React.FC = () => {
+  const [page, setPage] = useState('feed');
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Header page={page} setPage={setPage} />
+      <h1> Hello, world! </h1>
+    </ThemeProvider>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
