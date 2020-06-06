@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { CssBaseline } from '@material-ui/core';
+import 'typeface-roboto';
 
-ReactDOM.render(
-  <h1> Hello, world! </h1>,
-  document.getElementById('root')
-);
+import Header from './Header/Header';
+
+const App: React.FC = () => {
+  const [page, setPage] = useState('feed');
+
+  return (
+    <>
+      <CssBaseline />
+      <Header page={page} setPage={setPage} />
+      <h1> Hello, world! </h1>
+    </>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
