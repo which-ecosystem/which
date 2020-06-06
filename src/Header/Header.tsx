@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   AppBar,
   Toolbar,
   Tabs,
@@ -15,23 +15,23 @@ interface PropTypes {
 const useStyles = makeStyles(theme => ({
   tab: {
     '& .MuiTab-wrapper': {
-        padding: theme.spacing(2),
-        flexDirection: 'row',
-        fontSize: '0.8125rem'
+      padding: theme.spacing(2),
+      flexDirection: 'row',
+      fontSize: '0.8125rem'
     }
   }
 }));
 
-const tabs = ["Profile", "Feed"];
+const tabs = ['Profile', 'Feed'];
 
-const Header: React.FC<PropTypes> = ({ page, setPage }) => {
+const Header: React.FC<PropTypes> = ({ page /* , setPage */ }) => {
   const classes = useStyles();
 
-  const handleChange = () => {}
+  const handleChange = () => {};
 
   return (
     <AppBar position="static">
-      <Toolbar> 
+      <Toolbar>
         <Tabs onChange={handleChange} value={page}>
           {tabs.map((tab: string) => (
             <Tab
@@ -43,7 +43,7 @@ const Header: React.FC<PropTypes> = ({ page, setPage }) => {
         </Tabs>
       </Toolbar>
     </AppBar>
-  )
+  );
 };
 
 export default Header;

@@ -12,7 +12,7 @@
     "jsx-quotes": ["error", "prefer-double"],
     "quotes": ["error", "single"],
     "no-multiple-empty-lines": [2, { "max": 2, "maxEOF": 1 } ],
-    "max-len": ["error", { "code": 120 }],
+    "max-len": ["error", { "code": 140 }],
     "arrow-parens": [2, "as-needed"],
     "comma-dangle": ["error", "never"],
     "arrow-body-style": 0,
