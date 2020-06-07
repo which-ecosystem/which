@@ -7,6 +7,12 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
+import { Poll } from '../types';
+
+interface PercentageBarPropTypes {
+  value: number;
+  which: 'left' | 'right';
+}
 
 const useStyles = makeStyles({
   root: {
@@ -21,55 +27,69 @@ const useStyles = makeStyles({
   imagesBlock: {
     display: 'flex'
   },
-  percentageLeft: {
+  percentage: {
     position: 'absolute',
     color: 'white',
     top: '86%',
-    left: 30,
     fontSize: 20
   },
+  percentageLeft: {
+    left: 30
+  },
   percentageRight: {
-    position: 'absolute',
-    color: 'white',
-    top: '86%',
-    right: 30,
-    fontSize: 20
+    right: 30
   }
-
 });
 
-const PollCard: React.FC = () => {
+
+const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
   const classes = useStyles();
+  const positionClassName = which === 'left' ? 'percentageLeft' : 'percentageRight';
+
+  return (
+    <div className={`${classes.percentage} ${classes[positionClassName]}`}>
+      {value}
+      %
+    </div>
+  );
+};
+
+
+const PollCard: React.FC<Poll> = ({ author, contents: { left, right } }) => {
+  const classes = useStyles();
+
+  const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+  const rightPercentage = 100 - leftPercentage;
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={(
           <Avatar aria-label="avatar">
-            R
+            <img src={author.avatarUrl} alt={author.name[0].toUpperCase()} />
           </Avatar>
         )}
-        title="Nick Name"
+        title={author.name}
       />
       <div className={classes.imagesBlock}>
         <CardActionArea>
           <CardMedia
             className={classes.images}
-            // eslint-disable-next-line max-len
-            image="https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            image={left.url}
           />
-          <div className={classes.percentageLeft}>25%</div>
+          <PercentageBar value={leftPercentage} which="left" />
         </CardActionArea>
         <CardActionArea>
           <CardMedia
             className={classes.images}
-            // eslint-disable-next-line max-len
-            image="https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg"
+            image={right.url}
           />
-          <div className={classes.percentageRight}>75%</div>
+          <PercentageBar value={rightPercentage} which="right" />
         </CardActionArea>
       </div>
     </Card>
   );
 };
+
 export default PollCard;
+

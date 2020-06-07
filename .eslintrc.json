@@ -15,6 +15,7 @@
     "max-len": ["error", { "code": 120 }],
     "arrow-parens": [2, "as-needed"],
     "comma-dangle": ["error", "never"],
+    "import/extensions": ["error", { "ts": "never", "tsx": "never" }],
     "arrow-body-style": 0,
     "no-cond-assign": 0,
     "linebreak-style": 0,
