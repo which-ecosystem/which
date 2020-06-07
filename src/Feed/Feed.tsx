@@ -7,9 +7,9 @@ interface PropTypes {
   polls: Poll[],
 }
 
-const usedStyles = makeStyles(() => ({
+const usedStyles = makeStyles(theme => ({
   feed: {
-    maxWidth: 600,
+    maxWidth: theme.spacing(75),
     margin: '0 auto'
   }
 }));

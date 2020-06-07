@@ -14,15 +14,15 @@ interface PercentageBarPropTypes {
   which: 'left' | 'right';
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 600,
-    height: 500,
+    maxWidth: theme.spacing(75),
+    height: theme.spacing(63),
     margin: '20px auto'
   },
   images: {
-    height: 400,
-    width: 300
+    height: theme.spacing(50),
+    width: theme.spacing(38)
   },
   imagesBlock: {
     display: 'flex'
@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   percentageRight: {
     right: 30
   }
-});
+}));
 
 
 const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
