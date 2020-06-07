@@ -7,11 +7,6 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
-// import Card from '@material-ui/core/Card';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import CardMedia from '@material-ui/core/CardMedia';
-// import Avatar from '@material-ui/core/Avatar';
-// import CardHeader from '@material-ui/core/CardHeader';
 
 const useStyles = makeStyles({
   root: {
