@@ -8,10 +8,15 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import HomeIcon from '@material-ui/icons/Home';
 
 import SearchBar from './SearchBar';
 
-const useStyles = makeStyles(theme => ({
+interface PropTypes {
+  setPage: (newPage: string) => void;
+}
+
+const useStyles = makeStyles({
   root: {
     display: 'flex',
     justifyContent: 'space-around',
@@ -19,14 +24,22 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto'
   },
   logo: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
-}));
+});
 
-const Header: React.FC = () => {
+const Header: React.FC<PropTypes> = ({ setPage }) => {
   const classes = useStyles();
 
-  const handleChange = () => {};
+  const handleHome = (): void => {
+    setPage('feed');
+  };
+
+  const handleProfile = (): void => {
+    setPage('profile');
+  };
+
+  const handleNotifications = (): void => {};
 
   return (
     <AppBar position="fixed">
@@ -36,10 +49,13 @@ const Header: React.FC = () => {
         </Typography>
         <SearchBar />
         <div>
-          <IconButton>
+          <IconButton onClick={handleHome}>
+            <HomeIcon />
+          </IconButton>
+          <IconButton onClick={handleNotifications}>
             <NotificationsIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleProfile}>
             <AccountCircle />
           </IconButton>
         </div>

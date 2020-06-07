@@ -9,8 +9,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '2px',
     padding: theme.spacing(0.5),
     display: 'flex',
-    alignItems: 'center',
-    // marginRight: theme.spacing(8),
+    alignItems: 'center'
   }
 }));
 

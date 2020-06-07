@@ -13,7 +13,7 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: teal[700]
-    },
+    }
   }
 });
 
@@ -43,8 +43,9 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      <Header setPage={setPage} />
       <PollCard author={pollProps.author} contents={pollProps.contents} />
+      <h1> We are on page {page}! </h1>
     </ThemeProvider>
   );
 };
