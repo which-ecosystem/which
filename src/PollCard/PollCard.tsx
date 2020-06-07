@@ -7,28 +7,12 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
-
-interface ImageData {
-  url: string;
-  votes: number;
-}
-
-interface PropTypes {
-  author: {
-    name: string;
-    avatarUrl: string;
-  };
-  contents: {
-    left: ImageData;
-    right: ImageData;
-  };
-}
+import { Poll } from '../types';
 
 interface PercentageBarPropTypes {
   value: number;
   which: 'left' | 'right';
 }
-
 
 const useStyles = makeStyles({
   root: {
@@ -71,7 +55,7 @@ const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
 };
 
 
-const PollCard: React.FC<PropTypes> = ({ author, contents: { left, right } }) => {
+const PollCard: React.FC<Poll> = ({ author, contents: { left, right } }) => {
   const classes = useStyles();
 
   const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
@@ -106,5 +90,6 @@ const PollCard: React.FC<PropTypes> = ({ author, contents: { left, right } }) =>
     </Card>
   );
 };
+
 export default PollCard;
 
