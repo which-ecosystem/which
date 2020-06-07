@@ -7,7 +7,7 @@ import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
 import Header from './Header/Header';
-import PollCard from './PollCard/PollCard';
+import Feed from './Feed/Feed';
 
 const theme = createMuiTheme({
   palette: {
@@ -17,7 +17,7 @@ const theme = createMuiTheme({
   }
 });
 
-const pollProps = {
+const polls = [{
   author: {
     name: 'John Doe',
     avatarUrl: ''
@@ -34,7 +34,24 @@ const pollProps = {
       votes: 17
     }
   }
-};
+}, {
+  author: {
+    name: 'John Doe',
+    avatarUrl: ''
+  },
+  contents: {
+    left: {
+      // eslint-disable-next-line max-len
+      url: 'https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      votes: 15
+    },
+    right: {
+      // eslint-disable-next-line max-len
+      url: 'https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg',
+      votes: 17
+    }
+  }
+}];
 
 
 const App: React.FC = () => {
@@ -44,7 +61,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header setPage={setPage} />
-      <PollCard author={pollProps.author} contents={pollProps.contents} />
+      <Feed polls={polls} />
       <h1> We are on page {page}! </h1>
     </ThemeProvider>
   );
