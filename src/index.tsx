@@ -43,7 +43,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header page={page} setPage={setPage} />
+      <Header />
       <PollCard author={pollProps.author} contents={pollProps.contents} />
     </ThemeProvider>
   );

@@ -2,45 +2,47 @@ import React from 'react';
 import {
   AppBar,
   Toolbar,
-  Tabs,
-  Tab
+  IconButton,
+  Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
-interface PropTypes {
-  page: string;
-  setPage: (newPage: string) => void;
-}
+import SearchBar from './SearchBar';
 
 const useStyles = makeStyles(theme => ({
-  tab: {
-    '& .MuiTab-wrapper': {
-      padding: theme.spacing(2),
-      flexDirection: 'row',
-      fontSize: '0.8125rem'
-    }
+  root: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    width: '60%',
+    margin: 'auto'
+  },
+  logo: {
+    fontWeight: 'bold',
   }
 }));
 
-const tabs = ['Profile', 'Feed'];
-
-const Header: React.FC<PropTypes> = ({ page /* , setPage */ }) => {
+const Header: React.FC = () => {
   const classes = useStyles();
 
   const handleChange = () => {};
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Tabs onChange={handleChange} value={page}>
-          {tabs.map((tab: string) => (
-            <Tab
-              label={tab}
-              key={tab}
-              className={classes.tab}
-            />
-          ))}
-        </Tabs>
+      <Toolbar className={classes.root}>
+        <Typography variant="h5" className={classes.logo}>
+          Which
+        </Typography>
+        <SearchBar />
+        <div>
+          <IconButton>
+            <NotificationsIcon />
+          </IconButton>
+          <IconButton>
+            <AccountCircle />
+          </IconButton>
+        </div>
       </Toolbar>
     </AppBar>
   );
