@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  ThemeProvider,
+  makeStyles
+} from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
@@ -53,16 +56,26 @@ const polls = [{
   }
 }];
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: theme.spacing(15),
+  },
+}));
+
+
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header setPage={setPage} />
-      <Feed polls={polls} />
-      <h1> We are on page {page}! </h1>
+      <div className={classes.root}>
+        <Feed polls={polls} />
+        <h1> We are on page {page}! </h1>
+      </div>
     </ThemeProvider>
   );
 };
