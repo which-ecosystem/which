@@ -1,11 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
-import Avatar from '@material-ui/core/Avatar';
-import CardHeader from '@material-ui/core/CardHeader';
-
+import {
+  Card,
+  CardActionArea,
+  CardMedia,
+  Avatar,
+  CardHeader
+} from '@material-ui/core/';
+// import Card from '@material-ui/core/Card';
+// import CardActionArea from '@material-ui/core/CardActionArea';
+// import CardMedia from '@material-ui/core/CardMedia';
+// import Avatar from '@material-ui/core/Avatar';
+// import CardHeader from '@material-ui/core/CardHeader';
 
 const useStyles = makeStyles({
   root: {
@@ -54,6 +60,7 @@ const PollCard: React.FC = () => {
         <CardActionArea>
           <CardMedia
             className={classes.images}
+            // eslint-disable-next-line max-len
             image="https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
           />
           <div className={classes.percentageLeft}>25%</div>
@@ -61,6 +68,7 @@ const PollCard: React.FC = () => {
         <CardActionArea>
           <CardMedia
             className={classes.images}
+            // eslint-disable-next-line max-len
             image="https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg"
           />
           <div className={classes.percentageRight}>75%</div>
