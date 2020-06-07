@@ -20,7 +20,7 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
   return (
     <div className={classes.feed}>
       {
-        polls.map(poll => <PollCard author={poll.author} contents={poll.contents} />)
+        polls.map(poll => <PollCard poll={poll} />)
       }
     </div>
   );

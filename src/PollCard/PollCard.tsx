@@ -9,6 +9,10 @@ import {
 } from '@material-ui/core/';
 import { Poll } from '../types';
 
+interface PropTypes {
+  poll: Poll;
+}
+
 interface PercentageBarPropTypes {
   value: number;
   which: 'left' | 'right';
@@ -55,34 +59,36 @@ const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
 };
 
 
-const PollCard: React.FC<Poll> = (Poll) => {
+const PollCard: React.FC<PropTypes> = ({ poll }) => {
   const classes = useStyles();
+  const { author, contents } = poll;
 
-  const leftPercentage = Math.round(100 * (Poll.contents.left.votes / (Poll.contents.left.votes + Poll.contents.right.votes)));
+  const leftPercentage = Math.round(100 * (contents.left.votes / (contents.left.votes + contents.right.votes)));
   const rightPercentage = 100 - leftPercentage;
+
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={(
           <Avatar aria-label="avatar">
-            <img src={Poll.author.avatarUrl} alt={Poll.author.name[0].toUpperCase()} />
+            <img src={author.avatarUrl} alt={author.name[0].toUpperCase()} />
           </Avatar>
         )}
-        title={Poll.author.name}
+        title={author.name}
       />
       <div className={classes.imagesBlock}>
         <CardActionArea>
           <CardMedia
             className={classes.images}
-            image={Poll.contents.left.url}
+            image={contents.left.url}
           />
           <PercentageBar value={leftPercentage} which="left" />
         </CardActionArea>
         <CardActionArea>
           <CardMedia
             className={classes.images}
-            image={Poll.contents.right.url}
+            image={contents.right.url}
           />
           <PercentageBar value={rightPercentage} which="right" />
         </CardActionArea>
