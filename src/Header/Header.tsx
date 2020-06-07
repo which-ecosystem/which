@@ -29,7 +29,7 @@ const Header: React.FC = () => {
   const handleChange = () => {};
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar className={classes.root}>
         <Typography variant="h5" className={classes.logo}>
           Which
