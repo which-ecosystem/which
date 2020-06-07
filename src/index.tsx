@@ -14,10 +14,6 @@ const theme = createMuiTheme({
     primary: {
       main: teal[700]
     },
-    text: {
-      primary: '#000000',
-      secondary: 'rgba(255, 255, 255, 0.6)'
-    }
   }
 });
 
