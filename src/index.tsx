@@ -56,12 +56,11 @@ const polls = [{
   }
 }];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
-    marginTop: theme.spacing(15),
-  },
-}));
-
+    marginTop: theme.spacing(15)
+  }
+});
 
 
 const App: React.FC = () => {
