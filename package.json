@@ -1,7 +1,7 @@
 {
   "name": "which",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://ilyayudovin.github.io/which",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
