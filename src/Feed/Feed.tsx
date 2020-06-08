@@ -9,7 +9,7 @@ interface PropTypes {
 
 const usedStyles = makeStyles(theme => ({
   feed: {
-    position:'relative',
+    position: 'relative',
     maxWidth: theme.spacing(75),
     margin: '0 auto'
   }

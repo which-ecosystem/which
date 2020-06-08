@@ -57,15 +57,13 @@ const polls = [{
   }
 }];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     width: 600,
     marginTop: theme.spacing(15),
-    margin: '0 auto',
-  },
-}));
-
-
+    margin: '0 auto'
+  }
+});
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
@@ -77,7 +75,7 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' ? <ProfileInfo profile={polls[0]}/> : null
+          page === 'profile' ? <ProfileInfo profile={polls[0]} /> : null
         }
         <Feed polls={polls} />
         <h1> We are on page {page}! </h1>
