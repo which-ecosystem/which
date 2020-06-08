@@ -57,16 +57,14 @@ const polls = [{
   }
 }];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     width: 600,
     marginTop: theme.spacing(15),
     margin: '0 auto',
   },
 }));
-
-
-
+        
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
   const classes = useStyles();
