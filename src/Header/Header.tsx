@@ -37,6 +37,7 @@ const Header: React.FC<PropTypes> = ({ setPage }) => {
 
   const handleProfile = (): void => {
     setPage('profile');
+
   };
 
   const handleNotifications = (): void => {};

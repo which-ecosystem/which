@@ -11,6 +11,7 @@ import 'typeface-roboto';
 
 import Header from './Header/Header';
 import Feed from './Feed/Feed';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 const theme = createMuiTheme({
   palette: {
@@ -58,7 +59,9 @@ const polls = [{
 
 const useStyles = makeStyles(theme => ({
   root: {
+    width: 600,
     marginTop: theme.spacing(15),
+    margin: '0 auto',
   },
 }));
 
@@ -73,6 +76,9 @@ const App: React.FC = () => {
       <CssBaseline />
       <Header setPage={setPage} />
       <div className={classes.root}>
+        {
+          page === 'profile' ? <ProfileInfo profile={polls[0]}/> : null
+        }
         <Feed polls={polls} />
         <h1> We are on page {page}! </h1>
       </div>
