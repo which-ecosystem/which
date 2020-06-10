@@ -77,7 +77,7 @@ const App: React.FC = () => {
         {
           page === 'profile' && <ProfileInfo profile={polls[0]} />
         }
-        <Feed polls={polls} />
+        <Feed page={page} />
       </div>
     </ThemeProvider>
   );
