@@ -71,9 +71,7 @@ const PollCard: React.FC<PropTypes> = ({ poll }) => {
     <Card className={classes.root}>
       <CardHeader
         avatar={(
-          <Avatar aria-label="avatar">
-            <img src={author.avatarUrl} alt={author.name[0].toUpperCase()} />
-          </Avatar>
+          <Avatar aria-label="avatar" src={author.avatarUrl} alt={author.name[0].toUpperCase()}/>
         )}
         title={author.name}
       />

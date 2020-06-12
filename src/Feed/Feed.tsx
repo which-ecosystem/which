@@ -22,7 +22,7 @@ const Feed: React.FC<PropTypes> = ({ page }) => {
 
   let endpoint: string;
   if (page === 'feed') endpoint = '/polls';
-  else if (page === 'profile') endpoint = '/profile';
+  else if (page === 'profiles') endpoint = '/profiles';
 
   useEffect(() => {
     get(endpoint).then(response => {

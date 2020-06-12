@@ -75,7 +75,7 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo profile={polls[0]} />
+          page === 'profile' && <ProfileInfo id='5ee39a3b29600306e4e2b0b7' />
         }
         <Feed page={page} />
       </div>
