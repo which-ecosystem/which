@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
-import {Poll, User} from "../types";
-import {get} from "../requests";
+import { User } from '../types';
+import { get } from '../requests';
 
 interface PropTypes {
   id: string;
@@ -37,10 +37,8 @@ const useStyles = makeStyles({
 const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
   const [userInfo, setUserInfo] = useState<User>();
 
-  let endpoint: string = '/users/' + id;
-
-  get(endpoint).then(response => {
-    setUserInfo(response.data)
+  get(`/users/ + ${id}`).then(response => {
+    setUserInfo(response.data);
   });
 
   const classes = useStyles();

@@ -21,42 +21,6 @@ const theme = createMuiTheme({
   }
 });
 
-const polls = [{
-  author: {
-    name: 'John Doe',
-    avatarUrl: ''
-  },
-  contents: {
-    left: {
-      // eslint-disable-next-line max-len
-      url: 'https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      votes: 15
-    },
-    right: {
-      // eslint-disable-next-line max-len
-      url: 'https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg',
-      votes: 17
-    }
-  }
-}, {
-  author: {
-    name: 'John Doe',
-    avatarUrl: ''
-  },
-  contents: {
-    left: {
-      // eslint-disable-next-line max-len
-      url: 'https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      votes: 15
-    },
-    right: {
-      // eslint-disable-next-line max-len
-      url: 'https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg',
-      votes: 17
-    }
-  }
-}];
-
 const useStyles = makeStyles({
   root: {
     width: theme.spacing(75),
@@ -75,7 +39,7 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo id='5ee39a3b29600306e4e2b0b7' />
+          page === 'profile' && <ProfileInfo id="5ee39a3b29600306e4e2b0b7" />
         }
         <Feed page={page} />
       </div>
