@@ -13,6 +13,8 @@ import Header from './Header/Header';
 import Feed from './Feed/Feed';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
+import { get } from './requests';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -31,7 +33,12 @@ const useStyles = makeStyles({
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
+  const [id, setId] = useState<string>('');
   const classes = useStyles();
+
+  get('/users').then(response => {
+    setId(response.data[0]._id);
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -39,7 +46,7 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo id="5ee39a3b29600306e4e2b0b7" />
+          page === 'profile' && <ProfileInfo id={id} />
         }
         <Feed page={page} />
       </div>

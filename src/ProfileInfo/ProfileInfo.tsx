@@ -37,7 +37,7 @@ const useStyles = makeStyles({
 const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
   const [userInfo, setUserInfo] = useState<User>();
 
-  get(`/users/ + ${id}`).then(response => {
+  get(`/users/${id}`).then(response => {
     setUserInfo(response.data);
   });
 
