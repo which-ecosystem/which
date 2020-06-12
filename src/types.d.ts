@@ -1,3 +1,7 @@
+export interface User {
+  name: string;
+  avatarUrl: string;
+}
 interface ImageData {
   url: string;
   votes: number;

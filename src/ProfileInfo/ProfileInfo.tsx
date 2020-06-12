@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
-import { Poll } from '../types';
+import { User } from '../types';
+import { get } from '../requests';
 
 interface PropTypes {
-  profile: Poll;
+  id: string;
 }
 
 const useStyles = makeStyles({
@@ -33,14 +34,20 @@ const useStyles = makeStyles({
   }
 });
 
-const ProfileInfo: React.FC<PropTypes> = ({ profile }) => {
+const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
+  const [userInfo, setUserInfo] = useState<User>();
+
+  get(`/users/${id}`).then(response => {
+    setUserInfo(response.data);
+  });
+
   const classes = useStyles();
 
   return (
     <div>
-      <Avatar className={classes.avatar} src={profile.author.avatarUrl} />
+      <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       <div className={classes.name}>
-        Nick Name
+        {userInfo?.name}
       </div>
       <div className={classes.profileMenu}>
         <div style={{ borderBottom: '1px solid green', color: 'green' }} className={classes.menuButton}>

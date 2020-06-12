@@ -13,6 +13,8 @@ import Header from './Header/Header';
 import Feed from './Feed/Feed';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
+import { get } from './requests';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -20,42 +22,6 @@ const theme = createMuiTheme({
     }
   }
 });
-
-const polls = [{
-  author: {
-    name: 'John Doe',
-    avatarUrl: ''
-  },
-  contents: {
-    left: {
-      // eslint-disable-next-line max-len
-      url: 'https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      votes: 15
-    },
-    right: {
-      // eslint-disable-next-line max-len
-      url: 'https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg',
-      votes: 17
-    }
-  }
-}, {
-  author: {
-    name: 'John Doe',
-    avatarUrl: ''
-  },
-  contents: {
-    left: {
-      // eslint-disable-next-line max-len
-      url: 'https://images.pexels.com/photos/556666/pexels-photo-556666.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-      votes: 15
-    },
-    right: {
-      // eslint-disable-next-line max-len
-      url: 'https://cdn.psychologytoday.com/sites/default/files/field_blog_entry_images/2019-06/pexels-photo-556667.jpeg',
-      votes: 17
-    }
-  }
-}];
 
 const useStyles = makeStyles({
   root: {
@@ -67,7 +33,12 @@ const useStyles = makeStyles({
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
+  const [id, setId] = useState<string>('');
   const classes = useStyles();
+
+  get('/users').then(response => {
+    setId(response.data[0]._id);
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,7 +46,7 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo profile={polls[0]} />
+          page === 'profile' && <ProfileInfo id={id} />
         }
         <Feed page={page} />
       </div>
