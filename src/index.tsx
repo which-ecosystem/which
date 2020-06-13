@@ -13,7 +13,8 @@ import Header from './Header/Header';
 import Feed from './Feed/Feed';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-import { get } from './requests';
+import SignInForm from './Form/SignInForm';
+import { User } from './types';
 
 const theme = createMuiTheme({
   palette: {
@@ -33,12 +34,8 @@ const useStyles = makeStyles({
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
-  const [id, setId] = useState<string>('');
+  const [user, setUser] = React.useState<User | undefined>();
   const classes = useStyles();
-
-  get('/users').then(response => {
-    setId(response.data[0]._id);
-  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,7 +43,8 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo id={id} />
+          // eslint-disable-next-line
+          page === 'profile' && (!user ? <SignInForm setUser={setUser} /> : <ProfileInfo id={user?._id || ''} setUser={setUser} />)
         }
         <Feed page={page} />
       </div>

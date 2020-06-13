@@ -1,6 +1,7 @@
 export interface User {
   name: string;
   avatarUrl: string;
+  _id: string;
 }
 interface ImageData {
   url: string;
