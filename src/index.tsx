@@ -9,11 +9,10 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
-import Header from './Header/Header';
-import Feed from './Feed/Feed';
-import ProfileInfo from './ProfileInfo/ProfileInfo';
-
-import SignInForm from './Form/SignInForm';
+import Header from './components/Header/Header';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import FeedPage from './pages/FeedPage/FeedPage';
+import AuthPage from './pages/AuthPage/AuthPage';
 import { User } from './types';
 import { get } from './requests';
 
@@ -38,6 +37,11 @@ const App: React.FC = () => {
   const [user, setUser] = React.useState<User | undefined>();
   const classes = useStyles();
 
+  const logOut = () => {
+    localStorage.removeItem('userId');
+    setUser(undefined);
+  };
+
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     if (userId) {
@@ -56,15 +60,10 @@ const App: React.FC = () => {
           page === 'profile'
             ? (
               user
-                ? (
-                  <>
-                    <ProfileInfo id={user?._id || ''} setUser={setUser} />
-                    <Feed page={page} />
-                  </>
-                )
-                : <SignInForm setUser={setUser} />
+                ? <ProfilePage logOut={logOut} id={user?._id} />
+                : <AuthPage setUser={setUser} />
             )
-            : <Feed page={page} />
+            : <FeedPage />
         }
       </div>
     </ThemeProvider>

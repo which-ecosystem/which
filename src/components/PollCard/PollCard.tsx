@@ -7,7 +7,7 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
-import { Poll } from '../types';
+import { Poll } from '../../types';
 
 interface PropTypes {
   poll: Poll;
