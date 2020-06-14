@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Poll } from '../../types';
 import PollCard from '../PollCard/PollCard';
-import { get } from '../../requests';
 
 interface PropTypes {
-  page: string;
+  polls: Poll[];
 }
 
 const useStyles = makeStyles(theme => ({
@@ -16,19 +15,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Feed: React.FC<PropTypes> = ({ page }) => {
-  const [polls, setPolls] = useState<Poll[]>([]);
+const Feed: React.FC<PropTypes> = ({ polls }) => {
   const classes = useStyles();
-
-  let endpoint = '/polls';
-  // TODO: Make this work
-  if (page === 'feed') endpoint = '/polls';
-
-  useEffect(() => {
-    get(endpoint).then(response => {
-      setPolls(response.data);
-    });
-  }, [endpoint]);
 
   return (
     <div className={classes.root}>

@@ -1,25 +1,32 @@
-import React from 'react';
-import { User } from '../../types';
-import SignInForm from './SignInForm';
+import React, { useState } from 'react';
+import { User, Poll } from '../../types';
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
+import { get } from '../../requests';
 
 interface PropTypes {
-  setUser: (newUser: User | undefined) => void;
-  user: User | undefined;
+  logOut: () => void;
+  id: string;
 }
 
-const ProfilePage: React.FC<PropTypes> = ({ setUser, user }) => {
+const ProfilePage: React.FC<PropTypes> = ({ logOut, id }) => {
+  const [userInfo, setUserInfo] = useState<User>();
+  const [polls, setPolls] = useState<Poll[]>([]);
+
+  get(`/users/${id}`).then(response => {
+    setUserInfo(response.data);
+  });
+
+  get(`/profiles/${id}`).then(response => {
+    setPolls(response.data);
+  });
+
   return (
-    user
-      ? (
-        <>
-          <ProfileInfo id={user?._id} setUser={setUser} />
-          <Feed page="Feed" />
-        </>
-      )
-      : <SignInForm setUser={setUser} />
-  );
+    <>
+      <ProfileInfo user={userInfo} logOut={logOut} />
+      <Feed polls={polls} />
+    </>
+  )
 };
 
 export default ProfilePage;

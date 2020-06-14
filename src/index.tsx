@@ -10,8 +10,9 @@ import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
 import Header from './components/Header/Header';
-import Feed from './components/Feed/Feed';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import FeedPage from './pages/FeedPage/FeedPage';
+import AuthPage from './pages/AuthPage/AuthPage';
 import { User } from './types';
 import { get } from './requests';
 
@@ -36,6 +37,12 @@ const App: React.FC = () => {
   const [user, setUser] = React.useState<User | undefined>();
   const classes = useStyles();
 
+  const logOut = () => {
+    localStorage.removeItem('userId');
+    setUser(undefined);
+  };
+
+
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     if (userId) {
@@ -52,8 +59,12 @@ const App: React.FC = () => {
       <div className={classes.root}>
         {
           page === 'profile'
-            ? <ProfilePage setUser={setUser} user={user} />
-            : <Feed page={page} />
+            ? (
+              user
+                ? <ProfilePage logOut={logOut} id={user?._id} />
+                : <AuthPage setUser={setUser} />
+            )
+            : <FeedPage />
         }
       </div>
     </ThemeProvider>

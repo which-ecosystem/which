@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button/Button';
 import { User } from '../../types';
-import { get } from '../../requests';
 
 interface PropTypes {
-  id: string;
-  setUser: (newUser: User | undefined) => void;
+  user: User | undefined;
+  logOut: () => void;
 }
 
 const useStyles = makeStyles({
@@ -36,25 +35,14 @@ const useStyles = makeStyles({
   }
 });
 
-const ProfileInfo: React.FC<PropTypes> = ({ id, setUser }) => {
-  const [userInfo, setUserInfo] = useState<User>();
-
-  get(`/users/${id}`).then(response => {
-    setUserInfo(response.data);
-  });
-
+const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
   const classes = useStyles();
-
-  const LogOut = () => {
-    localStorage.clear();
-    setUser(undefined);
-  };
 
   return (
     <div>
-      <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
+      <Avatar className={classes.avatar} src={user?.avatarUrl} />
       <div className={classes.name}>
-        {userInfo?.name}
+        {user?.name}
       </div>
       <div className={classes.profileMenu}>
         <div style={{ borderBottom: '1px solid green', color: 'green' }} className={classes.menuButton}>
@@ -67,7 +55,7 @@ const ProfileInfo: React.FC<PropTypes> = ({ id, setUser }) => {
           Following
         </div>
       </div>
-      <Button variant="contained" onClick={LogOut}>Log Out</Button>
+      <Button variant="contained" onClick={logOut}>Log Out</Button>
     </div>
   );
 };
