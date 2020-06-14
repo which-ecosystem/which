@@ -26,23 +26,16 @@ const SignInForm: React.FC<PropTypes> = ({ setUser }) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
 
-  const getUserProfile = name => {
-    get(`/users?name=${name}`).then(response => {
-      setUser(response.data[0]);
-    });
-  };
-
   const onClick = () => {
-    const value = inputRef.current?.value;
-    if (value) {
-      localStorage.setItem('user', value);
-      getUserProfile(value);
+    const username = inputRef.current?.value;
+    if (username) {
+      get(`/users?name=${username}`).then(response => {
+        const user = response.data[0];
+        setUser(user);
+        localStorage.setItem('userId', user._id);
+      });
     }
   };
-
-  if (localStorage.getItem('user') !== null) {
-    getUserProfile(localStorage.getItem('user'));
-  }
 
   return (
     <form className={classes.root} noValidate autoComplete="off">

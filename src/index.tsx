@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
   createMuiTheme,
@@ -15,6 +15,7 @@ import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 import SignInForm from './Form/SignInForm';
 import { User } from './types';
+import { get } from './requests';
 
 const theme = createMuiTheme({
   palette: {
@@ -36,6 +37,15 @@ const App: React.FC = () => {
   const [page, setPage] = useState('feed');
   const [user, setUser] = React.useState<User | undefined>();
   const classes = useStyles();
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      get(`/users/${userId}`).then(response => {
+        setUser(response.data);
+      });
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
