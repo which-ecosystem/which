@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignInForm: React.FC<PropTypes> = ({ setUser }) => {
   const classes = useStyles();
-  const inputRef = useRef<any>();
+  const inputRef = useRef<HTMLInputElement>();
 
   const getUserProfile = name => {
     get(`/users?name=${name}`).then(response => {
@@ -33,9 +33,11 @@ const SignInForm: React.FC<PropTypes> = ({ setUser }) => {
   };
 
   const onClick = () => {
-    const value = inputRef.current.value;
-    localStorage.setItem('user', value);
-    getUserProfile(value);
+    const value = inputRef.current?.value;
+    if (value) {
+      localStorage.setItem('user', value);
+      getUserProfile(value);
+    }
   };
 
   if (localStorage.getItem('user') !== null) {
