@@ -9,9 +9,9 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
-import Header from './Components/Header/Header';
-import Feed from './Components/Feed/Feed';
-import ProfilePage from './Pages/ProfilePage/ProfilePage';
+import Header from './components/Header/Header';
+import Feed from './components/Feed/Feed';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 import { User } from './types';
 import { get } from './requests';
 
