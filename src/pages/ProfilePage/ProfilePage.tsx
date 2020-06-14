@@ -26,7 +26,7 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id }) => {
       <ProfileInfo user={userInfo} logOut={logOut} />
       <Feed polls={polls} />
     </>
-  )
+  );
 };
 
 export default ProfilePage;

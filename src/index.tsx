@@ -42,7 +42,6 @@ const App: React.FC = () => {
     setUser(undefined);
   };
 
-
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     if (userId) {
