@@ -1,6 +1,7 @@
 export interface User {
   name: string;
   avatarUrl: string;
+  _id: string;
 }
 interface ImageData {
   url: string;
@@ -8,6 +9,7 @@ interface ImageData {
 }
 
 export interface Poll {
+  _id: string;
   author: {
     name: string;
     avatarUrl: string;

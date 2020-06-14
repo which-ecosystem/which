@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
   createMuiTheme,
@@ -13,6 +13,8 @@ import Header from './Header/Header';
 import Feed from './Feed/Feed';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
+import SignInForm from './Form/SignInForm';
+import { User } from './types';
 import { get } from './requests';
 
 const theme = createMuiTheme({
@@ -33,12 +35,17 @@ const useStyles = makeStyles({
 
 const App: React.FC = () => {
   const [page, setPage] = useState('feed');
-  const [id, setId] = useState<string>('');
+  const [user, setUser] = React.useState<User | undefined>();
   const classes = useStyles();
 
-  get('/users').then(response => {
-    setId(response.data[0]._id);
-  });
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      get(`/users/${userId}`).then(response => {
+        setUser(response.data);
+      });
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,9 +53,19 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' && <ProfileInfo id={id} />
+          page === 'profile'
+            ? (
+              user
+                ? (
+                  <>
+                    <ProfileInfo id={user?._id || ''} setUser={setUser} />
+                    <Feed page={page} />
+                  </>
+                )
+                : <SignInForm setUser={setUser} />
+            )
+            : <Feed page={page} />
         }
-        <Feed page={page} />
       </div>
     </ThemeProvider>
   );

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button/Button';
 import { User } from '../types';
 import { get } from '../requests';
 
 interface PropTypes {
   id: string;
+  setUser: (newUser: User | undefined) => void;
 }
 
 const useStyles = makeStyles({
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
   }
 });
 
-const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
+const ProfileInfo: React.FC<PropTypes> = ({ id, setUser }) => {
   const [userInfo, setUserInfo] = useState<User>();
 
   get(`/users/${id}`).then(response => {
@@ -42,6 +44,11 @@ const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
   });
 
   const classes = useStyles();
+
+  const LogOut = () => {
+    localStorage.clear();
+    setUser(undefined);
+  };
 
   return (
     <div>
@@ -60,6 +67,7 @@ const ProfileInfo: React.FC<PropTypes> = ({ id }) => {
           Following
         </div>
       </div>
+      <Button variant="contained" onClick={LogOut}>Log Out</Button>
     </div>
   );
 };
