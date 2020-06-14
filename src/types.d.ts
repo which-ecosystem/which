@@ -9,6 +9,7 @@ interface ImageData {
 }
 
 export interface Poll {
+  _id: string;
   author: {
     name: string;
     avatarUrl: string;
