@@ -11,9 +11,7 @@ import 'typeface-roboto';
 
 import Header from './Components/Header/Header';
 import Feed from './Components/Feed/Feed';
-import ProfileInfo from './Pages/ProfilePage/ProfileInfo';
 import ProfilePage from './Pages/ProfilePage/ProfilePage';
-import SignInForm from './Pages/ProfilePage/SignInForm';
 import { User } from './types';
 import { get } from './requests';
 
@@ -53,7 +51,9 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          page === 'profile' ?  <ProfilePage id={user?._id || ''} setUser={setUser} user={user} /> : <Feed page={page} />
+          page === 'profile'
+            ? <ProfilePage setUser={setUser} user={user} />
+            : <Feed page={page} />
         }
       </div>
     </ThemeProvider>
