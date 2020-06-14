@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button/Button';
-import { User } from '../../../types';
-import { get } from '../../../requests';
+import { User } from '../../types';
+import { get } from '../../requests';
 
 interface PropTypes {
   id: string;

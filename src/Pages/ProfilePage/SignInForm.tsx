@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { User } from '../../../types';
-import { get } from '../../../requests';
+import { User } from '../../types';
+import { get } from '../../requests';
 
 interface PropTypes {
   setUser: (newUser: User) => void;
