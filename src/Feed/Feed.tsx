@@ -20,9 +20,9 @@ const Feed: React.FC<PropTypes> = ({ page }) => {
   const [polls, setPolls] = useState<Poll[]>([]);
   const classes = useStyles();
 
-  let endpoint: string;
+  let endpoint = '/polls';
+  // TODO: Make this work
   if (page === 'feed') endpoint = '/polls';
-  else if (page === 'profiles') endpoint = '/profiles';
 
   useEffect(() => {
     get(endpoint).then(response => {
