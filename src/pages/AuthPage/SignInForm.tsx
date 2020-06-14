@@ -7,6 +7,7 @@ import { get } from '../../requests';
 
 interface PropTypes {
   setUser: (newUser: User) => void;
+  navigate: (prefix: string, id: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ setUser }) => {
+const SignInForm: React.FC<PropTypes> = ({ setUser, navigate }) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
 
@@ -33,6 +34,7 @@ const SignInForm: React.FC<PropTypes> = ({ setUser }) => {
         const user = response.data[0];
         setUser(user);
         localStorage.setItem('userId', user._id);
+        navigate('profile', user._id);
       });
     }
   };

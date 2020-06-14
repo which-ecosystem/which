@@ -5,13 +5,15 @@ import {
   CardActionArea,
   CardMedia,
   Avatar,
-  CardHeader
+  CardHeader,
+Link
 } from '@material-ui/core/';
 import { Poll } from '../../types';
 import PercentageBar from './PercentageBar';
 
 interface PropTypes {
   poll: Poll;
+  navigate: (prefix: string, id: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -30,19 +32,29 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const PollCard: React.FC<PropTypes> = ({ poll }) => {
+const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
   const classes = useStyles();
   const { author, contents } = poll;
 
+  const handleNavigate = () => {
+    navigate('profile', poll.author._id);
+  };
+
   const leftPercentage = Math.round(100 * (contents.left.votes / (contents.left.votes + contents.right.votes)));
   const rightPercentage = 100 - leftPercentage;
-
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={(
-          <Avatar aria-label="avatar" src={author.avatarUrl} alt={author.name[0].toUpperCase()} />
+          <Link href="#">
+            <Avatar
+              aria-label="avatar"
+              src={author.avatarUrl}
+              alt={author.name[0].toUpperCase()}
+              onClick={handleNavigate}
+            />
+          </Link>
         )}
         title={author.name}
       />

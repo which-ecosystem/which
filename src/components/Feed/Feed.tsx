@@ -5,6 +5,7 @@ import PollCard from '../PollCard/PollCard';
 
 interface PropTypes {
   polls: Poll[];
+  navigate: (prefix: string, id: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -15,12 +16,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Feed: React.FC<PropTypes> = ({ polls }) => {
+const Feed: React.FC<PropTypes> = ({ polls, navigate }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      {polls.map(poll => <PollCard poll={poll} key={poll._id} />)}
+      {polls.map(poll => <PollCard poll={poll} key={poll._id} navigate={navigate} />)}
     </div>
   );
 };
