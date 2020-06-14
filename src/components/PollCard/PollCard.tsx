@@ -8,14 +8,10 @@ import {
   CardHeader
 } from '@material-ui/core/';
 import { Poll } from '../../types';
+import PercentageBar from './PercentageBar';
 
 interface PropTypes {
   poll: Poll;
-}
-
-interface PercentageBarPropTypes {
-  value: number;
-  which: 'left' | 'right';
 }
 
 const useStyles = makeStyles(theme => ({
@@ -31,33 +27,7 @@ const useStyles = makeStyles(theme => ({
   imagesBlock: {
     display: 'flex'
   },
-  percentage: {
-    position: 'absolute',
-    color: 'white',
-    top: '86%',
-    fontSize: 20,
-    textShadow: '0 0 3px black'
-  },
-  percentageLeft: {
-    left: 30
-  },
-  percentageRight: {
-    right: 30
-  }
 }));
-
-
-const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
-  const classes = useStyles();
-  const positionClassName = which === 'left' ? 'percentageLeft' : 'percentageRight';
-
-  return (
-    <div className={`${classes.percentage} ${classes[positionClassName]}`}>
-      {value}
-      %
-    </div>
-  );
-};
 
 
 const PollCard: React.FC<PropTypes> = ({ poll }) => {
@@ -95,6 +65,7 @@ const PollCard: React.FC<PropTypes> = ({ poll }) => {
     </Card>
   );
 };
+
 
 export default PollCard;
 
