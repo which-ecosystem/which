@@ -9,11 +9,11 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
-import Header from './Header/Header';
-import Feed from './Feed/Feed';
-import ProfileInfo from './ProfileInfo/ProfileInfo';
+import Header from './Components/Header/Header';
+import Feed from './Components/Feed/Feed';
+import ProfileInfo from './Pages/ProfilePage/ProfileInfo/ProfileInfo';
 
-import SignInForm from './Form/SignInForm';
+import SignInForm from './Pages/ProfilePage/Form/SignInForm';
 import { User } from './types';
 import { get } from './requests';
 

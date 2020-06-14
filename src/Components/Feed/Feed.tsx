@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Poll } from '../types';
+import { Poll } from '../../types';
 import PollCard from '../PollCard/PollCard';
-import { get } from '../requests';
+import { get } from '../../requests';
 
 interface PropTypes {
   page: string;
