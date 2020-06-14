@@ -43,10 +43,19 @@ const App: React.FC = () => {
       <Header setPage={setPage} />
       <div className={classes.root}>
         {
-          // eslint-disable-next-line
-          page === 'profile' && (!user ? <SignInForm setUser={setUser} /> : <ProfileInfo id={user?._id || ''} setUser={setUser} />)
+          page === 'profile'
+            ? (
+              user
+                ? (
+                  <>
+                    <ProfileInfo id={user?._id || ''} setUser={setUser} />
+                    <Feed page={page} />
+                  </>
+                )
+                : <SignInForm setUser={setUser} />
+            )
+            : <Feed page={page} />
         }
-        <Feed page={page} />
       </div>
     </ThemeProvider>
   );
