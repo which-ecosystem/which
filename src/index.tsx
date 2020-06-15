@@ -52,8 +52,8 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (name: string, password: string) => {
-    post('/authentication', {
+  const logIn = (name: string, password: string): Promise<boolean> => {
+    return post('/authentication', {
       strategy: 'local',
       name,
       password
@@ -65,7 +65,8 @@ const App: React.FC = () => {
       localStorage.setItem('userId', user._id);
       localStorage.setItem('token', accessToken);
       navigate('profile', user._id);
-    });
+      return true;
+    }).catch(error => false);
   };
 
   const logOut = () => {
@@ -91,7 +92,7 @@ const App: React.FC = () => {
       <div className={classes.root}>
         { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} /> }
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
-        { page.prefix === 'auth' && <AuthPage logIn={logIn} navigate={navigate} /> }
+        { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>
     </ThemeProvider>
   );
