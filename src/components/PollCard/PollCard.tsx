@@ -5,8 +5,7 @@ import {
   CardActionArea,
   CardMedia,
   Avatar,
-  CardHeader,
-Link
+  CardHeader
 } from '@material-ui/core/';
 import { Poll } from '../../types';
 import PercentageBar from './PercentageBar';
@@ -28,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   imagesBlock: {
     display: 'flex'
-  },
+  }
 }));
 
 
@@ -47,14 +46,12 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
     <Card className={classes.root}>
       <CardHeader
         avatar={(
-          <Link href="#">
-            <Avatar
-              aria-label="avatar"
-              src={author.avatarUrl}
-              alt={author.name[0].toUpperCase()}
-              onClick={handleNavigate}
-            />
-          </Link>
+          <Avatar
+            aria-label="avatar"
+            src={author.avatarUrl}
+            alt={author.name[0].toUpperCase()}
+            onClick={handleNavigate}
+          />
         )}
         title={author.name}
       />

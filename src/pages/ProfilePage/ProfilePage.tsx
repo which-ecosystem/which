@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Poll } from '../../types';
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';

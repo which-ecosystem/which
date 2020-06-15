@@ -39,14 +39,17 @@ const App: React.FC = () => {
   const classes = useStyles();
 
   const navigate = (prefix: string, id?: string): void => {
-    if (prefix === 'profile' && !id && !user) setPage({
-      prefix: 'auth',
-      id: ''
-    });
-    else setPage({
-      prefix,
-      id: (id || user?._id || '')
-    });
+    if (prefix === 'profile' && !id && !user) {
+      setPage({
+        prefix: 'auth',
+        id: ''
+      });
+    } else {
+      setPage({
+        prefix,
+        id: (id || user?._id || '')
+      });
+    }
   };
 
   const logOut = () => {
@@ -71,7 +74,7 @@ const App: React.FC = () => {
       <div className={classes.root}>
         { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} /> }
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
-        { page.prefix === 'auth' && <AuthPage setUser={setUser} navigate={navigate}/> }
+        { page.prefix === 'auth' && <AuthPage setUser={setUser} navigate={navigate} /> }
       </div>
     </ThemeProvider>
   );

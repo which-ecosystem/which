@@ -6,7 +6,7 @@ interface PropTypes {
   which: 'left' | 'right';
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     position: 'absolute',
     color: 'white',
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   right: {
     right: 30
   }
-}));
+});
 
 const PercentageBar: React.FC<PropTypes> = ({ value, which }) => {
   const classes = useStyles();
