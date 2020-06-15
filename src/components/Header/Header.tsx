@@ -13,7 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import SearchBar from './SearchBar';
 
 interface PropTypes {
-  setPage: (newPage: string) => void;
+  navigate: (prefix: string) => void;
 }
 
 const useStyles = makeStyles({
@@ -28,15 +28,15 @@ const useStyles = makeStyles({
   }
 });
 
-const Header: React.FC<PropTypes> = ({ setPage }) => {
+const Header: React.FC<PropTypes> = ({ navigate }) => {
   const classes = useStyles();
 
   const handleHome = (): void => {
-    setPage('feed');
+    navigate('feed');
   };
 
   const handleProfile = (): void => {
-    setPage('profile');
+    navigate('profile');
   };
 
   const handleNotifications = (): void => {};

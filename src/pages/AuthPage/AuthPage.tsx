@@ -4,10 +4,11 @@ import SignInForm from './SignInForm';
 
 interface PropTypes {
   setUser: (newUser: User | undefined) => void;
+  navigate: (prefix: string, id: string) => void;
 }
 
-const AuthPage: React.FC<PropTypes> = ({ setUser }) => {
-  return <SignInForm setUser={setUser} />;
+const AuthPage: React.FC<PropTypes> = ({ setUser, navigate }) => {
+  return <SignInForm setUser={setUser} navigate={navigate} />;
 };
 
 export default AuthPage;

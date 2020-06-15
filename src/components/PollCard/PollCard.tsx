@@ -8,14 +8,11 @@ import {
   CardHeader
 } from '@material-ui/core/';
 import { Poll } from '../../types';
+import PercentageBar from './PercentageBar';
 
 interface PropTypes {
   poll: Poll;
-}
-
-interface PercentageBarPropTypes {
-  value: number;
-  which: 'left' | 'right';
+  navigate: (prefix: string, id: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -30,49 +27,31 @@ const useStyles = makeStyles(theme => ({
   },
   imagesBlock: {
     display: 'flex'
-  },
-  percentage: {
-    position: 'absolute',
-    color: 'white',
-    top: '86%',
-    fontSize: 20,
-    textShadow: '0 0 3px black'
-  },
-  percentageLeft: {
-    left: 30
-  },
-  percentageRight: {
-    right: 30
   }
 }));
 
 
-const PercentageBar: React.FC<PercentageBarPropTypes> = ({ value, which }) => {
-  const classes = useStyles();
-  const positionClassName = which === 'left' ? 'percentageLeft' : 'percentageRight';
-
-  return (
-    <div className={`${classes.percentage} ${classes[positionClassName]}`}>
-      {value}
-      %
-    </div>
-  );
-};
-
-
-const PollCard: React.FC<PropTypes> = ({ poll }) => {
+const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
   const classes = useStyles();
   const { author, contents } = poll;
 
+  const handleNavigate = () => {
+    navigate('profile', poll.author._id);
+  };
+
   const leftPercentage = Math.round(100 * (contents.left.votes / (contents.left.votes + contents.right.votes)));
   const rightPercentage = 100 - leftPercentage;
-
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={(
-          <Avatar aria-label="avatar" src={author.avatarUrl} alt={author.name[0].toUpperCase()} />
+          <Avatar
+            aria-label="avatar"
+            src={author.avatarUrl}
+            alt={author.name[0].toUpperCase()}
+            onClick={handleNavigate}
+          />
         )}
         title={author.name}
       />
@@ -95,6 +74,7 @@ const PollCard: React.FC<PropTypes> = ({ poll }) => {
     </Card>
   );
 };
+
 
 export default PollCard;
 

@@ -13,8 +13,9 @@ import Header from './components/Header/Header';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
-import { User } from './types';
+import { User, Page } from './types';
 import { get } from './requests';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -33,13 +34,28 @@ const useStyles = makeStyles({
 });
 
 const App: React.FC = () => {
-  const [page, setPage] = useState('feed');
   const [user, setUser] = React.useState<User | undefined>();
+  const [page, setPage] = useState<Page>({ prefix: 'feed', id: '' });
   const classes = useStyles();
+
+  const navigate = (prefix: string, id?: string): void => {
+    if (prefix === 'profile' && !id && !user) {
+      setPage({
+        prefix: 'auth',
+        id: ''
+      });
+    } else {
+      setPage({
+        prefix,
+        id: (id || user?._id || '')
+      });
+    }
+  };
 
   const logOut = () => {
     localStorage.removeItem('userId');
     setUser(undefined);
+    navigate('auth');
   };
 
   useEffect(() => {
@@ -54,17 +70,11 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header setPage={setPage} />
+      <Header navigate={navigate} />
       <div className={classes.root}>
-        {
-          page === 'profile'
-            ? (
-              user
-                ? <ProfilePage logOut={logOut} id={user?._id} />
-                : <AuthPage setUser={setUser} />
-            )
-            : <FeedPage />
-        }
+        { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} /> }
+        { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
+        { page.prefix === 'auth' && <AuthPage setUser={setUser} navigate={navigate} /> }
       </div>
     </ThemeProvider>
   );

@@ -3,7 +3,11 @@ import { Poll } from '../../types';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 
-const FeedPage: React.FC = () => {
+interface PropTypes {
+  navigate: (prefix: string, id: string) => void;
+}
+
+const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
   const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
@@ -12,7 +16,7 @@ const FeedPage: React.FC = () => {
     });
   }, []);
 
-  return <Feed polls={polls} />;
+  return <Feed polls={polls} navigate={navigate} />;
 };
 
 export default FeedPage;
