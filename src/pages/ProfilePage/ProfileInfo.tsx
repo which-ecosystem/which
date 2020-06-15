@@ -37,7 +37,6 @@ const useStyles = makeStyles({
 
 const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
   const classes = useStyles();
-
   return (
     <div>
       <Avatar className={classes.avatar} src={user?.avatarUrl} />
@@ -55,7 +54,11 @@ const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
           Following
         </div>
       </div>
-      <Button variant="contained" onClick={logOut}>Log Out</Button>
+      {
+        user?._id === localStorage.getItem('userId')
+          ? <Button variant="contained" onClick={logOut}>Log Out</Button>
+          : null
+      }
     </div>
   );
 };
