@@ -38,7 +38,6 @@ const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <h1>Sign In</h1>
       <TextField
         inputRef={nameRef}
         error={error}
