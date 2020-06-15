@@ -65,7 +65,7 @@ const App: React.FC = () => {
       localStorage.setItem('token', token);
       navigate('profile', me._id);
       return true;
-    }).catch(error => false);
+    }).catch(() => false);
   };
 
   const logOut = () => {
