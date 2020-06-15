@@ -1,13 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { User } from '../../types';
-import { get } from '../../requests';
 
 interface PropTypes {
-  setUser: (newUser: User) => void;
-  navigate: (prefix: string, id: string) => void;
+  logIn: (name: string, password: string) => Promise<boolean>;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -23,18 +20,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ setUser, navigate }) => {
+const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
+  const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
-  const inputRef = useRef<HTMLInputElement>();
+  const nameRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
 
-  const onClick = () => {
-    const username = inputRef.current?.value;
-    if (username) {
-      get(`/users?name=${username}`).then(response => {
-        const user = response.data[0];
-        setUser(user);
-        localStorage.setItem('userId', user._id);
-        navigate('profile', user._id);
+  const onClick = async () => {
+    const name = nameRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (name && password) {
+      logIn(name, password).then(success => {
+        if (!success) setError(true);
       });
     }
   };
@@ -42,9 +39,15 @@ const SignInForm: React.FC<PropTypes> = ({ setUser, navigate }) => {
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <h1>Sign In</h1>
-      <TextField inputRef={inputRef} id="standard-basic" label="Login" />
       <TextField
-        id="standard-password-input"
+        inputRef={nameRef}
+        error={error}
+        label="Login"
+      />
+      <TextField
+        inputRef={passwordRef}
+        error={error}
+        helperText={error && 'Invalid credentials'}
         label="Password"
         type="password"
       />
@@ -54,3 +57,4 @@ const SignInForm: React.FC<PropTypes> = ({ setUser, navigate }) => {
 };
 
 export default SignInForm;
+

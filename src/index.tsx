@@ -14,7 +14,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { User, Page } from './types';
-import { get } from './requests';
+import { get, post } from './requests';
 
 
 const theme = createMuiTheme({
@@ -52,9 +52,26 @@ const App: React.FC = () => {
     }
   };
 
+  const logIn = (name: string, password: string): Promise<boolean> => {
+    return post('/authentication', {
+      strategy: 'local',
+      name,
+      password
+    }).then(response => {
+      const me = response.data.user;
+      const token = response.data.accessToken;
+      setUser(me);
+      localStorage.setItem('userId', me._id);
+      localStorage.setItem('token', token);
+      navigate('profile', me._id);
+      return true;
+    }).catch(() => false);
+  };
+
   const logOut = () => {
-    localStorage.removeItem('userId');
     setUser(undefined);
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
     navigate('auth');
   };
 
@@ -74,7 +91,7 @@ const App: React.FC = () => {
       <div className={classes.root}>
         { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} /> }
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
-        { page.prefix === 'auth' && <AuthPage setUser={setUser} navigate={navigate} /> }
+        { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>
     </ThemeProvider>
   );
