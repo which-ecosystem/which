@@ -58,13 +58,12 @@ const App: React.FC = () => {
       name,
       password
     }).then(response => {
-      const user = response.data.undefined; // TODO: rename 'undefined' field
-      const { accessToken } = response.data;
-
-      setUser(user);
-      localStorage.setItem('userId', user._id);
-      localStorage.setItem('token', accessToken);
-      navigate('profile', user._id);
+      const me = response.data.user;
+      const token = response.data.accessToken;
+      setUser(me);
+      localStorage.setItem('userId', me._id);
+      localStorage.setItem('token', token);
+      navigate('profile', me._id);
       return true;
     }).catch(error => false);
   };
