@@ -6,7 +6,7 @@ import { User } from '../../types';
 import { get } from '../../requests';
 
 interface PropTypes {
-  setUser: (newUser: User) => void;
+  logIn: (name: string, password: string) => void;
   navigate: (prefix: string, id: string) => void;
 }
 
@@ -23,27 +23,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ setUser, navigate }) => {
+const SignInForm: React.FC<PropTypes> = ({ logIn, navigate }) => {
   const classes = useStyles();
-  const inputRef = useRef<HTMLInputElement>();
+  const nameRef = useRef<HTMLInputElement>();
+  const passwordRef = useRef<HTMLInputElement>();
 
   const onClick = () => {
-    const username = inputRef.current?.value;
-    if (username) {
-      get(`/users?name=${username}`).then(response => {
-        const user = response.data[0];
-        setUser(user);
-        localStorage.setItem('userId', user._id);
-        navigate('profile', user._id);
-      });
-    }
+    const name = nameRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (name && password) logIn(name, password);
   };
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
       <h1>Sign In</h1>
-      <TextField inputRef={inputRef} id="standard-basic" label="Login" />
+      <TextField inputRef={nameRef} id="standard-basic" label="Login" />
       <TextField
+        inputRef={passwordRef}
         id="standard-password-input"
         label="Password"
         type="password"

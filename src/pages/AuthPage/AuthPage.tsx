@@ -3,12 +3,12 @@ import { User } from '../../types';
 import SignInForm from './SignInForm';
 
 interface PropTypes {
-  setUser: (newUser: User | undefined) => void;
+  logIn: (name: string, password: string) => void;
   navigate: (prefix: string, id: string) => void;
 }
 
-const AuthPage: React.FC<PropTypes> = ({ setUser, navigate }) => {
-  return <SignInForm setUser={setUser} navigate={navigate} />;
+const AuthPage: React.FC<PropTypes> = ({ logIn, navigate }) => {
+  return <SignInForm logIn={logIn} navigate={navigate} />;
 };
 
 export default AuthPage;
