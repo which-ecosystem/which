@@ -6,7 +6,7 @@ import { post } from '../../requests';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
-  setAuthorization: (authorization: { authorize: string }) => void ;
+  setAuth: (auth: string) => void ;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUpForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
+const SignUpForm: React.FC<PropTypes> = ({ logIn, setAuth }) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
   const inputRefPassword = useRef<HTMLInputElement>();
@@ -52,7 +52,7 @@ const SignUpForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
   };
 
   const handleSignIn = () => {
-    setAuthorization({ authorize: 'signIn' });
+    setAuth( 'signIn');
   };
 
   return (

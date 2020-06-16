@@ -2,9 +2,6 @@ export interface Page {
   prefix: string;
   id: string;
 }
-export interface Authorization {
-  authorize: string;
-}
 export interface User {
   name: string;
   avatarUrl: string;

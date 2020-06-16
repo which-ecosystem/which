@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
-  setAuthorization: (authorization: { authorize: string }) => void;
+  setAuth: (auth: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
+const SignInForm: React.FC<PropTypes> = ({ logIn, setAuth }) => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
@@ -50,7 +50,7 @@ const SignInForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
   };
 
   const handleSignUp = () => {
-    setAuthorization({ authorize: 'signUp' });
+    setAuth('signUp');
   };
 
   return (

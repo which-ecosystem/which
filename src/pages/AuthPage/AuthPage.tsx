@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
-import { Authorization } from '../../types';
 
 
 interface PropTypes {
@@ -9,12 +8,12 @@ interface PropTypes {
 }
 
 const AuthPage: React.FC<PropTypes> = ({ logIn }) => {
-  const [authorization, setAuthorization] = useState<Authorization>({ authorize: 'signIn' });
+  const [auth, setAuth] = useState<String>('signIn');
 
   return (
     <>
-      {authorization.authorize === 'signIn' && <SignInForm logIn={logIn} setAuthorization={setAuthorization} />}
-      {authorization.authorize === 'signUp' && <SignUpForm logIn={logIn} setAuthorization={setAuthorization} />}
+      {auth === 'signIn' && <SignInForm logIn={logIn} setAuth={setAuth} />}
+      {auth === 'signUp' && <SignUpForm logIn={logIn} setAuth={setAuth} />}
     </>
   );
 };
