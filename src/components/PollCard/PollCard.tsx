@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
   },
   imagesBlock: {
     display: 'flex'
+  },
+  avatar: {
+    cursor: 'pointer'
   }
 }));
 
@@ -51,6 +54,7 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
             src={author.avatarUrl}
             alt={author.name[0].toUpperCase()}
             onClick={handleNavigate}
+            className={classes.avatar}
           />
         )}
         title={author.name}

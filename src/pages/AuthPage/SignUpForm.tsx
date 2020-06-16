@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { post } from '../../requests';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
@@ -24,35 +25,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
-  const [error, setError] = useState<boolean>(false);
+const SignUpForm: React.FC<PropTypes> = ({ logIn }) => {
   const classes = useStyles();
-  const nameRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>();
+  const inputRefPassword = useRef<HTMLInputElement>();
 
-  const onClick = async () => {
-    const name = nameRef.current?.value;
-    const password = passwordRef.current?.value;
+  const onClick = () => {
+    const name = inputRef.current?.value;
+    const password = inputRefPassword.current?.value;
+    const newUser = { name, password };
     if (name && password) {
-      logIn(name, password).then(success => {
-        if (!success) setError(true);
+      post('/users', newUser).then(() => {
+        logIn(name, password);
       });
     }
   };
 
   return (
     <>
-      <div className={classes.formHeader}>Sign In</div>
+      <div className={classes.formHeader}>Sign Up</div>
       <form className={classes.root} noValidate autoComplete="off">
+        <TextField inputRef={inputRef} id="standard-basic" label="Name" />
+        <TextField id="standard-basic" label="Email" />
         <TextField
-          inputRef={nameRef}
-          error={error}
-          label="Login"
-        />
-        <TextField
-          inputRef={passwordRef}
-          error={error}
-          helperText={error && 'Invalid credentials'}
+          inputRef={inputRefPassword}
+          id="standard-password-input"
           label="Password"
           type="password"
         />
@@ -62,5 +59,4 @@ const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
   );
 };
 
-export default SignInForm;
-
+export default SignUpForm;
