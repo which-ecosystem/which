@@ -5,27 +5,18 @@ import Button from '@material-ui/core/Button';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
-  setAuth: (auth: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      width: '25ch'
+      width: theme.spacing(35)
     },
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center'
-  },
-  formTransfer: {
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  transferButton: {
-    marginLeft: 10,
-    color: 'green'
   },
   formHeader: {
     textAlign: 'center',
@@ -33,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ logIn, setAuth }) => {
+const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
@@ -47,10 +38,6 @@ const SignInForm: React.FC<PropTypes> = ({ logIn, setAuth }) => {
         if (!success) setError(true);
       });
     }
-  };
-
-  const handleSignUp = () => {
-    setAuth('signUp');
   };
 
   return (
@@ -71,10 +58,6 @@ const SignInForm: React.FC<PropTypes> = ({ logIn, setAuth }) => {
         />
         <Button variant="contained" onClick={onClick}>submit</Button>
       </form>
-      <div className={classes.formTransfer}>
-        <div>Don`t have an account?</div>
-        <div onClick={handleSignUp} className={classes.transferButton}>Sign Up</div>
-      </div>
     </>
   );
 };
