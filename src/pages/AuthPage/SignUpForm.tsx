@@ -1,9 +1,8 @@
-import React, {useRef} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, { useRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {Authorization} from '../../types';
-import {get, post} from '../../requests';
+import { post } from '../../requests';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
@@ -35,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUpForm: React.FC<PropTypes> = ({logIn,setAuthorization}) => {
+const SignUpForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
   const classes = useStyles();
   const inputRef = useRef<HTMLInputElement>();
   const inputRefPassword = useRef<HTMLInputElement>();
@@ -44,40 +43,37 @@ const SignUpForm: React.FC<PropTypes> = ({logIn,setAuthorization}) => {
   const onClick = () => {
     const name = inputRef.current?.value;
     const password = inputRefPassword.current?.value;
-    const newUser = {
-      name: name,
-      password: password,
-      avatarUrl: '',
-    };
+    const newUser = { name: name, password: password, avatarUrl: '' };
     if (name && password) {
-      post(`/users`,newUser).then(response => {
+      post('/users', newUser).then(() => {
         logIn(name, password);
       });
     }
   };
 
   const handleSignIn = () => {
-    setAuthorization({authorize: 'signIn'});
+    setAuthorization({ authorize: 'signIn' });
   };
 
   return (
     <>
       <div className={classes.formHeader}>Sign Up</div>
       <form className={classes.root} noValidate autoComplete="off">
-      <TextField inputRef={inputRef} id="standard-basic" label="Name"/>
-      <TextField id="standard-basic" label="Email"/>
-      <TextField inputRef={inputRefPassword}
-        id="standard-password-input"
-        label="Password"
-        type="password"
-      />
-      <Button variant="contained" onClick={onClick}>submit</Button>
-    </form>
-    <div className={classes.formTransfer}>
-      <div>Already have an account?</div>
-      <div onClick={handleSignIn} className={classes.transferButton}>Sign In</div>
-    </div>
-      </>
+        <TextField inputRef={inputRef} id="standard-basic" label="Name" />
+        <TextField id="standard-basic" label="Email" />
+        <TextField
+          inputRef={inputRefPassword}
+          id="standard-password-input"
+          label="Password"
+          type="password"
+        />
+        <Button variant="contained" onClick={onClick}>submit</Button>
+      </form>
+      <div className={classes.formTransfer}>
+        <div>Already have an account?</div>
+        <div className={classes.transferButton} onClick={handleSignIn}>Sign In</div>
+      </div>
+    </>
   );
 };
 

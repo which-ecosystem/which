@@ -1,11 +1,11 @@
-import React, {useState, useRef} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React, { useState, useRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 interface PropTypes {
   logIn: (name: string, password: string) => Promise<boolean>;
-  setAuthorization: (authorization: { authorize: string }) => void ;
+  setAuthorization: (authorization: { authorize: string }) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -21,11 +21,11 @@ const useStyles = makeStyles(theme => ({
   },
   formTransfer: {
     display: 'flex',
-   justifyContent: 'center'
+    justifyContent: 'center'
   },
   transferButton: {
     marginLeft: 10,
-   color: 'green'
+    color: 'green'
   },
   formHeader: {
     textAlign: 'center',
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({logIn, setAuthorization}) => {
+const SignInForm: React.FC<PropTypes> = ({ logIn, setAuthorization }) => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
@@ -50,12 +50,12 @@ const SignInForm: React.FC<PropTypes> = ({logIn, setAuthorization}) => {
   };
 
   const handleSignUp = () => {
-    setAuthorization({authorize: 'signUp'});
+    setAuthorization({ authorize: 'signUp' });
   };
 
   return (
     <>
-    <div className={classes.formHeader}>Sign In</div>
+      <div className={classes.formHeader}>Sign In</div>
       <form className={classes.root} noValidate autoComplete="off">
         <TextField
           inputRef={nameRef}
@@ -72,7 +72,7 @@ const SignInForm: React.FC<PropTypes> = ({logIn, setAuthorization}) => {
         <Button variant="contained" onClick={onClick}>submit</Button>
       </form>
       <div className={classes.formTransfer}>
-        <div>Don't have an account?</div>
+        <div>Don`t have an account?</div>
         <div onClick={handleSignUp} className={classes.transferButton}>Sign Up</div>
       </div>
     </>
