@@ -15,6 +15,7 @@ import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { User, Page } from './types';
 import { get, post } from './requests';
+import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 
 
 const theme = createMuiTheme({
@@ -93,7 +94,9 @@ const App: React.FC = () => {
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
         { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>
+      <ScrollTopArrow />
     </ThemeProvider>
+
   );
 };
 
