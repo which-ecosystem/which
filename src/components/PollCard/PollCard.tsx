@@ -10,8 +10,7 @@ import {
 import { Which, Poll } from 'which-types';
 
 import PercentageBar from './PercentageBar';
-import {post} from '../../requests';
-import teal from "@material-ui/core/colors/teal";
+import { post } from '../../requests';
 
 interface PropTypes {
   poll: Poll;
@@ -38,12 +37,12 @@ const useStyles = makeStyles(theme => ({
     position:'relative',
     margin: '0 auto',
     width: '100%',
-    height:16,
-    backgroundColor: teal[100]
+    height: theme.spacing(2),
+    backgroundColor: theme.palette.primary.light
   },
   fillRateLine: {
-    height:16,
-    backgroundColor: teal[800],
+    height: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
     transitionDuration: '0.5s'
   },
 }));

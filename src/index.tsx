@@ -22,7 +22,8 @@ import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: teal[700]
+      main: teal[700],
+      light: teal[100]
     }
   }
 });
