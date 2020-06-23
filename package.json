@@ -45,6 +45,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "gh-pages": "^3.0.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "which-types": "^1.3.1"
   }
 }

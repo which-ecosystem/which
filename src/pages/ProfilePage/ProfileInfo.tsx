@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button/Button';
-import { User } from '../../types';
+import { User } from 'which-types';
 
 interface PropTypes {
   user: User | undefined;
@@ -41,7 +41,7 @@ const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
     <div>
       <Avatar className={classes.avatar} src={user?.avatarUrl} />
       <div className={classes.name}>
-        {user?.name}
+        {user?.username}
       </div>
       <div className={classes.profileMenu}>
         <div style={{ borderBottom: '1px solid green', color: 'green' }} className={classes.menuButton}>

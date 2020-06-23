@@ -7,7 +7,8 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
-import { Poll } from '../../types';
+import { Which, Poll } from 'which-types';
+
 import PercentageBar from './PercentageBar';
 import {post} from '../../requests';
 import teal from "@material-ui/core/colors/teal";
@@ -56,7 +57,7 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
     navigate('profile', poll.author._id);
   };
 
-  const vote = (which: 'left' | 'right') => {
+  const vote = (which: Which) => {
     post(`polls/${ poll._id }/votes/`,{ which }).then((response)=>{
       console.log(response.data);
       const leftV = response.data.contents.left.votes;
@@ -78,12 +79,12 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
           <Avatar
             aria-label="avatar"
             src={author.avatarUrl}
-            alt={author.name[0].toUpperCase()}
+            alt={author.username[0].toUpperCase()}
             onClick={handleNavigate}
             className={classes.avatar}
           />
         )}
-        title={author.name}
+        title={author.username}
       />
       <div className={classes.imagesBlock}>
         <CardActionArea onDoubleClick={() => vote('left')}>

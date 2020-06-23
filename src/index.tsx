@@ -13,7 +13,8 @@ import Header from './components/Header/Header';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
-import { User, Page } from './types';
+import { Page } from './types';
+import { User } from 'which-types';
 import { get, post } from './requests';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 
@@ -53,10 +54,10 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (name: string, password: string): Promise<boolean> => {
+  const logIn = (username: string, password: string): Promise<boolean> => {
     return post('/authentication', {
       strategy: 'local',
-      name,
+      username,
       password
     }).then(response => {
       const me = response.data.user;

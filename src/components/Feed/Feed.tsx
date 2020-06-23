@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Poll } from '../../types';
+import { Poll } from 'which-types';
 import PollCard from '../PollCard/PollCard';
 
 interface PropTypes {
