@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core/';
 import { Poll } from '../../types';
 import PercentageBar from './PercentageBar';
+import {post} from '../../requests';
+import teal from "@material-ui/core/colors/teal";
 
 interface PropTypes {
   poll: Poll;
@@ -18,32 +20,56 @@ interface PropTypes {
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: theme.spacing(75),
-    height: theme.spacing(63),
-    margin: '20px auto'
+    height: 488,
+    margin: '40px auto',
   },
   images: {
     height: theme.spacing(50),
-    width: theme.spacing(38)
+    width: 300
   },
   imagesBlock: {
     display: 'flex'
   },
   avatar: {
     cursor: 'pointer'
-  }
+  },
+  rateLine: {
+    position:'relative',
+    margin: '0 auto',
+    width: '100%',
+    height:16,
+    backgroundColor: teal[100]
+  },
+  fillRateLine: {
+    height:16,
+    backgroundColor: teal[800],
+    transitionDuration: '0.5s'
+  },
 }));
-
 
 const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
   const classes = useStyles();
   const { author, contents } = poll;
+  const [rate, setRate] = useState<{left: number, right: number}>({left: contents.left.votes,right: contents.right.votes});
 
   const handleNavigate = () => {
     navigate('profile', poll.author._id);
   };
 
-  const leftPercentage = Math.round(100 * (contents.left.votes / (contents.left.votes + contents.right.votes)));
-  const rightPercentage = 100 - leftPercentage;
+  const vote = (which: 'left' | 'right') => {
+    post(`polls/${ poll._id }/votes/`,{ which }).then((response)=>{
+      console.log(response.data);
+      const leftV = response.data.contents.left.votes;
+      const rightV = response.data.contents.right.votes;
+      setRate({left: leftV, right: rightV});
+    })
+      .catch(error => {
+      console.log(error.response)
+    });
+  };
+
+    const leftPercentage = Math.round(100 * (rate.left / (rate.left + rate.right)));
+    const rightPercentage = 100 - leftPercentage;
 
   return (
     <Card className={classes.root}>
@@ -60,14 +86,14 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
         title={author.name}
       />
       <div className={classes.imagesBlock}>
-        <CardActionArea>
+        <CardActionArea onDoubleClick={() => vote('left')}>
           <CardMedia
             className={classes.images}
             image={contents.left.url}
           />
           <PercentageBar value={leftPercentage} which="left" />
         </CardActionArea>
-        <CardActionArea>
+        <CardActionArea onDoubleClick={() => vote('right')}>
           <CardMedia
             className={classes.images}
             image={contents.right.url}
@@ -75,10 +101,11 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
           <PercentageBar value={rightPercentage} which="right" />
         </CardActionArea>
       </div>
+      <div className={classes.rateLine}>
+        <div className={classes.fillRateLine} style={{width: `${leftPercentage}%`}} />
+      </div>
     </Card>
   );
 };
 
-
 export default PollCard;
-
