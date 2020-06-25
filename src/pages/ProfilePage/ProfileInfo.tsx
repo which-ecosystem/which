@@ -1,8 +1,9 @@
 import React from 'react';
-import { Avatar } from '@material-ui/core/';
+import {Avatar, Badge, withStyles} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button/Button';
 import { User } from 'which-types';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 
 interface PropTypes {
   user: User | undefined;
@@ -11,14 +12,13 @@ interface PropTypes {
 
 const useStyles = makeStyles({
   avatar: {
-    margin: '0 auto',
     width: 150,
     height: 150,
-    marginBottom: 10
   },
   name: {
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    margin: '10px 0'
   },
   profileMenu: {
     display: 'flex',
@@ -32,14 +32,43 @@ const useStyles = makeStyles({
     height: 50,
     paddingTop: 15,
     textAlign: 'center'
+  },
+  badge: {
+    backgroundColor: 'lightgray'
+  },
+  avatarContainer: {
+    position: 'relative',
+    textAlign: 'center'
   }
 });
+
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    backgroundColor: 'lightgray',
+    width: 40,
+    height: 40,
+    borderRadius: '50%',
+    cursor: 'pointer'
+  },
+}))(Badge);
 
 const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
   const classes = useStyles();
   return (
     <div>
-      <Avatar className={classes.avatar} src={user?.avatarUrl} />
+      <div className={classes.avatarContainer}>
+        <StyledBadge
+          overlap="circle"
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          badgeContent={<CameraAltIcon />}
+         >
+          <Avatar className={classes.avatar} src={user?.avatarUrl} />
+        </StyledBadge>
+      </div>
       <div className={classes.name}>
         {user?.username}
       </div>
