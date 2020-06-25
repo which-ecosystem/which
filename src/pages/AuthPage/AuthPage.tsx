@@ -5,7 +5,7 @@ import SignUpForm from './SignUpForm';
 
 
 interface PropTypes {
-  logIn: (name: string, password: string) => Promise<boolean>;
+  logIn: (name: string, password: string, remember?: boolean) => Promise<boolean>;
 }
 
 const useStyles = makeStyles({

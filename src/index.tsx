@@ -55,7 +55,7 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (username: string, password: string): Promise<boolean> => {
+  const logIn = (username: string, password: string, remember?: boolean): Promise<boolean> => {
     return post('/authentication', {
       strategy: 'local',
       username,
@@ -64,9 +64,11 @@ const App: React.FC = () => {
       const me = response.data.user;
       const token = response.data.accessToken;
       setUser(me);
-      localStorage.setItem('userId', me._id);
-      localStorage.setItem('token', token);
       navigate('profile', me._id);
+      if (remember) {
+        localStorage.setItem('userId', me._id);
+        localStorage.setItem('token', token);
+      }
       return true;
     }).catch(() => false);
   };
