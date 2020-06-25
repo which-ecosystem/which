@@ -37,11 +37,15 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     width: '100%',
     height: theme.spacing(2),
-    backgroundColor: theme.palette.primary.light
+    backgroundColor: theme.palette.primary.light,
+    transitionDuration: '0.5s'
+  },
+  highlight: {
+    backgroundColor: `${theme.palette.primary.main} !important`
   },
   fillRateLine: {
     height: theme.spacing(2),
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.light,
     transitionDuration: '0.5s'
   }
 }));
@@ -68,11 +72,8 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const handleRight = () => vote('right');
 
   const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+  const rightPercentage = 100 - leftPercentage;
 
-  const percentage = {
-    left: leftPercentage,
-    right: 100 - leftPercentage
-  };
   const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
   return (
@@ -95,23 +96,20 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
             className={classes.images}
             image={left.url}
           />
-          <PercentageBar value={percentage.left} which="left" like={userChoice === 'left'} />
+          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'} />
         </CardActionArea>
         <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
             image={right.url}
           />
-          <PercentageBar value={percentage.right} which="right" like={userChoice === 'right'} />
+          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'} />
         </CardActionArea>
       </div>
-      <div className={classes.rateLine}>
+      <div className={`${classes.rateLine} ${dominant === 'right' ? classes.highlight : ''}`}>
         <div
-          className={classes.fillRateLine}
-          style={{
-            width: `${percentage[dominant]}%`,
-            float: dominant
-          }}
+          className={`${classes.fillRateLine} ${dominant === 'left' ? classes.highlight : ''}`}
+          style={{ width: `${leftPercentage}%` }}
         />
       </div>
     </Card>

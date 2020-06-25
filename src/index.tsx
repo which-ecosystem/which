@@ -55,7 +55,7 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (username: string, password: string): Promise<boolean> => {
+  const logIn = (username: string, password: string, remember = true): Promise<boolean> => {
     return post('/authentication', {
       strategy: 'local',
       username,
@@ -64,21 +64,23 @@ const App: React.FC = () => {
       const me = response.data.user;
       const token = response.data.accessToken;
       setUser(me);
+      navigate('profile', me._id);
       localStorage.setItem('userId', me._id);
       localStorage.setItem('token', token);
-      navigate('profile', me._id);
+      if (!remember) localStorage.setItem('shouldClear', 'true');
       return true;
     }).catch(() => false);
   };
 
-  const logOut = () => {
+  const logOut = (redirect = true) => {
     setUser(undefined);
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
-    navigate('auth');
+    if (redirect) navigate('auth');
   };
 
   useEffect(() => {
+    if (localStorage.getItem('shouldClear')) logOut(false);
     const userId = localStorage.getItem('userId');
     if (userId) {
       get(`/users/${userId}`).then(response => {

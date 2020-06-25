@@ -1,10 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import {
+  TextField,
+  Button,
+  FormControlLabel,
+  Switch
+} from '@material-ui/core';
 
 interface PropTypes {
-  logIn: (name: string, password: string) => Promise<boolean>;
+  logIn: (name: string, password: string, remember?: boolean) => Promise<boolean>;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -26,15 +30,20 @@ const useStyles = makeStyles(theme => ({
 
 const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
   const [error, setError] = useState<boolean>(false);
+  const [remember, setRemember] = useState<boolean>(true);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
 
-  const onClick = async () => {
+  const handleCheck = () => {
+    setRemember(!remember);
+  };
+
+  const handleSubmit = async () => {
     const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
     if (name && password) {
-      logIn(name, password).then(success => {
+      logIn(name, password, remember).then(success => {
         if (!success) setError(true);
       });
     }
@@ -56,7 +65,11 @@ const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
           label="Password"
           type="password"
         />
-        <Button variant="contained" onClick={onClick}>submit</Button>
+        <FormControlLabel
+          control={<Switch color="primary" onClick={handleCheck} checked={remember} size="small" />}
+          label="Remember me"
+        />
+        <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
     </>
   );
