@@ -13,7 +13,7 @@ import PercentageBar from './PercentageBar';
 import { post } from '../../requests';
 
 interface PropTypes {
-  poll: Poll;
+  initialPoll: Poll;
   navigate: (prefix: string, id: string) => void;
 }
 
@@ -44,32 +44,34 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(2),
     backgroundColor: theme.palette.primary.main,
     transitionDuration: '0.5s'
-  },
+  }
 }));
 
-const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
+const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
+  const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
-  const { author, contents } = poll;
-  const [rate, setRate] = useState<{left: number, right: number}>({left: contents.left.votes,right: contents.right.votes});
+  const { author, contents: { left, right }, userChoice } = poll;
 
   const handleNavigate = () => {
     navigate('profile', poll.author._id);
   };
 
   const vote = (which: Which) => {
-    post(`polls/${ poll._id }/votes/`,{ which }).then((response)=>{
-      console.log(response.data);
-      const leftV = response.data.contents.left.votes;
-      const rightV = response.data.contents.right.votes;
-      setRate({left: leftV, right: rightV});
-    })
-      .catch(error => {
+    if (userChoice) return;
+    post('votes/', { which, pollId: poll._id }).then(() => {
+      poll.contents[which].votes += 1;
+      poll.userChoice = which;
+      setPoll({ ...poll});
+    }).catch(error => {
       console.log(error.response)
     });
   };
+  
+  const handleLeft = () => vote('left');
+  const handleRight = () => vote('right');
 
-    const leftPercentage = Math.round(100 * (rate.left / (rate.left + rate.right)));
-    const rightPercentage = 100 - leftPercentage;
+  const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+  const rightPercentage = 100 - leftPercentage;
 
   return (
     <Card className={classes.root}>
@@ -86,19 +88,19 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
         title={author.username}
       />
       <div className={classes.imagesBlock}>
-        <CardActionArea onDoubleClick={() => vote('left')}>
+        <CardActionArea onDoubleClick={handleLeft}>
           <CardMedia
             className={classes.images}
-            image={contents.left.url}
+            image={left.url}
           />
-          <PercentageBar value={leftPercentage} which="left" />
+          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'}/>
         </CardActionArea>
-        <CardActionArea onDoubleClick={() => vote('right')}>
+        <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
-            image={contents.right.url}
+            image={right.url}
           />
-          <PercentageBar value={rightPercentage} which="right" />
+          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'}/>
         </CardActionArea>
       </div>
       <div className={classes.rateLine}>

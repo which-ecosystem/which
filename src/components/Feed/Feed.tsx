@@ -21,7 +21,7 @@ const Feed: React.FC<PropTypes> = ({ polls, navigate }) => {
 
   return (
     <div className={classes.root}>
-      {polls.map(poll => <PollCard poll={poll} key={poll._id} navigate={navigate} />)}
+      {polls.map(poll => <PollCard initialPoll={poll} key={poll._id} navigate={navigate} />)}
     </div>
   );
 };
