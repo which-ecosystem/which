@@ -17,6 +17,14 @@ interface PropTypes {
   navigate: (prefix: string, id: string) => void;
 }
 
+const DATE_FORMAT = {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit'
+};
+
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: theme.spacing(75),
@@ -54,6 +62,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
   const { author, contents: { left, right }, userChoice } = poll;
+  const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
   const handleNavigate = () => {
     navigate('profile', poll.author._id);
@@ -89,6 +98,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
           />
         )}
         title={author.username}
+        subheader={date}
       />
       <div className={classes.imagesBlock}>
         <CardActionArea onDoubleClick={handleLeft}>
