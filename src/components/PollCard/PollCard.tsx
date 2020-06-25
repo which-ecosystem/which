@@ -8,6 +8,7 @@ import {
   CardHeader
 } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
+import _ from 'lodash';
 
 import PercentageBar from './PercentageBar';
 import { post } from '../../requests';
@@ -35,7 +36,6 @@ const useStyles = makeStyles(theme => ({
   },
   rateLine: {
     position: 'relative',
-    margin: '0 auto',
     width: '100%',
     height: theme.spacing(2),
     backgroundColor: theme.palette.primary.light
@@ -69,7 +69,12 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const handleRight = () => vote('right');
 
   const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
-  const rightPercentage = 100 - leftPercentage;
+
+  const percentage = {
+    left: leftPercentage,
+    right: 100 - leftPercentage
+  };
+  const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
   return (
     <Card className={classes.root}>
@@ -91,18 +96,24 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
             className={classes.images}
             image={left.url}
           />
-          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'} />
+          <PercentageBar value={percentage.left} which="left" like={userChoice === 'left'} />
         </CardActionArea>
         <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
             image={right.url}
           />
-          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'} />
+          <PercentageBar value={percentage.right} which="right" like={userChoice === 'right'} />
         </CardActionArea>
       </div>
       <div className={classes.rateLine}>
-        <div className={classes.fillRateLine} style={{ width: `${leftPercentage}%` }} />
+        <div
+          className={classes.fillRateLine}
+          style={{
+            width: `${percentage[dominant]}%`,
+            float: dominant
+          }}
+        />
       </div>
     </Card>
   );
