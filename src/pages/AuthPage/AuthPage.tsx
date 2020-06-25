@@ -29,8 +29,8 @@ const AuthPage: React.FC<PropTypes> = ({ logIn }) => {
   };
 
   const footerInfo = {
-    signIn: ['Don\'t have an account?', 'Sign in'],
-    signUp: ['Already have an account?', 'Sign up']
+    signIn: ['Don\'t have an account?', 'Sign up'],
+    signUp: ['Already have an account?', 'Sign in']
   };
 
   return (
