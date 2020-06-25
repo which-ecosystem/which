@@ -1,9 +1,9 @@
 import React from 'react';
 import {Avatar, Badge, withStyles} from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button/Button';
-import { User } from 'which-types';
+import {makeStyles} from '@material-ui/core/styles';
+import {User} from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import MoreMenu from "./MoreMenu";
 
 interface PropTypes {
   user: User | undefined;
@@ -11,6 +11,9 @@ interface PropTypes {
 }
 
 const useStyles = makeStyles({
+  root: {
+    position: 'relative'
+  },
   avatar: {
     width: 150,
     height: 150,
@@ -31,7 +34,6 @@ const useStyles = makeStyles({
   menuButton: {
     width: 200,
     height: 50,
-    paddingTop: 15,
     textAlign: 'center'
   },
   badge: {
@@ -40,7 +42,18 @@ const useStyles = makeStyles({
   avatarContainer: {
     position: 'relative',
     textAlign: 'center'
-  }
+  },
+  menuNumber: {
+    fontWeight: 800,
+    color: 'black'
+  },
+  menuText: {
+    color: 'darkgray'
+  },
+  status: {
+    textAlign: 'center',
+    color: 'darkgray'
+  },
 });
 
 
@@ -54,45 +67,50 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
+const ProfileInfo: React.FC<PropTypes> = ({user, logOut}) => {
   const classes = useStyles();
   return (
-    <div>
+    <div className={classes.root}>
       {
         user?._id === localStorage.getItem('userId')
-          ? <div className={classes.avatarContainer}>
-            <StyledBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              badgeContent={<CameraAltIcon />}
-            >
-              <Avatar className={classes.avatar} src={user?.avatarUrl} />
-            </StyledBadge>
+          ?
+          <div>
+            <MoreMenu logOut={logOut}/>
+            <div className={classes.avatarContainer}>
+              <StyledBadge
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                badgeContent={<CameraAltIcon/>}
+              >
+                <Avatar className={classes.avatar} src={user?.avatarUrl}/>
+              </StyledBadge>
+            </div>
           </div>
-          : <Avatar className={classes.avatar} src={user?.avatarUrl} />
+          : <Avatar className={classes.avatar} src={user?.avatarUrl}/>
       }
       <div className={classes.name}>
         {user?.username}
       </div>
+      <div className={classes.status}>
+        I am not alcoholic
+      </div>
       <div className={classes.profileMenu}>
-        <div style={{ borderBottom: '1px solid green', color: 'green' }} className={classes.menuButton}>
-          Polls
+        <div className={classes.menuButton}>
+          <div className={classes.menuNumber}>11</div>
+          <div className={classes.menuText}>Polls</div>
         </div>
         <div className={classes.menuButton}>
-          Followers
+          <div className={classes.menuNumber}>05.05.2020</div>
+          <div className={classes.menuText}>Since</div>
         </div>
         <div className={classes.menuButton}>
-          Following
+          <div className={classes.menuNumber}>17</div>
+          <div className={classes.menuText}>Total votes</div>
         </div>
       </div>
-      {
-        user?._id === localStorage.getItem('userId')
-          ? <Button variant="contained" onClick={logOut}>Log Out</Button>
-          : null
-      }
     </div>
   );
 };
