@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: theme.spacing(75),
     height: 488,
-    margin: '40px auto',
+    margin: '40px auto'
   },
   images: {
     height: theme.spacing(50),
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer'
   },
   rateLine: {
-    position:'relative',
+    position: 'relative',
     margin: '0 auto',
     width: '100%',
     height: theme.spacing(2),
@@ -61,12 +61,10 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
     post('votes/', { which, pollId: poll._id }).then(() => {
       poll.contents[which].votes += 1;
       poll.userChoice = which;
-      setPoll({ ...poll});
-    }).catch(error => {
-      console.log(error.response)
+      setPoll({ ...poll });
     });
   };
-  
+
   const handleLeft = () => vote('left');
   const handleRight = () => vote('right');
 
@@ -93,18 +91,18 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
             className={classes.images}
             image={left.url}
           />
-          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'}/>
+          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'} />
         </CardActionArea>
         <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
             image={right.url}
           />
-          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'}/>
+          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'} />
         </CardActionArea>
       </div>
       <div className={classes.rateLine}>
-        <div className={classes.fillRateLine} style={{width: `${leftPercentage}%`}} />
+        <div className={classes.fillRateLine} style={{ width: `${leftPercentage}%` }} />
       </div>
     </Card>
   );

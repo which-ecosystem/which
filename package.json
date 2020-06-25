@@ -6,11 +6,13 @@
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "axios": "^0.19.2",
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
     "react-scripts": "3.4.1",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "which-types": "^1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,6 +34,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.157",
     "@types/node": "^12.12.44",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
@@ -45,7 +48,6 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
     "gh-pages": "^3.0.0",
-    "typescript": "^3.9.5",
-    "which-types": "^1.4.1"
+    "typescript": "^3.9.5"
   }
 }

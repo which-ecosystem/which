@@ -9,12 +9,12 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
+import { User } from 'which-types';
 import Header from './components/Header/Header';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import { Page } from './types';
-import { User } from 'which-types';
 import { get, post } from './requests';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 

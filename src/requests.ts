@@ -1,12 +1,13 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 const requests = axios.create({
-  baseURL: 'http://localhost:3030',
+  baseURL: 'http://localhost:3030'
 });
 
 requests.interceptors.request.use(config => {
-  config.headers.Authorization = localStorage.getItem('token');
-  return config;
+  const token = localStorage.getItem('token');
+  return _.set(config, 'headers.Authorization', token);
 });
 
 export const { get, post, put } = requests;
