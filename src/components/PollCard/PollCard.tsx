@@ -8,7 +8,6 @@ import {
   CardHeader
 } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
-import _ from 'lodash';
 
 import PercentageBar from './PercentageBar';
 import { post } from '../../requests';
