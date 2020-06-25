@@ -38,8 +38,7 @@ const SignUpForm: React.FC<PropTypes> = ({ logIn }) => {
     const email = emailRef.current?.value;
     if (username && password) {
       post('/users', { username, password, email }).then(() => {
-        logIn(username, password).then(success => {
-        });
+        logIn(username, password);
       });
     } else setError(true);
   };

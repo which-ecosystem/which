@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     transitionDuration: '0.5s'
   },
   highlight: {
-    backgroundColor: theme.palette.primary.main + ' !important'
+    backgroundColor: `${theme.palette.primary.main} !important`
   },
   fillRateLine: {
     height: theme.spacing(2),
@@ -72,7 +72,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const handleRight = () => vote('right');
 
   const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
-  const rightPercentage = 100 - leftPercentage
+  const rightPercentage = 100 - leftPercentage;
 
   const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
