@@ -72,15 +72,17 @@ const App: React.FC = () => {
     }).catch(() => false);
   };
 
-  const logOut = (redirect = true) => {
+  const logOut = () => {
     setUser(undefined);
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
-    if (redirect) navigate('auth');
+    navigate('auth');
   };
 
   useEffect(() => {
-    if (localStorage.getItem('shouldClear')) logOut(false);
+    if (localStorage.getItem('shouldClear')) {
+      localStorage.clear();
+    }
     const userId = localStorage.getItem('userId');
     if (userId) {
       get(`/users/${userId}`).then(response => {
