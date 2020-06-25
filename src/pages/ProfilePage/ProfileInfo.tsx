@@ -14,6 +14,7 @@ const useStyles = makeStyles({
   avatar: {
     width: 150,
     height: 150,
+    margin: '0 auto'
   },
   name: {
     fontSize: 20,
@@ -57,18 +58,22 @@ const ProfileInfo: React.FC<PropTypes> = ({ user, logOut }) => {
   const classes = useStyles();
   return (
     <div>
-      <div className={classes.avatarContainer}>
-        <StyledBadge
-          overlap="circle"
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          badgeContent={<CameraAltIcon />}
-         >
-          <Avatar className={classes.avatar} src={user?.avatarUrl} />
-        </StyledBadge>
-      </div>
+      {
+        user?._id === localStorage.getItem('userId')
+          ? <div className={classes.avatarContainer}>
+            <StyledBadge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              badgeContent={<CameraAltIcon />}
+            >
+              <Avatar className={classes.avatar} src={user?.avatarUrl} />
+            </StyledBadge>
+          </div>
+          : <Avatar className={classes.avatar} src={user?.avatarUrl} />
+      }
       <div className={classes.name}>
         {user?.username}
       </div>
