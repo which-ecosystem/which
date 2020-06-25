@@ -22,7 +22,7 @@ const DATE_FORMAT = {
   day: 'numeric',
   year: 'numeric',
   hour: '2-digit',
-  minute: '2-digit',
+  minute: '2-digit'
 };
 
 const useStyles = makeStyles(theme => ({
@@ -58,7 +58,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
   const { author, contents: { left, right }, userChoice } = poll;
-  const date: String = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
+  const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
   const handleNavigate = () => {
     navigate('profile', poll.author._id);
