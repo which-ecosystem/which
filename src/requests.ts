@@ -1,10 +1,15 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
+import _ from 'lodash';
 
-type Request = (url: string, data?: Record<string, unknown>) => Promise<AxiosResponse>;
+const requests = axios.create({
+  baseURL: 'http://localhost:3030'
+});
 
-const baseApiUrl = 'http://localhost:3030';
+requests.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  return _.set(config, 'headers.Authorization', token);
+});
 
-export const get: Request = url => axios.get(baseApiUrl + url);
-export const del: Request = url => axios.delete(baseApiUrl + url);
-export const post: Request = (url, data) => axios.post(baseApiUrl + url, data);
+export const { get, post, put } = requests;
+export default requests;
 

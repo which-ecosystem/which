@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Poll } from '../../types';
+import { Poll } from 'which-types';
 import PollCard from '../PollCard/PollCard';
 
 interface PropTypes {
@@ -21,7 +21,7 @@ const Feed: React.FC<PropTypes> = ({ polls, navigate }) => {
 
   return (
     <div className={classes.root}>
-      {polls.map(poll => <PollCard poll={poll} key={poll._id} navigate={navigate} />)}
+      {polls.map(poll => <PollCard initialPoll={poll} key={poll._id} navigate={navigate} />)}
     </div>
   );
 };

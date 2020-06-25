@@ -31,12 +31,11 @@ const SignUpForm: React.FC<PropTypes> = ({ logIn }) => {
   const inputRefPassword = useRef<HTMLInputElement>();
 
   const onClick = () => {
-    const name = inputRef.current?.value;
+    const username = inputRef.current?.value;
     const password = inputRefPassword.current?.value;
-    const newUser = { name, password };
-    if (name && password) {
-      post('/users', newUser).then(() => {
-        logIn(name, password);
+    if (username && password) {
+      post('/users', { username, password }).then(() => {
+        logIn(username, password);
       });
     }
   };

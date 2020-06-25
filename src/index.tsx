@@ -9,11 +9,12 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
+import { User } from 'which-types';
 import Header from './components/Header/Header';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import FeedPage from './pages/FeedPage/FeedPage';
 import AuthPage from './pages/AuthPage/AuthPage';
-import { User, Page } from './types';
+import { Page } from './types';
 import { get, post } from './requests';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 
@@ -21,7 +22,8 @@ import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: teal[700]
+      main: teal[700],
+      light: teal[100]
     }
   }
 });
@@ -53,10 +55,10 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (name: string, password: string): Promise<boolean> => {
+  const logIn = (username: string, password: string): Promise<boolean> => {
     return post('/authentication', {
       strategy: 'local',
-      name,
+      username,
       password
     }).then(response => {
       const me = response.data.user;

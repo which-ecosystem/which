@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -7,43 +7,73 @@ import {
   Avatar,
   CardHeader
 } from '@material-ui/core/';
-import { Poll } from '../../types';
+import { Which, Poll } from 'which-types';
+
 import PercentageBar from './PercentageBar';
+import { post } from '../../requests';
 
 interface PropTypes {
-  poll: Poll;
+  initialPoll: Poll;
   navigate: (prefix: string, id: string) => void;
 }
 
 const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: theme.spacing(75),
-    height: theme.spacing(63),
-    margin: '20px auto'
+    height: 488,
+    margin: '40px auto'
   },
   images: {
     height: theme.spacing(50),
-    width: theme.spacing(38)
+    width: 300
   },
   imagesBlock: {
     display: 'flex'
   },
   avatar: {
     cursor: 'pointer'
+  },
+  rateLine: {
+    position: 'relative',
+    width: '100%',
+    height: theme.spacing(2),
+    backgroundColor: theme.palette.primary.light
+  },
+  fillRateLine: {
+    height: theme.spacing(2),
+    backgroundColor: theme.palette.primary.main,
+    transitionDuration: '0.5s'
   }
 }));
 
-
-const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
+const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
+  const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
-  const { author, contents } = poll;
+  const { author, contents: { left, right }, userChoice } = poll;
 
   const handleNavigate = () => {
     navigate('profile', poll.author._id);
   };
 
-  const leftPercentage = Math.round(100 * (contents.left.votes / (contents.left.votes + contents.right.votes)));
-  const rightPercentage = 100 - leftPercentage;
+  const vote = (which: Which) => {
+    if (userChoice) return;
+    post('votes/', { which, pollId: poll._id }).then(() => {
+      poll.contents[which].votes += 1;
+      poll.userChoice = which;
+      setPoll({ ...poll });
+    });
+  };
+
+  const handleLeft = () => vote('left');
+  const handleRight = () => vote('right');
+
+  const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+
+  const percentage = {
+    left: leftPercentage,
+    right: 100 - leftPercentage
+  };
+  const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
   return (
     <Card className={classes.root}>
@@ -52,33 +82,40 @@ const PollCard: React.FC<PropTypes> = ({ poll, navigate }) => {
           <Avatar
             aria-label="avatar"
             src={author.avatarUrl}
-            alt={author.name[0].toUpperCase()}
+            alt={author.username[0].toUpperCase()}
             onClick={handleNavigate}
             className={classes.avatar}
           />
         )}
-        title={author.name}
+        title={author.username}
       />
       <div className={classes.imagesBlock}>
-        <CardActionArea>
+        <CardActionArea onDoubleClick={handleLeft}>
           <CardMedia
             className={classes.images}
-            image={contents.left.url}
+            image={left.url}
           />
-          <PercentageBar value={leftPercentage} which="left" />
+          <PercentageBar value={percentage.left} which="left" like={userChoice === 'left'} />
         </CardActionArea>
-        <CardActionArea>
+        <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
-            image={contents.right.url}
+            image={right.url}
           />
-          <PercentageBar value={rightPercentage} which="right" />
+          <PercentageBar value={percentage.right} which="right" like={userChoice === 'right'} />
         </CardActionArea>
+      </div>
+      <div className={classes.rateLine}>
+        <div
+          className={classes.fillRateLine}
+          style={{
+            width: `${percentage[dominant]}%`,
+            float: dominant
+          }}
+        />
       </div>
     </Card>
   );
 };
 
-
 export default PollCard;
-

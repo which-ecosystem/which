@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { User, Poll } from '../../types';
+import { User, Poll } from 'which-types';
+
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';

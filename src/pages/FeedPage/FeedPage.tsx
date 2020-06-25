@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Poll } from '../../types';
+import { Poll } from 'which-types';
+
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 
