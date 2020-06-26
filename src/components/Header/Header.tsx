@@ -62,7 +62,7 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
           </IconButton>
           <IconButton onClick={handleProfile}>
             {
-              localStorage.getItem('token')
+              userImage!== undefined
                 ? <Avatar className={classes.avatar} src={userImage}/>
                 : <AccountCircle />
             }
