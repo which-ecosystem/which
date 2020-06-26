@@ -12,7 +12,7 @@
     "react-icons": "^3.10.0",
     "react-scripts": "3.4.1",
     "typeface-roboto": "0.0.75",
-    "which-types": "^1.4.1"
+    "which-types": "^1.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
