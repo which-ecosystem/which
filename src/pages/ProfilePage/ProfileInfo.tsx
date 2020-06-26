@@ -1,9 +1,11 @@
-import React from 'react';
-import {Avatar, Badge, withStyles} from '@material-ui/core/';
+import React, {useRef, useState} from 'react';
+import {Avatar, Badge, TextField, withStyles} from '@material-ui/core/';
 import {makeStyles} from '@material-ui/core/styles';
 import {User} from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MoreMenu from "./MoreMenu";
+import {patch} from '../../requests';
+
 
 interface PropTypes {
   user: User | undefined;
@@ -69,6 +71,21 @@ const StyledBadge = withStyles((theme) => ({
 
 const ProfileInfo: React.FC<PropTypes> = ({user, logOut}) => {
   const classes = useStyles();
+  const [input,setInput] = useState('hide');
+  const urlRef = useRef<HTMLInputElement>();
+
+  const handleClick = () => {
+    input === 'hide' ? setInput('show') : setInput('hide');
+  };
+
+  const updateAvatar = (event: any) => {
+    const id = localStorage.getItem('userId');
+    const newAvatar = urlRef.current?.value;
+    patch(`/users/${id}`, {avatarUrl: newAvatar}).then(res => {
+      console.log(res);
+    })
+  };
+
   return (
     <div className={classes.root}>
       {
@@ -78,16 +95,36 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut}) => {
             <MoreMenu logOut={logOut}/>
             <div className={classes.avatarContainer}>
               <StyledBadge
+                onClick={handleClick}
                 overlap="circle"
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'right',
                 }}
-                badgeContent={<CameraAltIcon/>}
+                badgeContent=
+                  {
+                  <div>
+                    <CameraAltIcon/>
+                  </div>
+                  }
               >
                 <Avatar className={classes.avatar} src={user?.avatarUrl}/>
               </StyledBadge>
             </div>
+            {
+              input === 'show'
+                ?<form>
+                <TextField
+                  inputRef={urlRef}
+                  id="url"
+                  label="url:"
+                  variant="outlined"
+                  color="secondary"
+                />
+                  <button type='submit' onClick={updateAvatar}>upload</button>
+                </form>
+                : null
+            }
           </div>
           : <Avatar className={classes.avatar} src={user?.avatarUrl}/>
       }
