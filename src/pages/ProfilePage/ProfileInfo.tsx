@@ -5,11 +5,15 @@ import {User} from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MoreMenu from "./MoreMenu";
 import {patch} from '../../requests';
+import Highlight from "../../components/Highlight/Highlight";
+import UserStatus from "../../components/UserStatus/UserStatus";
 
 
 interface PropTypes {
   user: User | undefined;
   logOut: () => void;
+  savedPolls: number;
+  totalVotes: number;
 }
 
 const useStyles = makeStyles({
@@ -51,11 +55,7 @@ const useStyles = makeStyles({
   },
   menuText: {
     color: 'darkgray'
-  },
-  status: {
-    textAlign: 'center',
-    color: 'darkgray'
-  },
+  }
 });
 
 
@@ -69,7 +69,7 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const ProfileInfo: React.FC<PropTypes> = ({user, logOut}) => {
+const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes}) => {
   const classes = useStyles();
   const [input,setInput] = useState('hide');
   const urlRef = useRef<HTMLInputElement>();
@@ -131,22 +131,11 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut}) => {
       <div className={classes.name}>
         {user?.username}
       </div>
-      <div className={classes.status}>
-        I am not alcoholic
-      </div>
+      <UserStatus />
       <div className={classes.profileMenu}>
-        <div className={classes.menuButton}>
-          <div className={classes.menuNumber}>11</div>
-          <div className={classes.menuText}>Polls</div>
-        </div>
-        <div className={classes.menuButton}>
-          <div className={classes.menuNumber}>05.05.2020</div>
-          <div className={classes.menuText}>Since</div>
-        </div>
-        <div className={classes.menuButton}>
-          <div className={classes.menuNumber}>17</div>
-          <div className={classes.menuText}>Total votes</div>
-        </div>
+        <Highlight text="polls" value={savedPolls}/>
+        <Highlight text="since" value={user?.createdAt.toString().substring(0,10).replace(/-/g, '.')}/>
+        <Highlight text="total" value={totalVotes}/>
       </div>
     </div>
   );

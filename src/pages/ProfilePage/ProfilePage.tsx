@@ -14,6 +14,7 @@ interface PropTypes {
 const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate }) => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
+  const [totalVotes, setTotalVotes] = useState<number>(0);
 
   useEffect(() => {
     get(`/users/${id}`).then(response => {
@@ -24,13 +25,21 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate }) => {
   useEffect(() => {
     get(`/profiles/${id}`).then(response => {
       setPolls(response.data);
+      // const x = response.data.reduce((a: any, c: any) => a.contents.left.votes + c.contents.left.votes);
+      // const y = response.data.reduce((a: any, c: any) => a.contents.right.votes + c.contents.right.votes);
+      let sum = 0;
+      for(let i = 0;i<response.data.length;i++){
+        sum += response.data[i].contents.left.votes;
+        sum += response.data[i].contents.right.votes;
+      }
+      setTotalVotes(sum);
     });
   }, [id]);
 
 
   return (
     <>
-      <ProfileInfo user={userInfo} logOut={logOut} />
+      <ProfileInfo user={userInfo} logOut={logOut} savedPolls={polls.length} totalVotes={totalVotes}/>
       <Feed polls={polls} navigate={navigate} />
     </>
   );
