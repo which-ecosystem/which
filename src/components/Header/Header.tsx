@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   logo: {
     fontWeight: 'bold'
   },
-  avatar:{
+  avatar: {
     width: 24,
     height: 24
   }
@@ -62,8 +62,8 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
           </IconButton>
           <IconButton onClick={handleProfile}>
             {
-              userImage!== undefined
-                ? <Avatar className={classes.avatar} src={userImage}/>
+              userImage !== undefined
+                ? <Avatar className={classes.avatar} src={userImage} />
                 : <AccountCircle />
             }
           </IconButton>

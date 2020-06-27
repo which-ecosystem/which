@@ -12,7 +12,9 @@ interface PropTypes {
   setUser:(a:User)=>void;
 }
 
-const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate,setUser }) => {
+const ProfilePage: React.FC<PropTypes> = ({
+  logOut, id, navigate, setUser
+}) => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
@@ -25,23 +27,26 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate,setUser }) => {
 
   useEffect(() => {
     get(`/profiles/${id}`).then(response => {
-      setPolls([]);
-      setPolls([...response.data]);
-
-      // const x = response.data.reduce((a: any, c: any) => a.contents.left.votes + c.contents.left.votes);
-      // const y = response.data.reduce((a: any, c: any) => a.contents.right.votes + c.contents.right.votes);
-      let sum = 0;
-      for(let i = 0;i<response.data.length;i++){
-        sum += response.data[i].contents.left.votes;
-        sum += response.data[i].contents.right.votes;
-      }
-      setTotalVotes(sum);
+      setPolls(response.data);
+      setTotalVotes(response.data.reduce(
+        (total: number, current: Poll) => {
+          const { left, right } = current.contents;
+          return total + left.votes + right.votes;
+        }, 0
+      ));
     });
   }, [id, userInfo]);
 
   return (
     <>
-      <ProfileInfo user={userInfo} setUserInfo={setUserInfo} setUser={setUser} logOut={logOut} savedPolls={polls.length} totalVotes={totalVotes}/>
+      <ProfileInfo
+        user={userInfo}
+        setUserInfo={setUserInfo}
+        setUser={setUser}
+        logOut={logOut}
+        savedPolls={polls.length}
+        totalVotes={totalVotes}
+      />
       <Feed polls={[...polls]} navigate={navigate} />
     </>
   );

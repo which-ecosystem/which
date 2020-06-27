@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface PropTypes {
   text: string;
-  value: any;
+  value: string | number;
 }
 
 const useStyles = makeStyles({
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   menuButton: {
     width: 200,
     height: 50,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   menuNumber: {
     fontWeight: 800,
@@ -21,11 +21,11 @@ const useStyles = makeStyles({
   },
   menuText: {
     color: 'darkgray'
-  },
+  }
 });
 
 
-const Highlight: React.FC<PropTypes> = ({text, value}) => {
+const Highlight: React.FC<PropTypes> = ({ text, value }) => {
   const classes = useStyles();
 
   return (

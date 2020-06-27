@@ -90,9 +90,16 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header navigate={navigate} userImage={user?.avatarUrl}/>
+      <Header navigate={navigate} userImage={user?.avatarUrl} />
       <div className={classes.root}>
-        { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} setUser={setUser}/> }
+        { page.prefix === 'profile' && (
+          <ProfilePage
+            logOut={logOut}
+            id={page.id}
+            navigate={navigate}
+            setUser={setUser}
+          />
+        ) }
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
         { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>

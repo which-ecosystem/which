@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core';
 
 interface PropTypes {
   logOut: () => void;
@@ -21,10 +21,10 @@ const useStyles = makeStyles({
 
 const MoreMenu: React.FC<PropTypes> = ({ logOut }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: any) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -41,7 +41,7 @@ const MoreMenu: React.FC<PropTypes> = ({ logOut }) => {
           aria-haspopup="true"
           onClick={handleClick}
         >
-          <MoreHorizIcon/>
+          <MoreHorizIcon />
         </IconButton>
         <Menu
           id="long-menu"
@@ -52,8 +52,8 @@ const MoreMenu: React.FC<PropTypes> = ({ logOut }) => {
           PaperProps={{
             style: {
               maxHeight: ITEM_HEIGHT * 4.5,
-              width: '20ch',
-            },
+              width: '20ch'
+            }
           }}
         >
           <MenuItem onClick={logOut}>Log out</MenuItem>

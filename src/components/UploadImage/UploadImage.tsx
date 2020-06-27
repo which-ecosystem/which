@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,28 +6,29 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {patch} from "../../requests";
-import {User} from 'which-types';
+import { User } from 'which-types';
+import { patch } from '../../requests';
 
 interface PropTypes {
- displayD: boolean;
- setDisplayD: (d: boolean) => void;
- setUserInfo: (a: User) => void;
- setUser: (a: User) => void
+  displayD: boolean;
+  setDisplayD: (d: boolean) => void;
+  setUserInfo: (a: User) => void;
+  setUser: (a: User) => void
 }
 
-const UploadImage: React.FC<PropTypes>  = ({displayD,setDisplayD,setUserInfo,setUser}) => {
+const UploadImage: React.FC<PropTypes> = ({
+  displayD, setDisplayD, setUserInfo, setUser
+}) => {
   const urlRef = useRef<HTMLInputElement>(null);
 
   const handleClose = () => {
     setDisplayD(false);
   };
 
-  const updateAvatar = (event: any) => {
+  const updateAvatar = () => {
     const id = localStorage.getItem('userId');
     const newAvatar = urlRef.current?.value;
-    console.log(newAvatar);
-    patch(`/users/${id}`, {avatarUrl: newAvatar}).then(res => {
+    patch(`/users/${id}`, { avatarUrl: newAvatar }).then(res => {
       setUserInfo(res.data);
       setUser(res.data);
     });
@@ -36,7 +37,7 @@ const UploadImage: React.FC<PropTypes>  = ({displayD,setDisplayD,setUserInfo,set
 
   return (
     <div>
-      <Dialog open={displayD} onClose={handleClose} >
+      <Dialog open={displayD} onClose={handleClose}>
         <DialogTitle id="form-dialog-title">Upload an Image</DialogTitle>
         <DialogContent>
           <DialogContentText>

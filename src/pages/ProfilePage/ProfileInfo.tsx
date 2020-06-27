@@ -1,12 +1,11 @@
-import React, {useRef, useState} from 'react';
-import {Avatar, Badge, TextField, withStyles} from '@material-ui/core/';
-import {makeStyles} from '@material-ui/core/styles';
-import {User} from 'which-types';
+import React, { useState } from 'react';
+import { Avatar, Badge } from '@material-ui/core/';
+import { makeStyles } from '@material-ui/core/styles';
+import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import MoreMenu from "./MoreMenu";
-import {patch} from '../../requests';
-import Highlight from "../../components/Highlight/Highlight";
-import UploadImage from "../../components/UploadImage/UploadImage";
+import MoreMenu from './MoreMenu';
+import Highlight from './Highlight';
+import UploadImage from '../../components/UploadImage/UploadImage';
 
 
 interface PropTypes {
@@ -70,50 +69,54 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, setUserInfo,setUser}) => {
+const ProfileInfo: React.FC<PropTypes> = ({
+  user, logOut, savedPolls, totalVotes, setUserInfo, setUser
+}) => {
   const classes = useStyles();
-  const [input,setInput] = useState(false);
+  const [input, setInput] = useState(false);
+
+  const dateSince = new Date(user?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
-    input === false ? setInput(true) : setInput(false);
+    setInput(!input);
   };
 
   return (
     <div className={classes.root}>
       {
         user?._id === localStorage.getItem('userId')
-          ?
-          <div>
-            <MoreMenu logOut={logOut}/>
-            <div className={classes.avatarContainer}>
-              <Badge
-                onClick={handleClick}
-                overlap="circle"
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                badgeContent=
-                  {
-                  <div className={classes.badge} >
-                    <CameraAltIcon/>
-                  </div>
-                  }
-              >
-                <Avatar className={classes.avatar} src={user?.avatarUrl}/>
-              </Badge>
+          ? (
+            <div>
+              <MoreMenu logOut={logOut} />
+              <div className={classes.avatarContainer}>
+                <Badge
+                  onClick={handleClick}
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                  }}
+                  badgeContent={(
+                    <div className={classes.badge}>
+                      <CameraAltIcon />
+                    </div>
+                  )}
+                >
+                  <Avatar className={classes.avatar} src={user?.avatarUrl} />
+                </Badge>
+              </div>
+              <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser} />
             </div>
-            <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser}/>
-          </div>
-          : <Avatar className={classes.avatar} src={user?.avatarUrl}/>
+)
+          : <Avatar className={classes.avatar} src={user?.avatarUrl} />
       }
       <div className={classes.name}>
         {user?.username}
       </div>
       <div className={classes.profileMenu}>
-        <Highlight text="Polls" value={savedPolls}/>
-        <Highlight text="Since" value={user?.createdAt.toString().substring(0,10).replace(/-/g, '.')}/>
-        <Highlight text="Total" value={totalVotes}/>
+        <Highlight text="Polls" value={savedPolls} />
+        <Highlight text="Since" value={dateSince} />
+        <Highlight text="Total" value={totalVotes} />
       </div>
     </div>
   );
