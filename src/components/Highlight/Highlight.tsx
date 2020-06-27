@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   menuButton: {
     width: 200,
     height: 50,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   menuNumber: {
     fontWeight: 800,

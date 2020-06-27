@@ -6,7 +6,6 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MoreMenu from "./MoreMenu";
 import {patch} from '../../requests';
 import Highlight from "../../components/Highlight/Highlight";
-import UserStatus from "../../components/UserStatus/UserStatus";
 
 
 interface PropTypes {
@@ -34,7 +33,6 @@ const useStyles = makeStyles({
     display: 'flex',
     width: '100%',
     height: 50,
-    borderBottom: '1px solid lightgray',
     margin: '50px 0'
   },
   menuButton: {
@@ -131,11 +129,10 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes})
       <div className={classes.name}>
         {user?.username}
       </div>
-      <UserStatus />
       <div className={classes.profileMenu}>
-        <Highlight text="polls" value={savedPolls}/>
-        <Highlight text="since" value={user?.createdAt.toString().substring(0,10).replace(/-/g, '.')}/>
-        <Highlight text="total" value={totalVotes}/>
+        <Highlight text="Polls" value={savedPolls}/>
+        <Highlight text="Since" value={user?.createdAt.toString().substring(0,10).replace(/-/g, '.')}/>
+        <Highlight text="Total" value={totalVotes}/>
       </div>
     </div>
   );
