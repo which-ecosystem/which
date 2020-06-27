@@ -3,7 +3,7 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography
+  Typography, Avatar
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -13,6 +13,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import SearchBar from './SearchBar';
 
 interface PropTypes {
+  userImage: string | undefined;
   navigate: (prefix: string) => void;
 }
 
@@ -25,10 +26,14 @@ const useStyles = makeStyles({
   },
   logo: {
     fontWeight: 'bold'
+  },
+  avatar: {
+    width: 24,
+    height: 24
   }
 });
 
-const Header: React.FC<PropTypes> = ({ navigate }) => {
+const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
   const classes = useStyles();
 
   const handleHome = (): void => {
@@ -56,7 +61,11 @@ const Header: React.FC<PropTypes> = ({ navigate }) => {
             <NotificationsIcon />
           </IconButton>
           <IconButton onClick={handleProfile}>
-            <AccountCircle />
+            {
+              userImage !== undefined
+                ? <Avatar className={classes.avatar} src={userImage} />
+                : <AccountCircle />
+            }
           </IconButton>
         </div>
       </Toolbar>

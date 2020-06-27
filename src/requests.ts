@@ -12,6 +12,8 @@ requests.interceptors.request.use(config => {
   return _.set(config, 'headers.Authorization', token);
 });
 
-export const { get, post, put } = requests;
+export const {
+  get, post, put, patch
+} = requests;
 export default requests;
 
