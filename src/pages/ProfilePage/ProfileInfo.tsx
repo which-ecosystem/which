@@ -36,7 +36,8 @@ const useStyles = makeStyles({
     display: 'flex',
     width: '100%',
     height: 50,
-    margin: '50px 0'
+    margin: '50px 0',
+    borderBottom: '1px solid lightgray'
   },
   menuButton: {
     width: 200,
@@ -77,7 +78,6 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, 
   const handleClick = () => {
     input === false ? setInput(true) : setInput(false);
   };
-
 
   return (
     <div className={classes.root}>

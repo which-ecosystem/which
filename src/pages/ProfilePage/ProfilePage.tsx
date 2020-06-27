@@ -25,7 +25,9 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate,setUser }) => {
 
   useEffect(() => {
     get(`/profiles/${id}`).then(response => {
-      setPolls(response.data);
+      setPolls([]);
+      setPolls([...response.data]);
+
       // const x = response.data.reduce((a: any, c: any) => a.contents.left.votes + c.contents.left.votes);
       // const y = response.data.reduce((a: any, c: any) => a.contents.right.votes + c.contents.right.votes);
       let sum = 0;
@@ -35,13 +37,12 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate,setUser }) => {
       }
       setTotalVotes(sum);
     });
-  }, [id]);
-
+  }, [id, userInfo]);
 
   return (
     <>
       <ProfileInfo user={userInfo} setUserInfo={setUserInfo} setUser={setUser} logOut={logOut} savedPolls={polls.length} totalVotes={totalVotes}/>
-      <Feed polls={polls} navigate={navigate} />
+      <Feed polls={[...polls]} navigate={navigate} />
     </>
   );
 };

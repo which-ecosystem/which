@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 const Feed: React.FC<PropTypes> = ({ polls, navigate }) => {
   const classes = useStyles();
-
+  console.log(polls);
   return (
     <div className={classes.root}>
       {polls.map(poll => <PollCard initialPoll={poll} key={poll._id} navigate={navigate} />)}
