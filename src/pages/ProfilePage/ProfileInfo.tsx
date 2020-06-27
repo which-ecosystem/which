@@ -18,7 +18,7 @@ interface PropTypes {
   setUser: (a:User) => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative'
   },
@@ -45,7 +45,16 @@ const useStyles = makeStyles({
     textAlign: 'center'
   },
   badge: {
-    backgroundColor: 'lightgray'
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    borderRadius: '50%',
+    cursor: 'pointer',
+    background: '#d3d3d3',
+    display: 'flex',
+    alignItems: 'center',
+    '& svg': {
+      margin: '0 auto'
+    }
   },
   avatarContainer: {
     position: 'relative',
@@ -58,18 +67,8 @@ const useStyles = makeStyles({
   menuText: {
     color: 'darkgray'
   }
-});
+}));
 
-
-const StyledBadge = withStyles((theme) => ({
-  badge: {
-    backgroundColor: 'lightgray',
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    cursor: 'pointer'
-  },
-}))(Badge);
 
 const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, setUserInfo,setUser}) => {
   const classes = useStyles();
@@ -87,7 +86,7 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, 
           <div>
             <MoreMenu logOut={logOut}/>
             <div className={classes.avatarContainer}>
-              <StyledBadge
+              <Badge
                 onClick={handleClick}
                 overlap="circle"
                 anchorOrigin={{
@@ -96,13 +95,13 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, 
                 }}
                 badgeContent=
                   {
-                  <div>
+                  <div className={classes.badge} >
                     <CameraAltIcon/>
                   </div>
                   }
               >
                 <Avatar className={classes.avatar} src={user?.avatarUrl}/>
-              </StyledBadge>
+              </Badge>
             </div>
             <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser}/>
           </div>
