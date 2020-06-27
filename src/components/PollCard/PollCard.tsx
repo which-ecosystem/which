@@ -3,13 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardActionArea,
-  CardMedia,
-  Avatar,
-  CardHeader
+  CardMedia
 } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
 
 import PercentageBar from './PercentageBar';
+import UserStrip from '../UserStrip/UserStrip';
 import { post } from '../../requests';
 
 interface PropTypes {
@@ -38,9 +37,6 @@ const useStyles = makeStyles(theme => ({
   imagesBlock: {
     display: 'flex'
   },
-  avatar: {
-    cursor: 'pointer'
-  },
   rateLine: {
     position: 'relative',
     width: '100%',
@@ -64,10 +60,6 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const { author, contents: { left, right }, userChoice } = poll;
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
-  const handleNavigate = () => {
-    navigate('profile', poll.author._id);
-  };
-
   const vote = (which: Which) => {
     if (userChoice) return;
     post('votes/', { which, pollId: poll._id }).then(() => {
@@ -87,19 +79,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        avatar={(
-          <Avatar
-            aria-label="avatar"
-            src={author.avatarUrl}
-            alt={author.username[0].toUpperCase()}
-            onClick={handleNavigate}
-            className={classes.avatar}
-          />
-        )}
-        title={author.username}
-        subheader={date}
-      />
+      <UserStrip user={author} info={date} navigate={navigate} />
       <div className={classes.imagesBlock}>
         <CardActionArea onDoubleClick={handleLeft}>
           <CardMedia

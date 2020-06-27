@@ -12,7 +12,7 @@ const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
   const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
-    get('/polls').then(response => {
+    get('/feed').then(response => {
       setPolls(response.data);
     });
   }, []);
