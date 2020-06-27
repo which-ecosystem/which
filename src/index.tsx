@@ -92,7 +92,7 @@ const App: React.FC = () => {
       <CssBaseline />
       <Header navigate={navigate} userImage={user?.avatarUrl}/>
       <div className={classes.root}>
-        { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} /> }
+        { page.prefix === 'profile' && <ProfilePage logOut={logOut} id={page.id} navigate={navigate} setUser={setUser}/> }
         { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
         { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>

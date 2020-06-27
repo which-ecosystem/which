@@ -6,6 +6,7 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MoreMenu from "./MoreMenu";
 import {patch} from '../../requests';
 import Highlight from "../../components/Highlight/Highlight";
+import UploadImage from "../../components/UploadImage/UploadImage";
 
 
 interface PropTypes {
@@ -13,6 +14,8 @@ interface PropTypes {
   logOut: () => void;
   savedPolls: number;
   totalVotes: number;
+  setUserInfo: (a: User) => void;
+  setUser: (a:User) => void;
 }
 
 const useStyles = makeStyles({
@@ -67,22 +70,14 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes}) => {
+const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes, setUserInfo,setUser}) => {
   const classes = useStyles();
-  const [input,setInput] = useState('hide');
-  const urlRef = useRef<HTMLInputElement>();
+  const [input,setInput] = useState(false);
 
   const handleClick = () => {
-    input === 'hide' ? setInput('show') : setInput('hide');
+    input === false ? setInput(true) : setInput(false);
   };
 
-  const updateAvatar = (event: any) => {
-    const id = localStorage.getItem('userId');
-    const newAvatar = urlRef.current?.value;
-    patch(`/users/${id}`, {avatarUrl: newAvatar}).then(res => {
-      console.log(res);
-    })
-  };
 
   return (
     <div className={classes.root}>
@@ -109,20 +104,7 @@ const ProfileInfo: React.FC<PropTypes> = ({user, logOut,savedPolls, totalVotes})
                 <Avatar className={classes.avatar} src={user?.avatarUrl}/>
               </StyledBadge>
             </div>
-            {
-              input === 'show'
-                ?<form>
-                <TextField
-                  inputRef={urlRef}
-                  id="url"
-                  label="url:"
-                  variant="outlined"
-                  color="secondary"
-                />
-                  <button type='submit' onClick={updateAvatar}>upload</button>
-                </form>
-                : null
-            }
+            <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser}/>
           </div>
           : <Avatar className={classes.avatar} src={user?.avatarUrl}/>
       }

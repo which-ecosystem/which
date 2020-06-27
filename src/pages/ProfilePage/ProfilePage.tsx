@@ -9,9 +9,10 @@ interface PropTypes {
   logOut: () => void;
   navigate: (prefix: string, id: string) => void;
   id: string;
+  setUser:(a:User)=>void;
 }
 
-const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate }) => {
+const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate,setUser }) => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
@@ -39,7 +40,7 @@ const ProfilePage: React.FC<PropTypes> = ({ logOut, id, navigate }) => {
 
   return (
     <>
-      <ProfileInfo user={userInfo} logOut={logOut} savedPolls={polls.length} totalVotes={totalVotes}/>
+      <ProfileInfo user={userInfo} setUserInfo={setUserInfo} setUser={setUser} logOut={logOut} savedPolls={polls.length} totalVotes={totalVotes}/>
       <Feed polls={polls} navigate={navigate} />
     </>
   );
