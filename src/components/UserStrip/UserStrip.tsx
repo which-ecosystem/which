@@ -10,8 +10,8 @@ import { User } from 'which-types';
 
 interface PropTypes {
   user: User;
-  info: string | JSX.Element
   navigate: (prefix: string, id: string) => void;
+  info?: string | JSX.Element
 }
 
 
