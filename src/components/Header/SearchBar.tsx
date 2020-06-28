@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {
   InputBase,
@@ -18,6 +18,7 @@ interface PropTypes {
 }
 
 const INTERVAL = 300;
+const LIMIT = 7;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,19 +48,19 @@ const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
     setTimeout(() => setIsReady(true), INTERVAL);
   };
 
-  const fetchPolls = () => {
+  const fetchPolls = useCallback(() => {
     sleep();
-    get(`/users?username[$regex]=${query}`).then(response => {
+    get(`/users?username[$regex]=${query}&$limit=${LIMIT}`).then(response => {
       setResults(response.data);
     });
-  };
+  }, [query]);
 
   useEffect(() => {
     if (isReady && shouldRefetch) {
       fetchPolls();
       setShouldRefetch(false);
     }
-  }, [isReady]);
+  }, [isReady, fetchPolls, shouldRefetch]);
 
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
