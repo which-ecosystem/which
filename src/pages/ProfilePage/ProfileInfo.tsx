@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Avatar, Badge } from '@material-ui/core/';
+import { Avatar, Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
+import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 
 
 interface PropTypes {
@@ -27,9 +28,15 @@ const useStyles = makeStyles(theme => ({
     margin: '0 auto'
   },
   name: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: '10px 0'
+    margin: theme.spacing(1, 0),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  verified: {
+    marginLeft: theme.spacing(0.5),
+    width: theme.spacing(3),
+    height: theme.spacing(3)
   },
   profileMenu: {
     display: 'flex',
@@ -110,13 +117,14 @@ const ProfileInfo: React.FC<PropTypes> = ({
 )
           : <Avatar className={classes.avatar} src={user?.avatarUrl} />
       }
-      <div className={classes.name}>
+      <Typography variant="h5" className={classes.name}>
         {user?.username}
-      </div>
+        {user?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
+      </Typography>
       <div className={classes.profileMenu}>
         <Highlight text="Polls" value={savedPolls} />
         <Highlight text="Since" value={dateSince} />
-        <Highlight text="Total" value={totalVotes} />
+        <Highlight text="Total votes" value={totalVotes} />
       </div>
     </div>
   );
