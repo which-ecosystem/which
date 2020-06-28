@@ -7,6 +7,7 @@ import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
+import { patch } from '../../requests';
 
 
 interface PropTypes {
@@ -82,10 +83,19 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const classes = useStyles();
   const [input, setInput] = useState(false);
 
+
   const dateSince = new Date(user?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
     setInput(!input);
+  };
+
+  const patchAvatar = (url: string) => {
+    const id = localStorage.getItem('userId');
+    patch(`/users/${id}`, { avatarUrl: url }).then(res => {
+      setUserInfo(res.data);
+      setUser(res.data);
+    });
   };
 
   return (
@@ -112,7 +122,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                   <Avatar className={classes.avatar} src={user?.avatarUrl} />
                 </Badge>
               </div>
-              <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser} />
+              <UploadImage displayD={input} setDisplayD={setInput} callback={patchAvatar} />
             </div>
 )
           : <Avatar className={classes.avatar} src={user?.avatarUrl} />

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,33 +6,30 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { User } from 'which-types';
-import { patch } from '../../requests';
 
 interface PropTypes {
   displayD: boolean;
   setDisplayD: (d: boolean) => void;
-  setUserInfo: (a: User) => void;
-  setUser: (a: User) => void
+  callback: (a: string) => void;
 }
 
 const UploadImage: React.FC<PropTypes> = ({
-  displayD, setDisplayD, setUserInfo, setUser
+  displayD, setDisplayD, callback
 }) => {
-  const urlRef = useRef<HTMLInputElement>(null);
+  const urlRef = useRef<HTMLInputElement | null>(null);
+  const [url, setUrl] = useState('');
 
   const handleClose = () => {
     setDisplayD(false);
   };
 
-  const updateAvatar = () => {
-    const id = localStorage.getItem('userId');
-    const newAvatar = urlRef.current?.value;
-    patch(`/users/${id}`, { avatarUrl: newAvatar }).then(res => {
-      setUserInfo(res.data);
-      setUser(res.data);
-    });
+  const update = () => {
+    callback(urlRef.current?.value || '');
     setDisplayD(false);
+  };
+
+  const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(event.target.value);
   };
 
   return (
@@ -52,13 +49,14 @@ const UploadImage: React.FC<PropTypes> = ({
             fullWidth
             autoComplete="off"
             inputRef={urlRef}
+            onChange={handleChange}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={updateAvatar} color="primary">
+          <Button onClick={update} color="primary" disabled={!url.length}>
             Submit
           </Button>
         </DialogActions>
