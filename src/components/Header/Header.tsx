@@ -52,7 +52,7 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
         <Typography variant="h5" className={classes.logo}>
           Which
         </Typography>
-        <SearchBar />
+        <SearchBar navigate={navigate} />
         <div>
           <IconButton onClick={handleHome}>
             <HomeIcon />
