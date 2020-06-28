@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import {
   InputBase,
@@ -37,41 +37,33 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
-  const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<User[]>([]);
-  const [isReady, setIsReady] = useState<boolean>(true);
-  const [shouldRefetch, setShouldRefetch] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
+  const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
   const classes = useStyles();
 
-  const sleep = () => {
-    setIsReady(false);
-    setTimeout(() => setIsReady(true), INTERVAL);
-  };
-
-  const fetchPolls = useCallback(() => {
-    sleep();
-    get(`/users?username[$regex]=${query}&$limit=${LIMIT}`).then(response => {
-      setResults(response.data);
-    });
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedQuery(query), INTERVAL);
+    return () => clearTimeout(handler);
   }, [query]);
 
   useEffect(() => {
-    if (isReady && shouldRefetch) {
-      fetchPolls();
-      setShouldRefetch(false);
-    }
-  }, [isReady, fetchPolls, shouldRefetch]);
-
+    const fetchPolls = () => {
+      get(`/users?username[$regex]=${debouncedQuery}&$limit=${LIMIT}`)
+        .then(response => setResults(response.data))
+        .catch(() => setResults([]));
+    };
+    if (debouncedQuery) fetchPolls();
+    else setResults([]);
+  }, [debouncedQuery]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setQuery(event.target.value);
-    if (isReady) fetchPolls();
-    else setShouldRefetch(true);
+    setQuery(event.target.value.trim());
   };
 
   const handleClose = () => {
+    setDebouncedQuery('');
     setQuery('');
-    setResults([]);
   };
 
   const handleNavigate = (index: number) => () => {
@@ -85,12 +77,12 @@ const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
         <List>
           {
           results.map((result, index) => (
-            <>
+            <div key={result._id}>
               <ListItem button onClick={handleNavigate(index)}>
                 <UserStrip user={result} navigate={navigate} />
               </ListItem>
               {(index < results.length - 1) && <Divider />}
-            </>
+            </div>
           ))
         }
         </List>
