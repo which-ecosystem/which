@@ -5,7 +5,8 @@ import {
   List,
   ListItem,
   Paper,
-  Divider
+  Divider,
+  ClickAwayListener
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
@@ -67,27 +68,33 @@ const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
     else setShouldRefetch(true);
   };
 
-  const handleNavigate = (index: number) => () => {
-    navigate('profile', results[index]._id);
+  const handleClose = () => {
     setQuery('');
     setResults([]);
   };
 
+  const handleNavigate = (index: number) => () => {
+    navigate('profile', results[index]._id);
+    handleClose();
+  };
+
   const SearchResults = (
-    <Paper className={classes.results}>
-      <List>
-        {
-        results.map((result, index) => (
-          <>
-            <ListItem button onClick={handleNavigate(index)}>
-              <UserStrip user={result} navigate={navigate} />
-            </ListItem>
-            {(index < results.length - 1) && <Divider />}
-          </>
-        ))
-      }
-      </List>
-    </Paper>
+    <ClickAwayListener onClickAway={handleClose}>
+      <Paper className={classes.results}>
+        <List>
+          {
+          results.map((result, index) => (
+            <>
+              <ListItem button onClick={handleNavigate(index)}>
+                <UserStrip user={result} navigate={navigate} />
+              </ListItem>
+              {(index < results.length - 1) && <Divider />}
+            </>
+          ))
+        }
+        </List>
+      </Paper>
+    </ClickAwayListener>
   );
 
   return (

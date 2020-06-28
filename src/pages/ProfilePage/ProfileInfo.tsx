@@ -3,10 +3,10 @@ import { Avatar, Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
-import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 
 
 interface PropTypes {
