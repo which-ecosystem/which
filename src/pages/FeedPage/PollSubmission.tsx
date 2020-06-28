@@ -68,8 +68,8 @@ const PollSubmission: React.FC<PropTypes> = ({ user }) => {
           <UserStrip user={user} info="" navigate={() => {}} />
           <Divider />
           <CardMedia className={classes.card}>
-            <PollSubmissionImage which="left" setContents={setContents} />
-            <PollSubmissionImage which="right" setContents={setContents} />
+            <PollSubmissionImage which="left" setContents={setContents} contents={contents}/>
+            <PollSubmissionImage which="right" setContents={setContents} contents={contents}/>
           </CardMedia>
         </Collapse>
         <Button onClick={handleClick} color="primary" variant="outlined" className={classes.button}>

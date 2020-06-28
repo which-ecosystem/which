@@ -6,6 +6,7 @@ import UploadImage from '../../components/UploadImage/UploadImage';
 import { Contents } from './types';
 
 interface PropTypes {
+  contents: Contents;
   setContents: (a: Contents) => void;
   which: 'left' | 'right';
 }
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which }) => {
+const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents }) => {
   const classes = useStyles();
   const [display, setDisplay] = useState(false);
   const [image, setImage] = useState('');
@@ -32,16 +33,8 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which }) => {
 
   const patchUrl = (url: string) => {
     setImage(url);
-    let nextImage;
-    which === 'left' ? nextImage = 'right' : nextImage = 'left';
-    setContents({
-      [which]: {
-        url
-      },
-      [nextImage]: {
-        url
-      }
-    });
+    contents[which] = {url};
+    setContents({...contents});
   };
 
 
