@@ -57,20 +57,20 @@ const useStyles = makeStyles(theme => ({
 const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
-  const { author, contents: { left, right }, userChoice } = poll;
+  const { author, contents: { left, right }, vote } = poll;
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
-  const vote = (which: Which) => {
-    if (userChoice) return;
-    post('votes/', { which, pollId: poll._id }).then(() => {
+  const handleVote = (which: Which) => {
+    if (vote) return;
+    post('votes/', { which, pollId: poll._id }).then(response => {
       poll.contents[which].votes += 1;
-      poll.userChoice = which;
+      poll.vote = response.data;
       setPoll({ ...poll });
     });
   };
 
-  const handleLeft = () => vote('left');
-  const handleRight = () => vote('right');
+  const handleLeft = () => handleVote('left');
+  const handleRight = () => handleVote('right');
 
   const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
   const rightPercentage = 100 - leftPercentage;
@@ -86,14 +86,14 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
             className={classes.images}
             image={left.url}
           />
-          <PercentageBar value={leftPercentage} which="left" like={userChoice === 'left'} />
+          <PercentageBar value={leftPercentage} which="left" like={vote?.which === 'left'} />
         </CardActionArea>
         <CardActionArea onDoubleClick={handleRight}>
           <CardMedia
             className={classes.images}
             image={right.url}
           />
-          <PercentageBar value={rightPercentage} which="right" like={userChoice === 'right'} />
+          <PercentageBar value={rightPercentage} which="right" like={vote?.which === 'right'} />
         </CardActionArea>
       </div>
       <div className={`${classes.rateLine} ${dominant === 'right' ? classes.highlight : ''}`}>
