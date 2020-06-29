@@ -3,15 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
-import _ from 'lodash';
 
 import UploadImage from '../../components/UploadImage/UploadImage';
-import { Contents } from './types';
 
 interface PropTypes {
-  contents: Contents;
-  setContents: (newContents: Contents) => void;
-  which: 'left' | 'right';
+  url: string;
+  setUrl: (url: string) => void;
 }
 
 const useStyles = makeStyles({
@@ -35,29 +32,22 @@ const useStyles = makeStyles({
 });
 
 
-const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents }) => {
+const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
   const classes = useStyles();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [image, setImage] = useState('');
-  const [clearIconDisplay, setClearIconDisplay] = useState(false);
-
-  const patchUrl = (url: string): void => {
-    setImage(url);
-    const newContents = _.set(contents, which, { url });
-    setContents({ ...newContents });
-  };
+  const [isMediaHover, setIsMediaHover] = useState(false);
 
   const handleClick = (): void => {
-    if (image) patchUrl('');
+    if (url) setUrl('');
     else setIsModalOpen(!isModalOpen);
   };
 
   const handleMouseEnter = (): void => {
-    setClearIconDisplay(true);
+    setIsMediaHover(true);
   };
 
   const handleMouseLeave = (): void => {
-    setClearIconDisplay(false);
+    setIsMediaHover(false);
   };
 
 
@@ -65,24 +55,24 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
     <>
       <CloudUploadIcon fontSize="large" color="primary" />
       <Typography variant="h5"> Upload an image </Typography>
-      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={patchUrl} />
+      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={setUrl} />
     </>
   );
 
   const Media = (
     <CardMedia
-      image={image}
+      image={url}
       className={classes.media}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {clearIconDisplay && <CancelOutlinedIcon className={classes.clearIcon} />}
+      {isMediaHover && <CancelOutlinedIcon className={classes.clearIcon} />}
     </CardMedia>
   );
 
   return (
     <CardActionArea onClick={handleClick} className={classes.root}>
-      {image ? Media : Upload}
+      {url ? Media : Upload}
     </CardActionArea>
   );
 };

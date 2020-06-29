@@ -20,9 +20,15 @@ const FeedPage: React.FC<PropTypes> = ({ navigate, user }) => {
     });
   }, []);
 
+  const addPoll = (poll: Poll): void => {
+    polls.unshift(poll);
+    setPolls([...polls]);
+  };
+
+
   return (
     <>
-      {user && <PollSubmission user={user} polls={polls} setPolls={setPolls} />}
+      {user && <PollSubmission user={user} addPoll={addPoll} />}
       <Feed polls={polls} navigate={navigate} />
     </>
   );
