@@ -3,11 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
 
-
-interface PropTypes {
-  logIn: (name: string, password: string, remember?: boolean) => Promise<boolean>;
-}
-
 const useStyles = makeStyles({
   formTransfer: {
     display: 'flex',
@@ -20,7 +15,7 @@ const useStyles = makeStyles({
   }
 });
 
-const AuthPage: React.FC<PropTypes> = ({ logIn }) => {
+const AuthPage: React.FC = () => {
   const [auth, setAuth] = useState<'signIn' | 'signUp'>('signIn');
   const classes = useStyles();
 
@@ -35,8 +30,8 @@ const AuthPage: React.FC<PropTypes> = ({ logIn }) => {
 
   return (
     <>
-      {auth === 'signIn' && <SignInForm logIn={logIn} />}
-      {auth === 'signUp' && <SignUpForm logIn={logIn} />}
+      {auth === 'signIn' && <SignInForm />}
+      {auth === 'signUp' && <SignUpForm />}
       <div className={classes.formTransfer}>
         <div>{footerInfo[auth][0]}</div>
         <span

@@ -4,10 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core';
-
-interface PropTypes {
-  logOut: () => void;
-}
+import { useAuth } from '../../hooks/useAuth';
 
 const ITEM_HEIGHT = 48;
 
@@ -19,9 +16,11 @@ const useStyles = makeStyles({
   }
 });
 
-const MoreMenu: React.FC<PropTypes> = ({ logOut }) => {
+const MoreMenu: React.FC = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const { logout } = useAuth();
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +55,7 @@ const MoreMenu: React.FC<PropTypes> = ({ logOut }) => {
             }
           }}
         >
-          <MenuItem onClick={logOut}>Log out</MenuItem>
+          <MenuItem onClick={logout}>Log out</MenuItem>
         </Menu>
       </div>
     </div>

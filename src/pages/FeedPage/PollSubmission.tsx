@@ -12,9 +12,9 @@ import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { Contents } from './types';
+import { useAuth } from '../../hooks/useAuth';
 
 interface PropTypes{
-  user: User;
   addPoll: (poll: Poll) => void;
 }
 
@@ -30,10 +30,11 @@ const emptyContents: Contents = {
   right: { url: '' }
 };
 
-const PollSubmission: React.FC<PropTypes> = ({ user, addPoll }) => {
+const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>(emptyContents);
+  const { user } = useAuth();
 
   const readyToSubmit = contents.left.url && contents.right.url;
 
@@ -47,7 +48,7 @@ const PollSubmission: React.FC<PropTypes> = ({ user, addPoll }) => {
 
   const handleClick = () => {
     if (expanded && readyToSubmit) {
-      post('/polls/', { authorId: user._id, contents }).then(response => {
+      post('/polls/', { contents }).then(response => {
         addPoll(response.data);
       });
       setContents({ ...emptyContents });
@@ -59,7 +60,7 @@ const PollSubmission: React.FC<PropTypes> = ({ user, addPoll }) => {
     <ClickAwayListener onClickAway={handleClickAway}>
       <Card>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <UserStrip user={user} info="" navigate={() => {}} />
+          {user && <UserStrip user={user} info="" navigate={() => {}} />}
           <Divider />
           <div className={classes.root}>
             <PollSubmissionImage url={contents.left.url} setUrl={setUrl('left')} />

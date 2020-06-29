@@ -6,15 +6,11 @@ import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 
 interface PropTypes {
-  logOut: () => void;
   navigate: (prefix: string, id: string) => void;
   id: string;
-  setUser:(a:User)=>void;
 }
 
-const ProfilePage: React.FC<PropTypes> = ({
-  logOut, id, navigate, setUser
-}) => {
+const ProfilePage: React.FC<PropTypes> = ({ id, navigate }) => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
@@ -40,10 +36,8 @@ const ProfilePage: React.FC<PropTypes> = ({
   return (
     <>
       <ProfileInfo
-        user={userInfo}
+        userInfo={userInfo}
         setUserInfo={setUserInfo}
-        setUser={setUser}
-        logOut={logOut}
         savedPolls={polls.length}
         totalVotes={totalVotes}
       />

@@ -17,6 +17,7 @@ import AuthPage from './pages/AuthPage/AuthPage';
 import { Page } from './types';
 import { get, post } from './requests';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
+import { useAuth, AuthProvider } from './hooks/useAuth';
 
 
 const theme = createMuiTheme({
@@ -37,9 +38,9 @@ const useStyles = makeStyles({
 });
 
 const App: React.FC = () => {
-  const [user, setUser] = React.useState<User | undefined>();
   const [page, setPage] = useState<Page>({ prefix: 'feed', id: '' });
   const classes = useStyles();
+  const user = { _id: '', avatarUrl: '' };
 
   const navigate = (prefix: string, id?: string): void => {
     if (prefix === 'profile' && !id && !user) {
@@ -55,42 +56,6 @@ const App: React.FC = () => {
     }
   };
 
-  const logIn = (username: string, password: string, remember = true): Promise<boolean> => {
-    return post('/authentication', {
-      strategy: 'local',
-      username,
-      password
-    }).then(response => {
-      const me = response.data.user;
-      const token = response.data.accessToken;
-      setUser(me);
-      navigate('profile', me._id);
-      localStorage.setItem('userId', me._id);
-      localStorage.setItem('token', token);
-      if (!remember) localStorage.setItem('shouldClear', 'true');
-      return true;
-    }).catch(() => false);
-  };
-
-  const logOut = () => {
-    setUser(undefined);
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    navigate('auth');
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem('shouldClear')) {
-      localStorage.clear();
-    }
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      get(`/users/${userId}`).then(response => {
-        setUser(response.data);
-      });
-    }
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -98,14 +63,12 @@ const App: React.FC = () => {
       <div className={classes.root}>
         { page.prefix === 'profile' && (
           <ProfilePage
-            logOut={logOut}
             id={page.id}
             navigate={navigate}
-            setUser={setUser}
           />
         ) }
-        { page.prefix === 'feed' && <FeedPage navigate={navigate} user={user} /> }
-        { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
+        { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
+        { page.prefix === 'auth' && <AuthPage /> }
       </div>
       <ScrollTopArrow />
     </ThemeProvider>

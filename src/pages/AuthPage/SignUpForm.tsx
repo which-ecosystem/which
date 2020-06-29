@@ -3,10 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { post } from '../../requests';
+import { useAuth } from '../../hooks/useAuth';
 
-interface PropTypes {
-  logIn: (name: string, password: string) => Promise<boolean>;
-}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,12 +23,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUpForm: React.FC<PropTypes> = ({ logIn }) => {
+const SignUpForm: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
+  const { login } = useAuth();
 
   const onClick = () => {
     const username = usernameRef.current?.value;
@@ -38,7 +37,7 @@ const SignUpForm: React.FC<PropTypes> = ({ logIn }) => {
     const email = emailRef.current?.value;
     if (username && password) {
       post('/users', { username, password, email }).then(() => {
-        logIn(username, password);
+        login(username, password);
       });
     } else setError(true);
   };

@@ -6,10 +6,7 @@ import {
   FormControlLabel,
   Switch
 } from '@material-ui/core';
-
-interface PropTypes {
-  logIn: (name: string, password: string, remember?: boolean) => Promise<boolean>;
-}
+import { useAuth } from '../../hooks/useAuth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,12 +25,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
+const SignInForm: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [remember, setRemember] = useState<boolean>(true);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
+  const { login } = useAuth();
 
   const handleCheck = () => {
     setRemember(!remember);
@@ -43,7 +41,7 @@ const SignInForm: React.FC<PropTypes> = ({ logIn }) => {
     const name = nameRef.current?.value;
     const password = passwordRef.current?.value;
     if (name && password) {
-      logIn(name, password, remember).then(success => {
+      login(name, password, remember).then(success => {
         if (!success) setError(true);
       });
     }

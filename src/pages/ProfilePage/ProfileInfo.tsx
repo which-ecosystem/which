@@ -8,15 +8,14 @@ import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { patch } from '../../requests';
+import { useAuth } from '../../hooks/useAuth';
 
 
 interface PropTypes {
-  user: User | undefined;
-  logOut: () => void;
   savedPolls: number;
   totalVotes: number;
-  setUserInfo: (a: User) => void;
-  setUser: (a:User) => void;
+  userInfo: User | undefined;
+  setUserInfo: (userInfo: User) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -78,13 +77,14 @@ const useStyles = makeStyles(theme => ({
 
 
 const ProfileInfo: React.FC<PropTypes> = ({
-  user, logOut, savedPolls, totalVotes, setUserInfo, setUser
+  savedPolls, totalVotes, setUserInfo, userInfo
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
+  const { setUser } = useAuth();
 
 
-  const dateSince = new Date(user?.createdAt || '').toLocaleDateString();
+  const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
     setInput(!input);
@@ -101,10 +101,10 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        user?._id === localStorage.getItem('userId')
+        userInfo?._id === localStorage.getItem('userId')
           ? (
             <div>
-              <MoreMenu logOut={logOut} />
+              <MoreMenu />
               <div className={classes.avatarContainer}>
                 <Badge
                   overlap="circle"
@@ -118,17 +118,17 @@ const ProfileInfo: React.FC<PropTypes> = ({
                     </div>
                   )}
                 >
-                  <Avatar className={classes.avatar} src={user?.avatarUrl} />
+                  <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
                 </Badge>
               </div>
               <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
             </div>
 )
-          : <Avatar className={classes.avatar} src={user?.avatarUrl} />
+          : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       }
       <Typography variant="h5" className={classes.name}>
-        {user?.username}
-        {user?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
+        {userInfo?.username}
+        {userInfo?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
       </Typography>
       <div className={classes.profileMenu}>
         <Highlight text="Polls" value={savedPolls} />
