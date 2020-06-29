@@ -22,7 +22,7 @@ const FeedPage: React.FC<PropTypes> = ({ navigate, user }) => {
 
   return (
     <>
-      {user && <PollSubmission user={user} />}
+      {user && <PollSubmission user={user} polls={polls} setPolls={setPolls}/>}
       <Feed polls={polls} navigate={navigate} />
     </>
   );

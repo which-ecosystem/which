@@ -4,7 +4,7 @@ import Collapse from '@material-ui/core/Collapse';
 import {
   Button, Card, CardMedia, ClickAwayListener, Divider
 } from '@material-ui/core';
-import { User } from 'which-types';
+import { User, Poll } from 'which-types';
 import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
@@ -13,6 +13,8 @@ import { Contents } from './types';
 
 interface PropTypes{
   user: User;
+  polls: Poll[];
+  setPolls: (a:Poll[])=> void;
 }
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollSubmission: React.FC<PropTypes> = ({ user }) => {
+const PollSubmission: React.FC<PropTypes> = ({ user , polls, setPolls}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>({
@@ -54,9 +56,10 @@ const PollSubmission: React.FC<PropTypes> = ({ user }) => {
 
   const handleClick = () => {
     if (expanded) {
-      if(contents.left?.url && contents.right?.url ) {
+      if(contents.left.url && contents.right.url ) {
         post('/polls/', {authorId: user._id, contents}).then(res => {
-          console.log(res.data);
+          polls.unshift({...res.data});
+          setPolls([...polls]);
         });
       }
     }
