@@ -107,7 +107,6 @@ const ProfileInfo: React.FC<PropTypes> = ({
               <MoreMenu logOut={logOut} />
               <div className={classes.avatarContainer}>
                 <Badge
-                  onClick={handleClick}
                   overlap="circle"
                   anchorOrigin={{
                     vertical: 'bottom',
@@ -115,7 +114,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                   }}
                   badgeContent={(
                     <div className={classes.badge}>
-                      <CameraAltIcon />
+                      <CameraAltIcon onClick={handleClick} />
                     </div>
                   )}
                 >
