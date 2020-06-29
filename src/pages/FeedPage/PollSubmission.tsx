@@ -54,9 +54,11 @@ const PollSubmission: React.FC<PropTypes> = ({ user }) => {
 
   const handleClick = () => {
     if (expanded) {
-      post('/polls/', { authorId: user._id, contents }).then(res => {
-        console.log(res.data);
-      });
+      if(contents.left?.url && contents.right?.url ) {
+        post('/polls/', {authorId: user._id, contents}).then(res => {
+          console.log(res.data);
+        });
+      }
     }
     setExpanded(!expanded);
   };
