@@ -7,6 +7,7 @@ import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
+import { patch } from '../../requests';
 
 
 interface PropTypes {
@@ -82,10 +83,19 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const classes = useStyles();
   const [input, setInput] = useState(false);
 
+
   const dateSince = new Date(user?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
     setInput(!input);
+  };
+
+  const patchAvatar = (url: string) => {
+    const id = localStorage.getItem('userId');
+    patch(`/users/${id}`, { avatarUrl: url }).then(res => {
+      setUserInfo(res.data);
+      setUser(res.data);
+    });
   };
 
   return (
@@ -97,7 +107,6 @@ const ProfileInfo: React.FC<PropTypes> = ({
               <MoreMenu logOut={logOut} />
               <div className={classes.avatarContainer}>
                 <Badge
-                  onClick={handleClick}
                   overlap="circle"
                   anchorOrigin={{
                     vertical: 'bottom',
@@ -105,14 +114,14 @@ const ProfileInfo: React.FC<PropTypes> = ({
                   }}
                   badgeContent={(
                     <div className={classes.badge}>
-                      <CameraAltIcon />
+                      <CameraAltIcon onClick={handleClick} />
                     </div>
                   )}
                 >
                   <Avatar className={classes.avatar} src={user?.avatarUrl} />
                 </Badge>
               </div>
-              <UploadImage displayD={input} setDisplayD={setInput} setUserInfo={setUserInfo} setUser={setUser} />
+              <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
             </div>
 )
           : <Avatar className={classes.avatar} src={user?.avatarUrl} />

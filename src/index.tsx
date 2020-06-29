@@ -104,7 +104,7 @@ const App: React.FC = () => {
             setUser={setUser}
           />
         ) }
-        { page.prefix === 'feed' && <FeedPage navigate={navigate} /> }
+        { page.prefix === 'feed' && <FeedPage navigate={navigate} user={user} /> }
         { page.prefix === 'auth' && <AuthPage logIn={logIn} /> }
       </div>
       <ScrollTopArrow />

@@ -72,8 +72,16 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const handleLeft = () => handleVote('left');
   const handleRight = () => handleVote('right');
 
-  const leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
-  const rightPercentage = 100 - leftPercentage;
+  let leftPercentage;
+  let rightPercentage;
+
+  if (left.votes || right.votes) {
+    leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+    rightPercentage = 100 - leftPercentage;
+  } else {
+    leftPercentage = 0;
+    rightPercentage = 0;
+  }
 
   const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 

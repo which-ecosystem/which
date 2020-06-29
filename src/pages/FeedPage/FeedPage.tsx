@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Poll } from 'which-types';
+import { Poll, User } from 'which-types';
 
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
+import PollSubmission from './PollSubmission';
+
 
 interface PropTypes {
   navigate: (prefix: string, id: string) => void;
+  user: User | undefined;
 }
 
-const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
+const FeedPage: React.FC<PropTypes> = ({ navigate, user }) => {
   const [polls, setPolls] = useState<Poll[]>([]);
 
   useEffect(() => {
@@ -17,7 +20,18 @@ const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
     });
   }, []);
 
-  return <Feed polls={polls} navigate={navigate} />;
+  const addPoll = (poll: Poll): void => {
+    polls.unshift(poll);
+    setPolls([...polls]);
+  };
+
+
+  return (
+    <>
+      {user && <PollSubmission user={user} addPoll={addPoll} />}
+      <Feed polls={polls} navigate={navigate} />
+    </>
+  );
 };
 
 export default FeedPage;
