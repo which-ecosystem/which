@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 const App: React.FC = () => {
   const [page, setPage] = useState<Page>({ prefix: 'feed', id: '' });
   const classes = useStyles();
-  const user = { _id: '', avatarUrl: '' };
+  const { user } = useAuth();
 
   const navigate = (prefix: string, id?: string): void => {
     if (prefix === 'profile' && !id && !user) {
@@ -59,7 +59,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header navigate={navigate} userImage={user?.avatarUrl} />
+      <Header navigate={navigate} />
       <div className={classes.root}>
         { page.prefix === 'profile' && (
           <ProfilePage
@@ -76,5 +76,5 @@ const App: React.FC = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<AuthProvider> <App /> </AuthProvider>, document.getElementById('root'));
 
