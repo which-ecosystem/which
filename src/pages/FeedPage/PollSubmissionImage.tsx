@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { CardActionArea, CardMedia } from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { Contents } from './types';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 
 interface PropTypes {
   contents: Contents;
@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'inset 0 0 10px;'
   },
   clearIcon: {
-    opacity: '.4',
-    fontSize: 130
+    opacity: '.5',
+    fontSize: 100
   }
 }));
 
@@ -67,7 +67,7 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
             image === ''
               ? <CloudUploadIcon fontSize="large" color="primary" />
               : clearIconDisplay
-                ? <ClearIcon className={classes.clearIcon} color="primary" />
+                ? <CancelOutlinedIcon className={classes.clearIcon}  />
                 : null
           }
         </CardMedia>

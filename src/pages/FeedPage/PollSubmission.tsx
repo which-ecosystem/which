@@ -77,7 +77,7 @@ const PollSubmission: React.FC<PropTypes> = ({ user, polls, setPolls }) => {
             <PollSubmissionImage which="right" setContents={setContents} contents={contents} />
           </CardMedia>
         </Collapse>
-        <Button onClick={handleClick} color="primary" variant="outlined" className={classes.button}>
+        <Button onClick={handleClick} color="primary" variant={expanded ? "contained" : "outlined" } className={classes.button}>
           {
           !expanded
             ? 'Create a Poll'
