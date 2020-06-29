@@ -8,23 +8,21 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface PropTypes {
-  display: boolean;
-  isOpen: (display: boolean) => void;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
   callback: (url: string) => void;
 }
 
-const UploadImage: React.FC<PropTypes> = ({
-  display, isOpen, callback
-}) => {
+const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState('');
 
   const handleClose = () => {
-    isOpen(false);
+    setIsOpen(false);
   };
 
   const handleSubmit = () => {
     callback(url || '');
-    isOpen(false);
+    setIsOpen(false);
   };
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +31,8 @@ const UploadImage: React.FC<PropTypes> = ({
 
   return (
     <div>
-      <Dialog open={display} onClose={handleClose}>
-        <DialogTitle id="form-dialog-title">Upload an Image</DialogTitle>
+      <Dialog open={isOpen} onClose={handleClose}>
+        <DialogTitle>Upload an Image</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Unfortunetly we do not support uploading images yet. Please provide a valid URL to your image.

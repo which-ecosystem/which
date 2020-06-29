@@ -121,7 +121,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                   <Avatar className={classes.avatar} src={user?.avatarUrl} />
                 </Badge>
               </div>
-              <UploadImage display={input} isOpen={setInput} callback={patchAvatar} />
+              <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
             </div>
 )
           : <Avatar className={classes.avatar} src={user?.avatarUrl} />

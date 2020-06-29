@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import {
-  Button, Card, CardMedia, ClickAwayListener, Divider
+  Button,
+  Card,
+  ClickAwayListener,
+  Divider
 } from '@material-ui/core';
 import { User, Poll } from 'which-types';
 import PollSubmissionImage from './PollSubmissionImage';
@@ -14,27 +17,12 @@ import { Contents } from './types';
 interface PropTypes{
   user: User;
   polls: Poll[];
-  setPolls: (a:Poll[])=> void;
+  setPolls: (newPoll: Poll[])=> void;
 }
 const useStyles = makeStyles(theme => ({
   root: {
-    textAlign: 'center',
-    cursor: 'pointer'
-  },
-  card: {
-    height: 400,
-    display: 'flex'
-  },
-  images: {
     height: theme.spacing(50),
-    width: 300,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer'
-  },
-  button: {
-    width: '100%'
+    display: 'flex'
   }
 }));
 
@@ -68,21 +56,23 @@ const PollSubmission: React.FC<PropTypes> = ({ user, polls, setPolls }) => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Card className={classes.root}>
+      <Card>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <UserStrip user={user} info="" navigate={() => {}} />
           <Divider />
-          <CardMedia className={classes.card}>
+          <div className={classes.root}>
             <PollSubmissionImage which="left" setContents={setContents} contents={contents} />
             <PollSubmissionImage which="right" setContents={setContents} contents={contents} />
-          </CardMedia>
+          </div>
         </Collapse>
-        <Button onClick={handleClick} color="primary" variant={expanded ? "contained" : "outlined" } className={classes.button}>
-          {
-          !expanded
-            ? 'Create a Poll'
-            : 'Submit'
-        }
+        <Button
+          color="primary"
+          disabled={expanded && !(contents.left.url && contents.right.url)}
+          variant={expanded ? "contained" : "outlined"}
+          onClick={handleClick}
+          fullWidth
+        >
+          {expanded ? 'Submit' : 'Create a Poll' }
         </Button>
       </Card>
     </ClickAwayListener>

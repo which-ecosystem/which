@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { CardActionArea, CardMedia } from '@material-ui/core';
+import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { Contents } from './types';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
@@ -13,24 +13,29 @@ interface PropTypes {
 }
 
 const useStyles = makeStyles(theme => ({
-  images: {
-    height: theme.spacing(50),
-    width: 300,
+  root: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    boxShadow: 'inset 0 0 10px;'
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   clearIcon: {
     opacity: '.5',
-    fontSize: 100
+    fontSize: 50
+  },
+  media: {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }));
 
+
 const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents }) => {
   const classes = useStyles();
-  const [display, setDisplay] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [image, setImage] = useState('');
   const [clearIconDisplay, setClearIconDisplay] = useState(false);
 
@@ -41,9 +46,7 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
   };
 
   const handleClick = () => {
-    image === ''
-      ? setDisplay(!display)
-      : patchUrl('');
+    image ? patchUrl('') : setIsModalOpen(!isModalOpen);
   };
 
   const handleMouseEnter = () => {
@@ -54,26 +57,30 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
     setClearIconDisplay(false);
   };
 
-  return (
+
+  const Upload = (
     <>
-      <CardActionArea onClick={handleClick}>
-        <CardMedia
-          className={classes.images}
-          image={image}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {
-            image === ''
-              ? <CloudUploadIcon fontSize="large" color="primary" />
-              : clearIconDisplay
-                ? <CancelOutlinedIcon className={classes.clearIcon}  />
-                : null
-          }
-        </CardMedia>
-      </CardActionArea>
-      <UploadImage display={display} isOpen={setDisplay} callback={patchUrl} />
+      <CloudUploadIcon fontSize="large" color="primary" />
+      <Typography variant="h5"> Upload an image </Typography>
+      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={patchUrl} />
     </>
+  );
+
+  const Media = (
+    <CardMedia
+      image={image}
+      className={classes.media}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {clearIconDisplay && <CancelOutlinedIcon className={classes.clearIcon} />}
+    </CardMedia>
+  )
+
+  return (
+    <CardActionArea onClick={handleClick} className={classes.root}>
+      {image ? Media : Upload}
+    </CardActionArea>
   );
 };
 
