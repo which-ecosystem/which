@@ -38,8 +38,10 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
   const [isMediaHover, setIsMediaHover] = useState(false);
 
   const handleClick = (): void => {
-    if (url) setUrl('');
-    else setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) {
+      if (url) setUrl('');
+      else setIsModalOpen(!isModalOpen);
+    };
   };
 
   const handleMouseEnter = (): void => {
