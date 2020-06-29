@@ -4,16 +4,18 @@ import { User, Poll } from 'which-types';
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
+import { useAuth } from '../../hooks/useAuth'; 
+import { useNavigate } from '../../hooks/useNavigate'; 
 
-interface PropTypes {
-  navigate: (prefix: string, id: string) => void;
-  id: string;
-}
 
-const ProfilePage: React.FC<PropTypes> = ({ id, navigate }) => {
+const ProfilePage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
+  const { page } = useNavigate();
+  const { user } = useAuth();
+
+  const id = page?.id || user?._id;
 
   useEffect(() => {
     get(`/users/${id}`).then(response => {
@@ -41,7 +43,7 @@ const ProfilePage: React.FC<PropTypes> = ({ id, navigate }) => {
         savedPolls={polls.length}
         totalVotes={totalVotes}
       />
-      <Feed polls={[...polls]} navigate={navigate} />
+      <Feed polls={[...polls]} />
     </>
   );
 };

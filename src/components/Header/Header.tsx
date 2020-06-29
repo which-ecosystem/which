@@ -10,12 +10,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
 import SearchBar from './SearchBar';
-
-interface PropTypes {
-  navigate: (prefix: string) => void;
-}
 
 const useStyles = makeStyles({
   root: {
@@ -33,9 +30,10 @@ const useStyles = makeStyles({
   }
 });
 
-const Header: React.FC<PropTypes> = ({ navigate }) => {
+const Header: React.FC = () => {
   const classes = useStyles();
   const { user } = useAuth();
+  const { navigate } = useNavigate();
 
   const handleHome = (): void => {
     navigate('feed');
@@ -53,7 +51,7 @@ const Header: React.FC<PropTypes> = ({ navigate }) => {
         <Typography variant="h5" className={classes.logo}>
           Which
         </Typography>
-        <SearchBar navigate={navigate} />
+        <SearchBar />
         <div>
           <IconButton onClick={handleHome}>
             <HomeIcon />

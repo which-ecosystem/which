@@ -60,7 +60,7 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
     <ClickAwayListener onClickAway={handleClickAway}>
       <Card>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {user && <UserStrip user={user} info="" navigate={() => {}} />}
+          {user && <UserStrip user={user} info="" />}
           <Divider />
           <div className={classes.root}>
             <PollSubmissionImage url={contents.left.url} setUrl={setUrl('left')} />

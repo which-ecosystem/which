@@ -7,11 +7,7 @@ import PollSubmission from './PollSubmission';
 import { useAuth } from '../../hooks/useAuth';
 
 
-interface PropTypes {
-  navigate: (prefix: string, id: string) => void;
-}
-
-const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
+const FeedPage: React.FC = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
   const { isAuthenticated } = useAuth();
 
@@ -30,7 +26,7 @@ const FeedPage: React.FC<PropTypes> = ({ navigate }) => {
   return (
     <>
       {isAuthenticated() && <PollSubmission addPoll={addPoll} />}
-      <Feed polls={polls} navigate={navigate} />
+      <Feed polls={polls} />
     </>
   );
 };
