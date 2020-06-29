@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import get from '../../../node_modules/axios';
 
 interface PropTypes {
   isOpen: boolean;
@@ -15,14 +16,27 @@ interface PropTypes {
 
 const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState('');
+  const [isError, setIsError] = useState(false);
+
 
   const handleClose = () => {
     setIsOpen(false);
   };
 
   const handleSubmit = () => {
-    callback(url || '');
-    setIsOpen(false);
+    get(url).then(res => {
+      if (res.headers['content-type'] === 'image/jpeg') {
+        callback(url || '');
+        setIsOpen(false);
+        setIsError(false);
+      } else {
+        // console.warn(res); TODO: handle error if response status is ok but not an image
+        setIsError(true);
+      }
+    }).catch(() => {
+      // console.warn(err); TODO: handle error if resposne status is not ok
+      setIsError(true);
+    });
   };
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -46,6 +60,8 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
             fullWidth
             autoComplete="off"
             onChange={handleChange}
+            error={isError}
+            helperText={isError === true ? 'invalid Url!' : ''}
           />
         </DialogContent>
         <DialogActions>
