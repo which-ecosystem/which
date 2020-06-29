@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext, createContext } from 'react';
+import React, {
+  useState, useEffect, useContext, createContext
+} from 'react';
 import { User } from 'which-types';
 import { post, get } from '../requests';
 
@@ -60,16 +62,18 @@ const useProvideAuth = () => {
     }
   }, []);
 
-  return { user, setUser, login, logout, isAuthenticated };
+  return {
+    user, setUser, login, logout, isAuthenticated
+  };
 };
 
 export const AuthProvider: React.FC = ({ children }) => {
   const auth = useProvideAuth();
   const { Provider } = authContext;
-  return <Provider value={auth}>{children}</Provider>
+  return <Provider value={auth}>{children}</Provider>;
 };
 
 export const useAuth = () => {
   return useContext(authContext);
-}
+};
 

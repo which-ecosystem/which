@@ -4,8 +4,8 @@ import { User, Poll } from 'which-types';
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
-import { useAuth } from '../../hooks/useAuth'; 
-import { useNavigate } from '../../hooks/useNavigate'; 
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
 
 const ProfilePage: React.FC = () => {

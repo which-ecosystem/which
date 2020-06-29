@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 
 const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
   const classes = useStyles();
-  const { navigate } = useNavigate(); 
+  const { navigate } = useNavigate();
   const { username, avatarUrl, verified } = user;
 
   const handleNavigate = () => {

@@ -7,7 +7,7 @@ import {
   ClickAwayListener,
   Divider
 } from '@material-ui/core';
-import { User, Poll, Which } from 'which-types';
+import { Poll, Which } from 'which-types';
 import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';

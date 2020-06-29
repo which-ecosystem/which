@@ -1,5 +1,4 @@
 import React, { useState, useContext, createContext } from 'react';
-import { User } from 'which-types';
 
 export interface Page {
   prefix: string;
@@ -38,5 +37,5 @@ export const NavigationProvider: React.FC = ({ children }) => {
 
 export const useNavigate = () => {
   return useContext(context);
-}
+};
 
