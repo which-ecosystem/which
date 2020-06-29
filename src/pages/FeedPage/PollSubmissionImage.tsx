@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { CardActionArea, CardMedia } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { Contents } from './types';
-import ClearIcon from '@material-ui/icons/Clear';
 
 interface PropTypes {
   contents: Contents;
-  setContents: (a: Contents) => void;
+  setContents: (newContents: Contents) => void;
   which: 'left' | 'right';
 }
 
@@ -34,17 +34,16 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
   const [image, setImage] = useState('');
   const [clearIconDisplay, setClearIconDisplay] = useState(false);
 
+  const patchUrl = (url: string) => {
+    setImage(url);
+    contents[which] = { url } ;
+    setContents({ ...contents });
+  };
+
   const handleClick = () => {
     image === ''
       ? setDisplay(!display)
       : patchUrl('');
-
-  };
-
-  const patchUrl = (url: string) => {
-    setImage(url);
-    contents[which] = {url};
-    setContents({...contents});
   };
 
   const handleMouseEnter = () => {
@@ -57,18 +56,23 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
 
   return (
     <>
-      <CardActionArea onClick={handleClick} >
-        <CardMedia className={classes.images} image={image} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <CardActionArea onClick={handleClick}>
+        <CardMedia
+          className={classes.images}
+          image={image}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           {
             image === ''
-              ? <CloudUploadIcon fontSize='large' color='primary' />
+              ? <CloudUploadIcon fontSize="large" color="primary" />
               : clearIconDisplay
-              ?  <ClearIcon className={classes.clearIcon} color='primary'/>
-              : null
+                ? <ClearIcon className={classes.clearIcon} color="primary" />
+                : null
           }
         </CardMedia>
       </CardActionArea>
-      <UploadImage displayD={display} setDisplayD={setDisplay} callback={patchUrl} />
+      <UploadImage display={display} isOpen={setDisplay} callback={patchUrl} />
     </>
   );
 };

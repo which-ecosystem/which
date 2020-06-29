@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollSubmission: React.FC<PropTypes> = ({ user , polls, setPolls}) => {
+const PollSubmission: React.FC<PropTypes> = ({ user, polls, setPolls }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>({
@@ -56,9 +56,9 @@ const PollSubmission: React.FC<PropTypes> = ({ user , polls, setPolls}) => {
 
   const handleClick = () => {
     if (expanded) {
-      if(contents.left.url && contents.right.url ) {
-        post('/polls/', {authorId: user._id, contents}).then(res => {
-          polls.unshift({...res.data});
+      if (contents.left.url && contents.right.url) {
+        post('/polls/', { authorId: user._id, contents }).then(res => {
+          polls.unshift({ ...res.data });
           setPolls([...polls]);
         });
       }
@@ -73,13 +73,13 @@ const PollSubmission: React.FC<PropTypes> = ({ user , polls, setPolls}) => {
           <UserStrip user={user} info="" navigate={() => {}} />
           <Divider />
           <CardMedia className={classes.card}>
-            <PollSubmissionImage which="left" setContents={setContents} contents={contents}/>
-            <PollSubmissionImage which="right" setContents={setContents} contents={contents}/>
+            <PollSubmissionImage which="left" setContents={setContents} contents={contents} />
+            <PollSubmissionImage which="right" setContents={setContents} contents={contents} />
           </CardMedia>
         </Collapse>
         <Button onClick={handleClick} color="primary" variant="outlined" className={classes.button}>
           {
-          expanded === false
+          !expanded
             ? 'Create a Poll'
             : 'Submit'
         }

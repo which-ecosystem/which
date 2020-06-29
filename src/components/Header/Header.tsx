@@ -62,7 +62,7 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
           </IconButton>
           <IconButton onClick={handleProfile}>
             {
-              userImage?.match(/\.(jpeg|jpg|gif|png)$/) !== null
+              userImage?.match(/\.(jpeg|jpg|gif|png)$/)
                 ? <Avatar className={classes.avatar} src={userImage} />
                 : <AccountCircle />
             }

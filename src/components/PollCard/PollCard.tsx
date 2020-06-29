@@ -72,10 +72,13 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
   const handleLeft = () => vote('left');
   const handleRight = () => vote('right');
 
-  let leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
-  let rightPercentage = 100 - leftPercentage;
+  let leftPercentage;
+  let rightPercentage;
 
-  if(Number.isNaN(leftPercentage) && Number.isNaN(rightPercentage)){
+  if (left.votes || right.votes) {
+    leftPercentage = Math.round(100 * (left.votes / (left.votes + right.votes)));
+    rightPercentage = 100 - leftPercentage;
+  } else {
     leftPercentage = 0;
     rightPercentage = 0;
   }

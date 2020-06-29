@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,24 +8,23 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface PropTypes {
-  displayD: boolean;
-  setDisplayD: (d: boolean) => void;
-  callback: (a: string) => void;
+  display: boolean;
+  isOpen: (display: boolean) => void;
+  callback: (url: string) => void;
 }
 
 const UploadImage: React.FC<PropTypes> = ({
-  displayD, setDisplayD, callback
+  display, isOpen, callback
 }) => {
-  const urlRef = useRef<HTMLInputElement | null>(null);
   const [url, setUrl] = useState('');
 
   const handleClose = () => {
-    setDisplayD(false);
+    isOpen(false);
   };
 
-  const update = () => {
-    callback(urlRef.current?.value || '');
-    setDisplayD(false);
+  const handleSubmit = () => {
+    callback(url || '');
+    isOpen(false);
   };
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +33,7 @@ const UploadImage: React.FC<PropTypes> = ({
 
   return (
     <div>
-      <Dialog open={displayD} onClose={handleClose}>
+      <Dialog open={display} onClose={handleClose}>
         <DialogTitle id="form-dialog-title">Upload an Image</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -48,7 +47,6 @@ const UploadImage: React.FC<PropTypes> = ({
             type="text"
             fullWidth
             autoComplete="off"
-            inputRef={urlRef}
             onChange={handleChange}
           />
         </DialogContent>
@@ -56,7 +54,7 @@ const UploadImage: React.FC<PropTypes> = ({
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={update} color="primary" disabled={!url.length}>
+          <Button onClick={handleSubmit} color="primary" disabled={!url.length}>
             Submit
           </Button>
         </DialogActions>
