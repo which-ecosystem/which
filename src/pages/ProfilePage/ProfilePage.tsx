@@ -16,7 +16,7 @@ const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const id = page?.id || user?._id
+    const id = page?.id || user?._id;
     if (id) {
       get(`/users/${id}`).then(response => {
         setUserInfo(response.data);

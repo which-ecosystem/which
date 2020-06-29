@@ -24,7 +24,7 @@ const authContext = createContext<ContextType>({
 const useProvideAuth = () => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (username: string, password: string, remember = true): Promise<boolean> => {
+  const login: ContextType['login'] = (username, password, remember = true) => {
     return post('/authentication', {
       strategy: 'local',
       username,
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   return <Provider value={auth}>{children}</Provider>;
 };
 
-export const useAuth = () => {
+export const useAuth = (): ContextType => {
   return useContext(authContext);
 };
 

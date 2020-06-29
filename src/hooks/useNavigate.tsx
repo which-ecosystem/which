@@ -22,7 +22,7 @@ const context = createContext<ContextType>({
 const useProvideNavigation = () => {
   const [page, setPage] = useState<Page>(landingPage);
 
-  const navigate = (prefix: string, id?: string): void => {
+  const navigate: ContextType['navigate'] = (prefix, id?) => {
     setPage({ prefix, id });
   };
 
@@ -35,7 +35,7 @@ export const NavigationProvider: React.FC = ({ children }) => {
   return <Provider value={navigation}>{children}</Provider>;
 };
 
-export const useNavigate = () => {
+export const useNavigate = (): ContextType => {
   return useContext(context);
 };
 
