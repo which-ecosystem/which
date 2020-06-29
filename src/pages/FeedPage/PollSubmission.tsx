@@ -68,7 +68,7 @@ const PollSubmission: React.FC<PropTypes> = ({ user, polls, setPolls }) => {
         <Button
           color="primary"
           disabled={expanded && !(contents.left.url && contents.right.url)}
-          variant={expanded ? "contained" : "outlined"}
+          variant={expanded ? 'contained' : 'outlined'}
           onClick={handleClick}
           fullWidth
         >

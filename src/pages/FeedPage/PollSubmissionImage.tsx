@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
+import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import _ from 'lodash';
+
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { Contents } from './types';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 
 interface PropTypes {
   contents: Contents;
@@ -12,7 +14,7 @@ interface PropTypes {
   which: 'left' | 'right';
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -30,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center'
   }
-}));
+});
 
 
 const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents }) => {
@@ -39,21 +41,22 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
   const [image, setImage] = useState('');
   const [clearIconDisplay, setClearIconDisplay] = useState(false);
 
-  const patchUrl = (url: string) => {
+  const patchUrl = (url: string): void => {
     setImage(url);
-    contents[which] = { url } ;
-    setContents({ ...contents });
+    const newContents = _.set(contents, which, { url });
+    setContents({ ...newContents });
   };
 
-  const handleClick = () => {
-    image ? patchUrl('') : setIsModalOpen(!isModalOpen);
+  const handleClick = (): void => {
+    if (image) patchUrl('');
+    else setIsModalOpen(!isModalOpen);
   };
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (): void => {
     setClearIconDisplay(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (): void => {
     setClearIconDisplay(false);
   };
 
@@ -75,7 +78,7 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ setContents, which, contents
     >
       {clearIconDisplay && <CancelOutlinedIcon className={classes.clearIcon} />}
     </CardMedia>
-  )
+  );
 
   return (
     <CardActionArea onClick={handleClick} className={classes.root}>
