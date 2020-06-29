@@ -5,8 +5,7 @@ const baseURL = process.env.NODE_ENV === 'production'
   ? 'https://which-api.herokuapp.com'
   : 'http://localhost:3030';
 
-const headers = ['Access-Control-Allow-Origin', '*'];
-const requests = axios.create({ baseURL, headers });
+const requests = axios.create({ baseURL });
 
 requests.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
