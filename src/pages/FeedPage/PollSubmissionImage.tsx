@@ -41,7 +41,7 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
     if (!isModalOpen) {
       if (url) setUrl('');
       else setIsModalOpen(!isModalOpen);
-    };
+    }
   };
 
   const handleMouseEnter = (): void => {

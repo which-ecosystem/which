@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Poll, User } from 'which-types';
+import { Poll } from 'which-types';
 
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 import PollSubmission from './PollSubmission';
+import { useAuth } from '../../hooks/useAuth';
 
 
-interface PropTypes {
-  navigate: (prefix: string, id: string) => void;
-  user: User | undefined;
-}
-
-const FeedPage: React.FC<PropTypes> = ({ navigate, user }) => {
+const FeedPage: React.FC = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     get('/feed').then(response => {
@@ -28,8 +25,8 @@ const FeedPage: React.FC<PropTypes> = ({ navigate, user }) => {
 
   return (
     <>
-      {user && <PollSubmission user={user} addPoll={addPoll} />}
-      <Feed polls={polls} navigate={navigate} />
+      {isAuthenticated() && <PollSubmission addPoll={addPoll} />}
+      <Feed polls={polls} />
     </>
   );
 };

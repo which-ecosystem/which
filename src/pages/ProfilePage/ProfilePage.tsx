@@ -4,50 +4,44 @@ import { User, Poll } from 'which-types';
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
-interface PropTypes {
-  logOut: () => void;
-  navigate: (prefix: string, id: string) => void;
-  id: string;
-  setUser:(a:User)=>void;
-}
 
-const ProfilePage: React.FC<PropTypes> = ({
-  logOut, id, navigate, setUser
-}) => {
+const ProfilePage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
+  const { page, navigate } = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
-    get(`/users/${id}`).then(response => {
-      setUserInfo(response.data);
-    });
-  }, [id]);
-
-  useEffect(() => {
-    get(`/profiles/${id}`).then(response => {
-      setPolls(response.data);
-      setTotalVotes(response.data.reduce(
-        (total: number, current: Poll) => {
-          const { left, right } = current.contents;
-          return total + left.votes + right.votes;
-        }, 0
-      ));
-    });
-  }, [id, userInfo]);
+    const id = page?.id || user?._id;
+    if (id) {
+      get(`/users/${id}`).then(response => {
+        setUserInfo(response.data);
+      });
+      get(`/profiles/${id}`).then(response => {
+        setPolls(response.data);
+        setTotalVotes(response.data.reduce(
+          (total: number, current: Poll) => {
+            const { left, right } = current.contents;
+            return total + left.votes + right.votes;
+          }, 0
+        ));
+      });
+    } else navigate('auth');
+  }, [navigate, page, user]);
 
   return (
     <>
       <ProfileInfo
-        user={userInfo}
+        userInfo={userInfo}
         setUserInfo={setUserInfo}
-        setUser={setUser}
-        logOut={logOut}
         savedPolls={polls.length}
         totalVotes={totalVotes}
       />
-      <Feed polls={[...polls]} navigate={navigate} />
+      <Feed polls={[...polls]} />
     </>
   );
 };

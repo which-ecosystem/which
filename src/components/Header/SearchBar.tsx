@@ -12,10 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
 import { get } from '../../requests';
 import UserStrip from '../UserStrip/UserStrip';
+import { useNavigate } from '../../hooks/useNavigate';
 
-interface PropTypes {
-  navigate: (prefix: string, id: string) => void;
-}
 
 const INTERVAL = 300;
 const LIMIT = 7;
@@ -36,10 +34,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
+const SearchBar: React.FC = () => {
   const [results, setResults] = useState<User[]>([]);
   const [query, setQuery] = useState<string>('');
   const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
+  const { navigate } = useNavigate();
   const classes = useStyles();
 
   useEffect(() => {
@@ -79,7 +78,7 @@ const SearchBar: React.FC<PropTypes> = ({ navigate }) => {
           results.map((result, index) => (
             <div key={result._id}>
               <ListItem button onClick={handleNavigate(index)}>
-                <UserStrip user={result} navigate={navigate} />
+                <UserStrip user={result} />
               </ListItem>
               {(index < results.length - 1) && <Divider />}
             </div>

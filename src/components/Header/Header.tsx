@@ -9,13 +9,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
 import SearchBar from './SearchBar';
-
-interface PropTypes {
-  userImage: string | undefined;
-  navigate: (prefix: string) => void;
-}
 
 const useStyles = makeStyles({
   root: {
@@ -33,15 +30,18 @@ const useStyles = makeStyles({
   }
 });
 
-const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
+const Header: React.FC = () => {
   const classes = useStyles();
+  const { user } = useAuth();
+  const { navigate } = useNavigate();
 
   const handleHome = (): void => {
     navigate('feed');
   };
 
   const handleProfile = (): void => {
-    navigate('profile');
+    if (user) navigate('profile');
+    else navigate('auth');
   };
 
   const handleNotifications = (): void => {};
@@ -52,7 +52,7 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
         <Typography variant="h5" className={classes.logo}>
           Which
         </Typography>
-        <SearchBar navigate={navigate} />
+        <SearchBar />
         <div>
           <IconButton onClick={handleHome}>
             <HomeIcon />
@@ -62,8 +62,8 @@ const Header: React.FC<PropTypes> = ({ navigate, userImage }) => {
           </IconButton>
           <IconButton onClick={handleProfile}>
             {
-              userImage?.match(/\.(jpeg|jpg|gif|png)$/)
-                ? <Avatar className={classes.avatar} src={userImage} />
+              user?.avatarUrl?.match(/\.(jpeg|jpg|gif|png)$/)
+                ? <Avatar className={classes.avatar} src={user?.avatarUrl} />
                 : <AccountCircle />
             }
           </IconButton>

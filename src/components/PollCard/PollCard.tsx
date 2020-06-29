@@ -13,7 +13,6 @@ import { post } from '../../requests';
 
 interface PropTypes {
   initialPoll: Poll;
-  navigate: (prefix: string, id: string) => void;
 }
 
 const DATE_FORMAT = {
@@ -54,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
+const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
@@ -87,7 +86,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll, navigate }) => {
 
   return (
     <Card className={classes.root}>
-      <UserStrip user={author} info={date} navigate={navigate} />
+      <UserStrip user={author} info={date} />
       <div className={classes.imagesBlock}>
         <CardActionArea onDoubleClick={handleLeft}>
           <CardMedia

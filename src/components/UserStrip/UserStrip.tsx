@@ -1,16 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
-import {
-  Avatar,
-  CardHeader
-} from '@material-ui/core/';
+import { Avatar, CardHeader } from '@material-ui/core/';
 import { User } from 'which-types';
+import { useNavigate } from '../../hooks/useNavigate';
 
 
 interface PropTypes {
   user: User;
-  navigate: (prefix: string, id: string) => void;
   info?: string | JSX.Element
 }
 
@@ -31,13 +28,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UserStrip: React.FC<PropTypes> = ({ user, info, navigate }) => {
+const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
   const classes = useStyles();
-  const {
-    username,
-    avatarUrl,
-    verified
-  } = user;
+  const { navigate } = useNavigate();
+  const { username, avatarUrl, verified } = user;
 
   const handleNavigate = () => {
     navigate('profile', user._id);
