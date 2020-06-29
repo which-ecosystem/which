@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
 
 const useStyles = makeStyles(theme => ({
@@ -30,15 +31,16 @@ const SignUpForm: React.FC = () => {
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
+  const { navigate } = useNavigate();
 
   const onClick = () => {
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
     if (username && password) {
-      post('/users', { username, password, email }).then(() => {
-        login(username, password);
-      });
+      post('/users', { username, password, email })
+        .then(() => login(username, password))
+        .then(() => navigate('profile'));
     } else setError(true);
   };
 

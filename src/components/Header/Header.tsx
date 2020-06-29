@@ -40,7 +40,8 @@ const Header: React.FC = () => {
   };
 
   const handleProfile = (): void => {
-    navigate('profile');
+    if (user) navigate('profile');
+    else navigate('auth');
   };
 
   const handleNotifications = (): void => {};

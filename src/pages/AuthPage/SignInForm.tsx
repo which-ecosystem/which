@@ -7,6 +7,7 @@ import {
   Switch
 } from '@material-ui/core';
 import { useAuth } from '../../hooks/useAuth';
+import { useNavigate } from '../../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +33,7 @@ const SignInForm: React.FC = () => {
   const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
+  const { navigate } = useNavigate();
 
   const handleCheck = () => {
     setRemember(!remember);
@@ -42,7 +44,8 @@ const SignInForm: React.FC = () => {
     const password = passwordRef.current?.value;
     if (name && password) {
       login(name, password, remember).then(success => {
-        if (!success) setError(true);
+        if (success) navigate('profile');
+        else setError(true);
       });
     }
   };

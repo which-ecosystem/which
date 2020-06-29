@@ -33,7 +33,6 @@ const useProvideAuth = () => {
       const me = response.data.user;
       const token = response.data.accessToken;
       setUser(me);
-      // navigate('profile', me._id);
       localStorage.setItem('userId', me._id);
       localStorage.setItem('token', token);
       if (!remember) localStorage.setItem('shouldClear', 'true');
@@ -45,7 +44,6 @@ const useProvideAuth = () => {
     setUser(null);
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
-    // navigate('auth');
   };
 
   const isAuthenticated = () => Boolean(user);
