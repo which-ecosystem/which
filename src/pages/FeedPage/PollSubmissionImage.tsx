@@ -57,7 +57,6 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
     <>
       <CloudUploadIcon fontSize="large" color="primary" />
       <Typography variant="h5"> Upload an image </Typography>
-      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={setUrl} />
     </>
   );
 
@@ -73,9 +72,12 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
   );
 
   return (
-    <CardActionArea onClick={handleClick} className={classes.root}>
-      {url ? Media : Upload}
-    </CardActionArea>
+    <>
+      <CardActionArea onClick={handleClick} className={classes.root}>
+        {url ? Media : Upload}
+      </CardActionArea>
+      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={setUrl} />
+    </>
   );
 };
 
