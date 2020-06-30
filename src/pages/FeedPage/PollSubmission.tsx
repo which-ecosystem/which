@@ -13,6 +13,7 @@ import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { Contents } from './types';
 import { useAuth } from '../../hooks/useAuth';
+import {useSnackbar} from "notistack";
 
 interface PropTypes{
   addPoll: (poll: Poll) => void;
@@ -34,6 +35,7 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>(emptyContents);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { user } = useAuth();
 
   const readyToSubmit = contents.left.url && contents.right.url;
@@ -50,10 +52,17 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
     if (expanded && readyToSubmit) {
       post('/polls/', { contents }).then(response => {
         addPoll(response.data);
+        showSnackBar('Your poll has been successfully created!');
       });
       setContents({ ...emptyContents });
     }
     setExpanded(!expanded);
+  };
+
+  const showSnackBar = (message: string) => {
+    enqueueSnackbar(message, {
+      variant: 'success',
+    });
   };
 
   return (

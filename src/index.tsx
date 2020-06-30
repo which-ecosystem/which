@@ -10,6 +10,8 @@ import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 import Page from './pages/Page';
 import { AuthProvider } from './hooks/useAuth';
 import { NavigationProvider } from './hooks/useNavigate';
+import { SnackbarProvider } from 'notistack';
+
 
 
 const theme = createMuiTheme({
@@ -24,16 +26,24 @@ const theme = createMuiTheme({
 
 const App: React.FC = () => {
   return (
-    <NavigationProvider>
-      <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Header />
-          <Page />
-          <ScrollTopArrow />
-        </ThemeProvider>
-      </AuthProvider>
-    </NavigationProvider>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+    >
+      <NavigationProvider>
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Header />
+            <Page />
+            <ScrollTopArrow />
+          </ThemeProvider>
+        </AuthProvider>
+      </NavigationProvider>
+    </SnackbarProvider>
   );
 };
 
