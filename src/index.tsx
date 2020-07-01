@@ -5,14 +5,12 @@ import { CssBaseline } from '@material-ui/core';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
+import { SnackbarProvider } from 'notistack';
 import Header from './components/Header/Header';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 import Page from './pages/Page';
 import { AuthProvider } from './hooks/useAuth';
 import { NavigationProvider } from './hooks/useNavigate';
-import { SnackbarProvider } from 'notistack';
-
-
 
 const theme = createMuiTheme({
   palette: {
@@ -30,7 +28,7 @@ const App: React.FC = () => {
       maxSnack={3}
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'right',
+        horizontal: 'right'
       }}
     >
       <NavigationProvider>

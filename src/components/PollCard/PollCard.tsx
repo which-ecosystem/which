@@ -6,10 +6,10 @@ import {
   CardMedia
 } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
+import { useSnackbar } from 'notistack';
 import PercentageBar from './PercentageBar';
 import UserStrip from '../UserStrip/UserStrip';
 import { post } from '../../requests';
-import {useSnackbar} from "notistack";
 
 interface PropTypes {
   initialPoll: Poll;
@@ -57,25 +57,25 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const [poll, setPoll] = useState<Poll>(initialPoll);
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
-  const handleVote = (which: Which) => {
-    if (vote) {
-      showSnackBar('You have voted already');
-      return;
-    }
-    post('votes/', { which, pollId: poll._id }).then(response => {
-      console.log(response.data);
-      poll.contents[which].votes += 1;
-      poll.vote = response.data;
-      setPoll({ ...poll });
-    });
-  };
 
   const showSnackBar = (message: string) => {
     enqueueSnackbar(message, {
-      variant: 'warning',
+      variant: 'error'
+    });
+  };
+
+  const handleVote = (which: Which) => {
+    if (vote) {
+      showSnackBar('You have already voted');
+      return;
+    }
+    post('votes/', { which, pollId: poll._id }).then(response => {
+      poll.contents[which].votes += 1;
+      poll.vote = response.data;
+      setPoll({ ...poll });
     });
   };
 

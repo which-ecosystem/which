@@ -8,12 +8,12 @@ import {
   Divider
 } from '@material-ui/core';
 import { Poll, Which } from 'which-types';
+import { useSnackbar } from 'notistack';
 import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { Contents } from './types';
 import { useAuth } from '../../hooks/useAuth';
-import {useSnackbar} from "notistack";
 
 interface PropTypes{
   addPoll: (poll: Poll) => void;
@@ -35,7 +35,7 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>(emptyContents);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
   const readyToSubmit = contents.left.url && contents.right.url;
@@ -48,6 +48,13 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
     setExpanded(false);
   };
 
+  const showSnackBar = (message: string) => {
+    enqueueSnackbar(message, {
+      variant: 'success'
+    });
+  };
+
+
   const handleClick = () => {
     if (expanded && readyToSubmit) {
       post('/polls/', { contents }).then(response => {
@@ -57,12 +64,6 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
       setContents({ ...emptyContents });
     }
     setExpanded(!expanded);
-  };
-
-  const showSnackBar = (message: string) => {
-    enqueueSnackbar(message, {
-      variant: 'success',
-    });
   };
 
   return (
