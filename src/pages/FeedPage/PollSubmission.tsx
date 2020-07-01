@@ -48,18 +48,13 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
     setExpanded(false);
   };
 
-  const showSnackBar = (message: string) => {
-    enqueueSnackbar(message, {
-      variant: 'success'
-    });
-  };
-
-
   const handleClick = () => {
     if (expanded && readyToSubmit) {
       post('/polls/', { contents }).then(response => {
         addPoll(response.data);
-        showSnackBar('Your poll has been successfully created!');
+        enqueueSnackbar('Your poll has been successfully created!', {
+          variant: 'success'
+        });
       });
       setContents({ ...emptyContents });
     }

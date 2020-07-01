@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { SnackbarProvider } from 'notistack';
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
 import AuthPage from './AuthPage/AuthPage';
@@ -18,11 +19,19 @@ const Page: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      { page.prefix === 'profile' && <ProfilePage />}
-      { page.prefix === 'feed' && <FeedPage /> }
-      { page.prefix === 'auth' && <AuthPage /> }
-    </div>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right'
+      }}
+    >
+      <div className={classes.root}>
+        { page.prefix === 'profile' && <ProfilePage />}
+        { page.prefix === 'feed' && <FeedPage /> }
+        { page.prefix === 'auth' && <AuthPage /> }
+      </div>
+    </SnackbarProvider>
   );
 };
 

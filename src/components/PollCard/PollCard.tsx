@@ -60,16 +60,11 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const { enqueueSnackbar } = useSnackbar();
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
-
-  const showSnackBar = (message: string) => {
-    enqueueSnackbar(message, {
-      variant: 'error'
-    });
-  };
-
   const handleVote = (which: Which) => {
     if (vote) {
-      showSnackBar('You have already voted');
+      enqueueSnackbar('You have already voted', {
+        variant: 'error'
+      });
       return;
     }
     post('votes/', { which, pollId: poll._id }).then(response => {
