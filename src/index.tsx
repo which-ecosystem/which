@@ -11,7 +11,6 @@ import Page from './pages/Page';
 import { AuthProvider } from './hooks/useAuth';
 import { NavigationProvider } from './hooks/useNavigate';
 
-
 const theme = createMuiTheme({
   palette: {
     primary: {

@@ -8,6 +8,7 @@ import {
   Divider
 } from '@material-ui/core';
 import { Poll, Which } from 'which-types';
+import { useSnackbar } from 'notistack';
 import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
@@ -34,6 +35,7 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [contents, setContents] = useState<Contents>(emptyContents);
+  const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
   const readyToSubmit = contents.left.url && contents.right.url;
@@ -50,6 +52,9 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
     if (expanded && readyToSubmit) {
       post('/polls/', { contents }).then(response => {
         addPoll(response.data);
+        enqueueSnackbar('Your poll has been successfully created!', {
+          variant: 'success'
+        });
       });
       setContents({ ...emptyContents });
     }
