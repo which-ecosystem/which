@@ -10,9 +10,7 @@ import { useNavigate } from '../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: theme.spacing(75),
-    marginTop: theme.spacing(15),
-    margin: '0 auto'
+    margin: theme.spacing(15, 5, 5, 8)
   }
 }));
 
