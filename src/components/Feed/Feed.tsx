@@ -46,6 +46,8 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
                 rowRenderer={RenderItem}
                 scrollTop={scrollTop}
                 width={width}
+                containerStyle={{ pointerEvents: 'auto' }}
+                overscanRowCount={1}
               />
             </div>
           )}
