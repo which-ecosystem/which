@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     color: 'white'
   },
-  avatar: {
+  round: {
     width: theme.spacing(3),
     height: theme.spacing(3)
   }
@@ -79,7 +79,7 @@ const Header: React.FC = () => {
   const ProfileButton = (
     <IconButton onClick={handleProfile}>
       { user?.avatarUrl
-          ? <Avatar className={classes.avatar} src={user?.avatarUrl} />
+          ? <Avatar className={classes.round} src={user?.avatarUrl} />
           : <AccountCircle />
       }
     </IconButton>
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
     <AppBar position="fixed" className={classes.mobile}>
       <Toolbar className={classes.toolbar}>
         <IconButton onClick={handleHome}>
-          <Typography className={classes.logo}>W</Typography>
+          <Typography className={`${classes.logo} ${classes.round}`}>W</Typography>
         </IconButton>
         {FeedButton}
         {NotificationsButton}
