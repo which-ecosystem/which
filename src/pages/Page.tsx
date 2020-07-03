@@ -4,6 +4,8 @@ import { SnackbarProvider } from 'notistack';
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
 import AuthPage from './AuthPage/AuthPage';
+import HomePage from './HomePage/HomePage';
+import NotificationsPage from './NotificationsPage/NotificationsPage';
 import { useNavigate } from '../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
@@ -27,9 +29,11 @@ const Page: React.FC = () => {
       }}
     >
       <div className={classes.root}>
+        { page.prefix === 'home' && <HomePage />}
         { page.prefix === 'profile' && <ProfilePage />}
         { page.prefix === 'feed' && <FeedPage /> }
         { page.prefix === 'auth' && <AuthPage /> }
+        { page.prefix === 'notifications' && <NotificationsPage /> }
       </div>
     </SnackbarProvider>
   );

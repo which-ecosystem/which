@@ -22,7 +22,8 @@ const useStyles = makeStyles({
     margin: 'auto'
   },
   logo: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    cursor: 'pointer'
   },
   avatar: {
     width: 24,
@@ -36,6 +37,10 @@ const Header: React.FC = () => {
   const { navigate } = useNavigate();
 
   const handleHome = (): void => {
+    navigate('home');
+  };
+
+  const handleFeed = (): void => {
     navigate('feed');
   };
 
@@ -44,17 +49,19 @@ const Header: React.FC = () => {
     else navigate('auth');
   };
 
-  const handleNotifications = (): void => {};
+  const handleNotifications = (): void => {
+    navigate('notifications');
+  };
 
   return (
     <AppBar position="fixed">
       <Toolbar className={classes.root}>
-        <Typography variant="h5" className={classes.logo}>
+        <Typography variant="h5" className={classes.logo} onClick={handleHome}>
           Which
         </Typography>
         <SearchBar />
         <div>
-          <IconButton onClick={handleHome}>
+          <IconButton onClick={handleFeed}>
             <HomeIcon />
           </IconButton>
           <IconButton onClick={handleNotifications}>
