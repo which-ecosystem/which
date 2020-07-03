@@ -24,6 +24,7 @@ const useProvideNavigation = () => {
 
   const navigate: ContextType['navigate'] = (prefix, id?) => {
     setPage({ prefix, id });
+    window.scrollTo(0, 0);
   };
 
   return { page, setPage, navigate };
