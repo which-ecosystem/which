@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
-import { FaArrowCircleUp } from 'react-icons/fa';
-import { makeStyles } from '@material-ui/core';
-import teal from '@material-ui/core/colors/teal';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
-const useStyles = makeStyles(() => ({
-  scrollTop: {
+const useStyles = makeStyles(theme => ({
+  root: {
     position: 'fixed',
-    width: 50,
-    bottom: 50,
-    left: 50,
+    bottom: theme.spacing(10),
+    left: theme.spacing(10),
     zIndex: 1000,
     cursor: 'pointer',
-    opacity: 0.5,
+    opacity: 0.4,
     '&:hover': {
-      opacity: '1'
-    }
+      opacity: 1
+    },
+    background: theme.palette.primary.main,
+    borderRadius: '50%'
+  },
+  icon: {
+    fontSize: 80,
+    color: 'white'
   }
 }));
 
-const ScrollTopArrow:React.FC = () => {
+const ScrollTopArrow: React.FC = () => {
   const [showScroll, setShowScroll] = useState(false);
+  const theme = useTheme();
   const classes = useStyles();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const checkScrollTop = () => {
     if (!showScroll && window.pageYOffset > 400) {
@@ -37,11 +44,10 @@ const ScrollTopArrow:React.FC = () => {
   window.addEventListener('scroll', checkScrollTop);
 
   return (
-    <FaArrowCircleUp
-      className={classes.scrollTop}
-      onClick={scrollTop}
-      style={{ height: 50, display: showScroll ? 'block' : 'none', color: teal[700] }}
-    />
+    <div className={classes.root}>
+      {showScroll && !isMobile &&
+        <ArrowUpwardIcon className={classes.icon} color="primary" onClick={scrollTop} />}
+    </div>
   );
 };
 
