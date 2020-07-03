@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Typography, Divider, Grid, Button } from '@material-ui/core/';
+import { Typography, Divider, Grid, Button, Link } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+
 import { useNavigate } from '../../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
@@ -46,9 +48,36 @@ const HomePage: React.FC = () => {
           <Grid item>
             <Typography variant="h4"> About the project </Typography>
             <Divider />
-            <p>
-              Visit our <a href="https://github.com/">GitHub</a>
-            </p>
+            <Typography>
+              <p>
+                The project is written in <Link href="https://www.typescriptlang.org/">
+                  Typescript
+                </Link> and features <Link href="https://reactjs.org/">
+                  React
+                </Link>, <Link href="https://feathersjs.com/">
+                  Feathers
+                </Link>, and <Link href="https://material-ui.com/">
+                  Material-UI
+                </Link>.
+               It is currently open-source and you can visit our <Link href="https://github.com/which-ecosystem">
+                GitHub</Link> (make sure to star our repositories)!
+              </p>
+              <p>
+                We encourage any developer to check it out. Feel free to open issues and create Pull Requests!
+              </p>
+              <p>
+                All the development process is being tracked on the KanBan board (thanks GitHub).
+                You can always check it to see what is the current state of the project.
+              </p>
+              <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<TrendingUpIcon />}
+                href="https://github.com/orgs/which-ecosystem/projects/1"
+              >
+                 track our progress
+              </Button>
+            </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h4"> Leave feedback </Typography>
