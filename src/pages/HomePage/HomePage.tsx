@@ -1,36 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Divider, Grid, Button, Link } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import { Rating } from '@material-ui/lab';
+import { Feedback } from 'which-types';
 
 import { useNavigate } from '../../hooks/useNavigate';
+import { useAuth } from '../../hooks/useAuth';
+import { get } from '../../requests';
 
 const useStyles = makeStyles(theme => ({
   logo: {
-    width: theme.spacing(32),
-    height: theme.spacing(32)
+    width: theme.spacing(20),
+    height: theme.spacing(20)
   },
-  leftColumn: {
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  title: {
+  score: {
     fontWeight: 'bold'
+  },
+  signup: {
+    marginLeft: theme.spacing(2)
   }
 }));
 
 const HomePage: React.FC = () => {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const classes = useStyles();
   const { navigate } = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+
+  const rating = feedbacks.length && feedbacks.reduce(
+    (acc: number, feedback: Feedback) => acc + feedback.score,
+    0
+  ) / feedbacks.length;
+
+  useEffect(() => {
+    get('/feedback').then(response => {
+      setFeedbacks(response.data);
+    });
+  }, []);
 
   const handleLetsGo = () => {
     navigate('feed');
   };
 
+  const handleSignUp = () => {
+    navigate('auth');
+  };
+
   return (
     <Grid container spacing={4}>
-      <Grid item xs={4} className={classes.leftColumn}>
-        <img src={process.env.PUBLIC_URL + '/which-logo-512.png'} alt="logo" className={classes.logo}/>
+      <Grid item xs={4}>
+        <Grid container direction="column" spacing={1} alignItems="center">
+          <Grid item>
+              <img src={process.env.PUBLIC_URL + '/which-logo-512.png'} alt="logo" className={classes.logo}/>
+          </Grid>
+          <Grid item>
+            <Rating value={rating} readOnly size="large" />
+          </Grid>
+          <Grid item>
+            <Typography variant="h5" className={classes.score}>
+              User score: {rating.toFixed(1)}
+            </Typography>
+          </Grid>
+        </Grid>
       </Grid>
       <Grid item xs={5}>
         <Grid container direction="column" spacing={6}>
@@ -41,8 +74,17 @@ const HomePage: React.FC = () => {
               <p>Have you ever found yourself stuck between two options, not being able to choose any? This is exactly the problem we are going to solve!</p>
               <p>Share your minor everyday uncertainties with the whole world and see what others think!</p>
               <Button variant="contained" color="primary" size="large" onClick={handleLetsGo}>
-                let's go! 
+                let's go!
               </Button>
+              {!isAuthenticated() && <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                className={classes.signup}
+                onClick={handleSignUp}
+              >
+                sign up
+              </Button>}
             </Typography>
           </Grid>
           <Grid item>
@@ -78,10 +120,6 @@ const HomePage: React.FC = () => {
                  track our progress
               </Button>
             </Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h4"> Leave feedback </Typography>
-            <Divider />
           </Grid>
         </Grid>
       </Grid>
