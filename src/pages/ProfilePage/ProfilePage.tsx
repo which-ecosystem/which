@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User, Poll } from 'which-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core';
 
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
@@ -9,20 +9,12 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from '../../hooks/useNavigate';
 
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: theme.spacing(75),
-    margin: '0 auto'
-  }
-}));
-
 const ProfilePage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
   const { page, navigate } = useNavigate();
   const { user } = useAuth();
-  const classes = useStyles();
 
   useEffect(() => {
     const id = page?.id || user?._id;
@@ -44,7 +36,7 @@ const ProfilePage: React.FC = () => {
   }, [navigate, page, user]);
 
   return (
-    <div className={classes.root}>
+    <Container maxWidth="sm" disableGutters>
       <ProfileInfo
         userInfo={userInfo}
         setUserInfo={setUserInfo}
@@ -52,7 +44,7 @@ const ProfilePage: React.FC = () => {
         totalVotes={totalVotes}
       />
       <Feed polls={[...polls]} />
-    </div>
+    </Container>
   );
 };
 
