@@ -69,7 +69,7 @@ const Header: React.FC = () => {
           </IconButton>
           <IconButton onClick={handleProfile}>
             {
-              user?.avatarUrl?.match(/\.(jpeg|jpg|gif|png)$/)
+              user?.avatarUrl
                 ? <Avatar className={classes.avatar} src={user?.avatarUrl} />
                 : <AccountCircle />
             }
