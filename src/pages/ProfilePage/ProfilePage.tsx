@@ -14,9 +14,11 @@ const ProfilePage: React.FC = () => {
   const [totalVotes, setTotalVotes] = useState<number>(0);
   const { page, navigate } = useNavigate();
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const id = page?.id || user?._id;
+    setIsLoading(true);
     if (id) {
       get(`/users/${id}`).then(response => {
         setUserInfo(response.data);
@@ -29,6 +31,7 @@ const ProfilePage: React.FC = () => {
             return total + left.votes + right.votes;
           }, 0
         ));
+        setIsLoading(false);
       });
     } else navigate('auth');
   }, [navigate, page, user]);
@@ -40,6 +43,7 @@ const ProfilePage: React.FC = () => {
         setUserInfo={setUserInfo}
         savedPolls={polls.length}
         totalVotes={totalVotes}
+        loading={isLoading}
       />
       <Feed polls={[...polls]} />
     </>
