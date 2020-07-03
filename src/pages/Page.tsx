@@ -13,10 +13,10 @@ import { useNavigate } from '../hooks/useNavigate';
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(2)
+      margin: theme.spacing(2, 0, 12, 0)
     },
     [theme.breakpoints.up('md')]: {
-      margin: theme.spacing(15, 5, 5, 8)
+      margin: theme.spacing(15, 5, 8, 5)
     }
   }
 }));
