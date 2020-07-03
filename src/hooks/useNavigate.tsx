@@ -11,7 +11,7 @@ interface ContextType {
   navigate: (prefix: string, id?: string) => void;
 }
 
-const landingPage = { prefix: 'feed' };
+const landingPage = { prefix: 'home' };
 
 const context = createContext<ContextType>({
   page: landingPage,
