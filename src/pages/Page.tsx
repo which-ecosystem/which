@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
-import { isMobile } from 'react-device-detect';
 
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
@@ -13,7 +12,12 @@ import { useNavigate } from '../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: isMobile ? theme.spacing(2) : theme.spacing(15, 5, 5, 8)
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(2)
+    },
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(15, 5, 5, 8)
+    }
   }
 }));
 

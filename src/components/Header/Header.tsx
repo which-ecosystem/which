@@ -3,15 +3,16 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography, Avatar
+  Typography,
+  Avatar,
+  useMediaQuery
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from '../../hooks/useNavigate';
-import { isMobile } from 'react-device-detect';
 
 import SearchBar from './SearchBar';
 
@@ -43,6 +44,8 @@ const Header: React.FC = () => {
   const classes = useStyles();
   const { user } = useAuth();
   const { navigate } = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleHome = (): void => {
     navigate('home');

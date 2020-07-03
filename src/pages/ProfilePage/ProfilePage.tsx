@@ -36,7 +36,7 @@ const ProfilePage: React.FC = () => {
   }, [navigate, page, user]);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" disableGutters>
       <ProfileInfo
         userInfo={userInfo}
         setUserInfo={setUserInfo}
