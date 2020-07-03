@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
+import { isMobile } from 'react-device-detect';
+
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
 import AuthPage from './AuthPage/AuthPage';
@@ -8,9 +10,10 @@ import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
 import { useNavigate } from '../hooks/useNavigate';
 
+
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: theme.spacing(15, 5, 5, 8)
+    margin: isMobile ? theme.spacing(5, 2) : theme.spacing(15, 5, 5, 8)
   }
 }));
 

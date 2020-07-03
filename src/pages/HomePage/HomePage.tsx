@@ -61,7 +61,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Grid container spacing={4}>
-      <Grid item xs={4}>
+      <Grid item xs={12} md={4}>
         <Grid container direction="column" spacing={1} alignItems="center">
           <Grid item>
             <img src={`${process.env.PUBLIC_URL}/which-logo-512.png`} alt="logo" className={classes.logo} />
@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={5}>
+      <Grid item xs={12} md={5}>
         <Grid container direction="column" spacing={6}>
           <Grid item>
             <Typography variant="h4"> Which one to choose? </Typography>
