@@ -1,26 +1,51 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Poll } from 'which-types';
 import PollCard from '../PollCard/PollCard';
+import { WindowScroller, AutoSizer, List } from 'react-virtualized';
 
 interface PropTypes {
   polls: Poll[];
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    position: 'relative',
-    maxWidth: theme.spacing(75),
-    margin: '0 auto'
-  }
-}));
+interface RenderPropTypes {
+  index: number;
+  key: string;
+  style: React.CSSProperties;
+}
 
 const Feed: React.FC<PropTypes> = ({ polls }) => {
-  const classes = useStyles();
+
+  const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
+    const poll = polls[index];
+    return (
+      <div key={key} style={style}>
+        <PollCard initialPoll={poll} />
+      </div>
+    )
+  };
+
   return (
-    <div className={classes.root}>
-      {polls.map(poll => <PollCard initialPoll={poll} key={poll._id} />)}
-    </div>
+    <WindowScroller>
+      {({height, isScrolling, registerChild, onChildScroll, scrollTop}) => (
+        <AutoSizer disableHeight>
+          {({width}) => (
+            <div ref={registerChild}>
+              <List
+                autoHeight
+                height={height}
+                isScrolling={isScrolling}
+                onScroll={onChildScroll}
+                rowCount={polls.length}
+                rowHeight={600}
+                rowRenderer={RenderItem}
+                scrollTop={scrollTop}
+                width={width}
+              />
+            </div>
+          )}
+        </AutoSizer>
+      )}
+    </WindowScroller>
   );
 };
 
