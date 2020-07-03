@@ -7,9 +7,11 @@ import {
 } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
+
 import PercentageBar from './PercentageBar';
 import UserStrip from '../UserStrip/UserStrip';
 import { post } from '../../requests';
+import { useAuth } from '../../hooks/useAuth';
 
 interface PropTypes {
   initialPoll: Poll;
@@ -58,20 +60,30 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
   const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated } = useAuth();
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
   const handleVote = (which: Which) => {
-    if (vote) {
-      enqueueSnackbar('You have already voted', {
+    if (!isAuthenticated()) {
+      enqueueSnackbar('Unauthorized users can not vote in polls', {
         variant: 'error'
       });
-      return;
-    }
-    post('votes/', { which, pollId: poll._id }).then(response => {
+    } else if (vote) {
+      enqueueSnackbar('You have already voted in this poll', {
+        variant: 'error'
+      });
+    } else {
+      const newVote = ({ which, pollId: poll._id });
+      post('votes/', newVote);
       poll.contents[which].votes += 1;
-      poll.vote = response.data;
+      poll.vote = {
+        _id: '',
+        authorId: '',
+        createdAt: new Date(),
+        ...newVote
+      };
       setPoll({ ...poll });
-    });
+    }
   };
 
   const handleLeft = () => handleVote('left');

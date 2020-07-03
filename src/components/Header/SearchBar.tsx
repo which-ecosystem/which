@@ -31,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     width: '100%',
     top: theme.spacing(5)
+  },
+  listItem: {
+    padding: 0
   }
 }));
 
@@ -77,7 +80,7 @@ const SearchBar: React.FC = () => {
           {
           results.map((result, index) => (
             <div key={result._id}>
-              <ListItem button onClick={handleNavigate(index)}>
+              <ListItem button onClick={handleNavigate(index)} className={classes.listItem}>
                 <UserStrip user={result} />
               </ListItem>
               {(index < results.length - 1) && <Divider />}

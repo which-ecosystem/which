@@ -22,6 +22,7 @@ const ProfilePage: React.FC = () => {
         setUserInfo(response.data);
       });
       get(`/profiles/${id}`).then(response => {
+        setPolls([]);
         setPolls(response.data);
         setTotalVotes(response.data.reduce(
           (total: number, current: Poll) => {

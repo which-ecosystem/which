@@ -19,7 +19,8 @@ const FeedPage: React.FC = () => {
 
   const addPoll = (poll: Poll): void => {
     polls.unshift(poll);
-    setPolls([...polls]);
+    setPolls([]);
+    setPolls(polls);
   };
 
 
