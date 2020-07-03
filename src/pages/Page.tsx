@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 
 import ProfilePage from './ProfilePage/ProfilePage';
@@ -24,12 +25,14 @@ const useStyles = makeStyles(theme => ({
 const Page: React.FC = () => {
   const { page } = useNavigate();
   const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <SnackbarProvider
       maxSnack={3}
       anchorOrigin={{
-        vertical: 'bottom',
+        vertical: isMobile ? 'top' : 'bottom',
         horizontal: 'right'
       }}
     >
