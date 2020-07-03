@@ -62,16 +62,21 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
 
   const handleVote = (which: Which) => {
     if (vote) {
-      enqueueSnackbar('You have already voted', {
+      enqueueSnackbar('You have already voted in this poll', {
         variant: 'error'
       });
-      return;
-    }
-    post('votes/', { which, pollId: poll._id }).then(response => {
+    } else {
+      const newVote = ({ which, pollId: poll._id });
+      post('votes/', newVote);
       poll.contents[which].votes += 1;
-      poll.vote = response.data;
+      poll.vote = {
+        _id: '',
+        authorId: '',
+        createdAt: new Date(),
+        ...newVote
+      };
       setPoll({ ...poll });
-    });
+    }
   };
 
   const handleLeft = () => handleVote('left');
