@@ -2,11 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
+    marginTop: theme.spacing(40),
     textAlign: 'center'
   }
-});
+}));
 
 const NotificationsPage: React.FC = () => {
   const classes = useStyles();
