@@ -16,7 +16,7 @@ interface PropTypes {
   totalVotes: number;
   userInfo: User | undefined;
   setUserInfo: (userInfo: User) => void;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -83,7 +83,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const ProfileInfo: React.FC<PropTypes> = ({
-  savedPolls, totalVotes, setUserInfo, userInfo, loading
+  savedPolls, totalVotes, setUserInfo, userInfo, isLoading
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
@@ -105,7 +105,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        loading
+        isLoading
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
           : userInfo?._id === localStorage.getItem('userId')
             ? (
@@ -133,7 +133,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
             : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       }
       {
-        loading
+        isLoading
           ? <Skeleton animation="wave" variant="rect" width={100} height={20} className={classes.skeleton} />
           : (
             <Typography variant="h5" className={classes.name}>
@@ -144,19 +144,19 @@ const ProfileInfo: React.FC<PropTypes> = ({
       }
       <div className={classes.profileMenu}>
         {
-          !loading
+          isLoading
             ? (
               <>
-                <Highlight text="Polls" value={savedPolls} />
-                <Highlight text="Since" value={dateSince} />
-                <Highlight text="Total votes" value={totalVotes} />
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
               </>
             )
             : (
               <>
-                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
-                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
-                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+                <Highlight text="Polls" value={savedPolls} />
+                <Highlight text="Since" value={dateSince} />
+                <Highlight text="Total votes" value={totalVotes} />
               </>
             )
         }
