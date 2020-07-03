@@ -27,7 +27,7 @@ const ScrollTopArrow: React.FC = () => {
   const [showScroll, setShowScroll] = useState(false);
   const theme = useTheme();
   const classes = useStyles();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const checkScrollTop = () => {
     if (!showScroll && window.pageYOffset > 400) {
@@ -45,8 +45,11 @@ const ScrollTopArrow: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      {showScroll && !isMobile &&
-        <ArrowUpwardIcon className={classes.icon} color="primary" onClick={scrollTop} />}
+      {
+        showScroll
+        && !isMobile
+        && <ArrowUpwardIcon className={classes.icon} color="primary" onClick={scrollTop} />
+      }
     </div>
   );
 };

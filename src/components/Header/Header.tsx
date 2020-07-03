@@ -78,7 +78,8 @@ const Header: React.FC = () => {
 
   const ProfileButton = (
     <IconButton onClick={handleProfile}>
-      { user?.avatarUrl
+      {
+        user?.avatarUrl
           ? <Avatar className={classes.round} src={user?.avatarUrl} />
           : <AccountCircle />
       }

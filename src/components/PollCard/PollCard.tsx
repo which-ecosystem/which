@@ -27,7 +27,7 @@ const DATE_FORMAT = {
 
 const useStyles = makeStyles(theme => ({
   images: {
-    height: theme.spacing(50),
+    height: theme.spacing(50)
   },
   imagesBlock: {
     display: 'flex'
