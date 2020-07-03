@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Poll } from 'which-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { Container } from '@material-ui/core/';
 
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 import PollSubmission from './PollSubmission';
 import { useAuth } from '../../hooks/useAuth';
 
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: theme.spacing(75),
-    margin: '0 auto'
-  }
-}));
-
 const FeedPage: React.FC = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
   const { isAuthenticated } = useAuth();
-  const classes = useStyles();
 
   useEffect(() => {
     get('/feed').then(response => {
@@ -33,10 +24,10 @@ const FeedPage: React.FC = () => {
   };
 
   return (
-    <div className={classes.root}>
+    <Container maxWidth="sm" disableGutters>
       {isAuthenticated() && <PollSubmission addPoll={addPoll} />}
       <Feed polls={polls} />
-    </div>
+    </Container>
   );
 };
 

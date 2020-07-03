@@ -26,14 +26,8 @@ const DATE_FORMAT = {
 };
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    maxWidth: theme.spacing(75),
-    height: 488,
-    margin: '40px auto'
-  },
   images: {
     height: theme.spacing(50),
-    width: 300
   },
   imagesBlock: {
     display: 'flex'
@@ -103,7 +97,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
   return (
-    <Card className={classes.root}>
+    <Card>
       <UserStrip user={author} info={date} />
       <div className={classes.imagesBlock}>
         <CardActionArea onDoubleClick={handleLeft}>

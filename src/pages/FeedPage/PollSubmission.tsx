@@ -21,8 +21,11 @@ interface PropTypes{
 
 const useStyles = makeStyles(theme => ({
   root: {
+    marginBottom: theme.spacing(4)
+  },
+  images: {
     height: theme.spacing(50),
-    display: 'flex'
+    display: 'flex',
   }
 }));
 
@@ -63,11 +66,11 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Card>
+      <Card className={classes.root}>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           {user && <UserStrip user={user} info="" />}
           <Divider />
-          <div className={classes.root}>
+          <div className={classes.images}>
             <PollSubmissionImage url={contents.left.url} setUrl={setUrl('left')} />
             <PollSubmissionImage url={contents.right.url} setUrl={setUrl('right')} />
           </div>

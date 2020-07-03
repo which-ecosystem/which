@@ -13,7 +13,7 @@ import { useNavigate } from '../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: isMobile ? theme.spacing(5, 2) : theme.spacing(15, 5, 5, 8)
+    margin: isMobile ? theme.spacing(2) : theme.spacing(15, 5, 5, 8)
   }
 }));
 

@@ -28,6 +28,9 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  text: {
+    textAlign: 'center'
   }
 });
 
@@ -56,7 +59,7 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
   const Upload = (
     <>
       <CloudUploadIcon fontSize="large" color="primary" />
-      <Typography variant="h5"> Upload an image </Typography>
+      <Typography variant="h5" className={classes.text}> Upload an image </Typography>
     </>
   );
 
