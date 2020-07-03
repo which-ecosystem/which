@@ -42,7 +42,7 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
                 isScrolling={isScrolling}
                 onScroll={onChildScroll}
                 rowCount={polls.length}
-                rowHeight={600}
+                rowHeight={550}
                 rowRenderer={RenderItem}
                 scrollTop={scrollTop}
                 width={width}
