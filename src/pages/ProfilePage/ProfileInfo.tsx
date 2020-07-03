@@ -4,18 +4,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
+import Skeleton from '@material-ui/lab/Skeleton';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
-
 interface PropTypes {
   savedPolls: number;
   totalVotes: number;
   userInfo: User | undefined;
   setUserInfo: (userInfo: User) => void;
+  loading: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -72,18 +73,21 @@ const useStyles = makeStyles(theme => ({
   },
   menuText: {
     color: 'darkgray'
+  },
+  skeleton: {
+    margin: '10px auto',
+    borderRadius: 2
   }
+
 }));
 
 
 const ProfileInfo: React.FC<PropTypes> = ({
-  savedPolls, totalVotes, setUserInfo, userInfo
+  savedPolls, totalVotes, setUserInfo, userInfo, loading
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
   const { setUser } = useAuth();
-
-
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
@@ -101,39 +105,61 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        userInfo?._id === localStorage.getItem('userId')
-          ? (
-            <div>
-              <MoreMenu />
-              <div className={classes.avatarContainer}>
-                <Badge
-                  overlap="circle"
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right'
-                  }}
-                  badgeContent={(
-                    <div className={classes.badge}>
-                      <CameraAltIcon onClick={handleClick} />
-                    </div>
-                  )}
-                >
-                  <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
-                </Badge>
+        loading
+          ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
+          : userInfo?._id === localStorage.getItem('userId')
+            ? (
+              <div>
+                <MoreMenu />
+                <div className={classes.avatarContainer}>
+                  <Badge
+                    overlap="circle"
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right'
+                    }}
+                    badgeContent={(
+                      <div className={classes.badge}>
+                        <CameraAltIcon onClick={handleClick} />
+                      </div>
+                    )}
+                  >
+                    <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
+                  </Badge>
+                </div>
+                <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
               </div>
-              <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
-            </div>
-)
-          : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
+            )
+            : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       }
-      <Typography variant="h5" className={classes.name}>
-        {userInfo?.username}
-        {userInfo?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
-      </Typography>
+      {
+        loading
+          ? <Skeleton animation="wave" variant="rect" width={100} height={20} className={classes.skeleton} />
+          : (
+            <Typography variant="h5" className={classes.name}>
+              {userInfo?.username}
+              {userInfo?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
+            </Typography>
+          )
+      }
       <div className={classes.profileMenu}>
-        <Highlight text="Polls" value={savedPolls} />
-        <Highlight text="Since" value={dateSince} />
-        <Highlight text="Total votes" value={totalVotes} />
+        {
+          !loading
+            ? (
+              <>
+                <Highlight text="Polls" value={savedPolls} />
+                <Highlight text="Since" value={dateSince} />
+                <Highlight text="Total votes" value={totalVotes} />
+              </>
+            )
+            : (
+              <>
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+                <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />
+              </>
+            )
+        }
       </div>
     </div>
   );
