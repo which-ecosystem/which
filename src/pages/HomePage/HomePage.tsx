@@ -116,10 +116,10 @@ const HomePage: React.FC = () => {
               <img src={`${process.env.PUBLIC_URL}/which-logo-512.png`} alt="logo" className={classes.logo} />
             </Grid>
             <Grid item>
-              {rating!==0 && <Rating value={rating} readOnly size="large" />}
+              {rating !== 0 && <Rating value={rating} readOnly size="large" />}
             </Grid>
             <Grid item>
-              {rating!==0 && (
+              {rating !== 0 && (
                 <Typography variant="h5" className={classes.score}>
                   User score: {rating.toFixed(1)}
                 </Typography>
