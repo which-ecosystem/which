@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControlLabel,
+  Switch
+} from '@material-ui/core';
 
 interface PropTypes {
   isOpen: boolean;
@@ -15,6 +19,7 @@ interface PropTypes {
 
 const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState<string>('');
+  const [isInstagramLink, setIsInstagramLink] = useState<boolean>(false);
 
 
   const handleClose = () => {
@@ -22,12 +27,18 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   };
 
   const handleSubmit = () => {
+    const result = isInstagramLink ? `${url.slice(0, url.length - 29)}/media/?size=l` : url;
+    console.log(result)
+    callback(result || '');
     handleClose();
-    callback(url || '');
   };
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
+  };
+
+  const handleSwitch = () => {
+    setIsInstagramLink(!isInstagramLink);
   };
 
   return (
@@ -47,6 +58,10 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
             fullWidth
             autoComplete="off"
             onChange={handleChange}
+          />
+          <FormControlLabel
+            control={<Switch color="primary" onClick={handleSwitch} checked={isInstagramLink} size="small" />}
+            label="It's an Instagram link"
           />
         </DialogContent>
         <DialogActions>
