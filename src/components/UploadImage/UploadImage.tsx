@@ -6,9 +6,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  FormControlLabel,
-  Switch
+  DialogTitle
 } from '@material-ui/core';
 
 interface PropTypes {
@@ -19,25 +17,24 @@ interface PropTypes {
 
 const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState<string>('');
-  const [isInstagramLink, setIsInstagramLink] = useState<boolean>(false);
-
 
   const handleClose = () => {
     setIsOpen(false);
   };
 
   const handleSubmit = () => {
-    const result = isInstagramLink ? `${url.slice(0, url.length - 29)}/media/?size=l` : url;
+    let result = url;
+    if (url.startsWith('https://www.instagram.com/')) {
+      const lastSlashIndex = url.lastIndexOf('/');
+      const baseUrl = url.slice(0, lastSlashIndex);
+      result = `${baseUrl}/media/?size=l`;
+    }
     callback(result || '');
     handleClose();
   };
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
-  };
-
-  const handleSwitch = () => {
-    setIsInstagramLink(!isInstagramLink);
   };
 
   return (
@@ -57,10 +54,6 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
             fullWidth
             autoComplete="off"
             onChange={handleChange}
-          />
-          <FormControlLabel
-            control={<Switch color="primary" onClick={handleSwitch} checked={isInstagramLink} size="small" />}
-            label="It's an Instagram link"
           />
         </DialogContent>
         <DialogActions>
