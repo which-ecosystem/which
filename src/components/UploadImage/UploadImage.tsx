@@ -25,8 +25,8 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const handleSubmit = () => {
     let result = url;
     if (url.startsWith('https://www.instagram.com/')) {
-      const lastSlashIndex = url.lastIndexOf('/');
-      const baseUrl = url.slice(0, lastSlashIndex);
+      const appendixIndex = url.indexOf('/?utm_source=');
+      const baseUrl = url.slice(0, appendixIndex);
       result = `${baseUrl}/media/?size=l`;
     }
     callback(result || '');
