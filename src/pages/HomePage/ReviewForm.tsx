@@ -27,7 +27,7 @@ const ReviewForm: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = (): void => {
-    if (contents && score) {
+    if (score) {
       post('/feedback', { contents, score, version }).then(() => {
         enqueueSnackbar('Your feedback has been submitted!', {
           variant: 'success'

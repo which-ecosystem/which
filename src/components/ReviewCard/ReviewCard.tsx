@@ -30,12 +30,16 @@ const ReviewCard: React.FC<PropTypes> = ({ feedback }) => {
         user={feedback.author}
         info={<Rating value={feedback.score} readOnly size="small" />}
       />
-      <Divider />
-      <CardContent>
-        <Typography>
-          {feedback.contents}
-        </Typography>
-      </CardContent>
+      {feedback.contents && (
+        <>
+          <Divider />
+          <CardContent>
+            <Typography>
+              {feedback.contents}
+            </Typography>
+          </CardContent>
+        </>
+      )}
     </Card>
   );
 };
