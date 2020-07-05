@@ -4,9 +4,10 @@ import {
   Divider,
   Grid,
   Button,
-  Link
+  Link,
+  useMediaQuery
 } from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
@@ -14,6 +15,8 @@ import { Feedback } from 'which-types';
 import { useNavigate } from '../../hooks/useNavigate';
 import { useAuth } from '../../hooks/useAuth';
 import { get } from '../../requests';
+import ReviewCard from '../../components/ReviewCard/ReviewCard';
+import ReviewForm from './ReviewForm';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,6 +32,11 @@ const useStyles = makeStyles(theme => ({
   },
   signup: {
     marginLeft: theme.spacing(2)
+  },
+  reviews: {
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0, 10)
+    }
   }
 }));
 
@@ -36,7 +44,9 @@ const HomePage: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const classes = useStyles();
   const { navigate } = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const rating = feedbacks.length && feedbacks.reduce(
     (acc: number, feedback: Feedback) => acc + feedback.score,
@@ -62,6 +72,40 @@ const HomePage: React.FC = () => {
   const ReactLink = <Link href="https://reactjs.org/">React</Link>;
   const FeathersLink = <Link href="https://feathersjs.com">Feathers</Link>;
   const MUILink = <Link href="https://material-ui.com">Material-UI</Link>;
+  const EmailLink = <Link href="mailto: eug-vs@keemail.me">eug-vs@keemail.me</Link>;
+
+  const Reviews = (
+    <div className={classes.reviews}>
+      {feedbacks.map(feedback => <ReviewCard feedback={feedback} />)}
+    </div>
+  );
+
+  const FeedbackSection = feedbacks.findIndex((feedback: Feedback) => feedback.author._id === user?._id) >= 0 ? (
+    <p>
+      You have already left feedback for this version.
+      If you have more to say, please open GitHub issue or contact us directly via email: {EmailLink}.
+      Alternatively, you can just wait for another application patch to come out.
+    </p>
+  ) : (
+    <>
+      <p>
+        Here you can share your thougts about Which with us!
+        Note that you can ony leave feedback once per application version (there will be plenty of them later).
+      </p>
+      {isAuthenticated() ? <ReviewForm /> : (
+        <>
+          <p> You must be authorized to leave feedback.</p>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleSignUp}
+          >
+            sign in
+          </Button>
+        </>
+      )}
+    </>
+  );
 
   return (
     <div className={classes.root}>
@@ -72,14 +116,17 @@ const HomePage: React.FC = () => {
               <img src={`${process.env.PUBLIC_URL}/which-logo-512.png`} alt="logo" className={classes.logo} />
             </Grid>
             <Grid item>
-              <Rating value={rating} readOnly size="large" />
+              {rating && <Rating value={rating} readOnly size="large" />}
             </Grid>
             <Grid item>
-              <Typography variant="h5" className={classes.score}>
-                User score: {rating.toFixed(1)}
-              </Typography>
+              {rating && (
+                <Typography variant="h5" className={classes.score}>
+                  User score: {rating.toFixed(1)}
+                </Typography>
+              )}
             </Grid>
           </Grid>
+          {isMobile || Reviews}
         </Grid>
         <Grid item xs={12} md={5}>
           <Grid container direction="column" spacing={6}>
@@ -133,6 +180,18 @@ const HomePage: React.FC = () => {
                 </Button>
               </Typography>
             </Grid>
+            <Grid item>
+              <Typography variant="h4"> Leave feedback </Typography>
+              <Divider />
+              <Typography>
+                {FeedbackSection}
+              </Typography>
+            </Grid>
+            {isMobile && (
+              <Grid item>
+                {Reviews}
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Grid>
