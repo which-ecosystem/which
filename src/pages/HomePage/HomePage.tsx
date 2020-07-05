@@ -14,6 +14,7 @@ import { Feedback } from 'which-types';
 import { useNavigate } from '../../hooks/useNavigate';
 import { useAuth } from '../../hooks/useAuth';
 import { get } from '../../requests';
+import ReviewCard from '../../components/ReviewCard/ReviewCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,6 +30,11 @@ const useStyles = makeStyles(theme => ({
   },
   signup: {
     marginLeft: theme.spacing(2)
+  },
+  reviews: {
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0, 10)
+    }
   }
 }));
 
@@ -63,6 +69,12 @@ const HomePage: React.FC = () => {
   const FeathersLink = <Link href="https://feathersjs.com">Feathers</Link>;
   const MUILink = <Link href="https://material-ui.com">Material-UI</Link>;
 
+  const Reviews = (
+    <div className={classes.reviews}>
+      {feedbacks.map(feedback => <ReviewCard feedback={feedback} />)}
+    </div>
+  );
+
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>
@@ -80,6 +92,7 @@ const HomePage: React.FC = () => {
               </Typography>
             </Grid>
           </Grid>
+          {Reviews}
         </Grid>
         <Grid item xs={12} md={5}>
           <Grid container direction="column" spacing={6}>
