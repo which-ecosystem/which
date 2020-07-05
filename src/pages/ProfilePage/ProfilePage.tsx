@@ -16,16 +16,19 @@ const ProfilePage: React.FC = () => {
   const { page, navigate } = useNavigate();
   const { user } = useAuth();
   const [isInfoLoading, setIsInfoLoading] = useState(false);
+  const [isPollsLoading, setIsPollsLoading] = useState(false);
 
   useEffect(() => {
     const id = page?.id || user?._id;
     setIsInfoLoading(true);
+    setIsPollsLoading(true);
     if (id) {
       get(`/users/${id}`).then(response => {
         setUserInfo(response.data);
         setIsInfoLoading(false);
       });
       get(`/profiles/${id}`).then(response => {
+        setIsPollsLoading(false);
         setPolls([]);
         setPolls(response.data);
         setTotalVotes(response.data.reduce(
@@ -47,7 +50,7 @@ const ProfilePage: React.FC = () => {
         totalVotes={totalVotes}
         isLoading={isInfoLoading}
       />
-      <Feed polls={[...polls]} />
+      {isPollsLoading ? <Feed polls={[]} /> : (polls.length > 0 && <Feed polls={polls} />)}
     </Container>
   );
 };
