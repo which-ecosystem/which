@@ -28,6 +28,10 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
       const appendixIndex = url.indexOf('/?utm_source=');
       const baseUrl = url.slice(0, appendixIndex);
       result = `${baseUrl}/media/?size=l`;
+    } else if (url.startsWith('https://drive.google.com/')) {
+      const match = url.match('/d/(.*)/');
+      const fileId = match && match[1];
+      result = `https://drive.google.com/uc?export=view&id=${fileId}`;
     }
     callback(result || '');
     handleClose();
