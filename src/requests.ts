@@ -12,6 +12,14 @@ requests.interceptors.request.use(config => {
   return _.set(config, 'headers.Authorization', token);
 });
 
+requests.interceptors.response.use(response => response, error => {
+  if (error.message === 'Request failed with status code 401' && localStorage.getItem('token')) {
+    localStorage.setItem('shouldClear', 'true');
+    window.location.reload();
+  }
+  return Promise.reject(error);
+});
+
 export const {
   get, post, put, patch
 } = requests;
