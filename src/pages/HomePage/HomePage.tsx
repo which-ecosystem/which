@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
   const ReactLink = <Link href="https://reactjs.org/">React</Link>;
   const FeathersLink = <Link href="https://feathersjs.com">Feathers</Link>;
   const MUILink = <Link href="https://material-ui.com">Material-UI</Link>;
-  const EmailLink = <Link href="mailto: eug-vs@keemail.me">eug-vs@keemail.me</Link>
+  const EmailLink = <Link href="mailto: eug-vs@keemail.me">eug-vs@keemail.me</Link>;
 
   const Reviews = (
     <div className={classes.reviews}>

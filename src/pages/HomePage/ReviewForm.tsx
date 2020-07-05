@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { useSnackbar } from 'notistack';
 
 import { post } from '../../requests';
-import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from '../../hooks/useNavigate';
 
 const version = 'v1.0.0';
@@ -38,17 +37,17 @@ const ReviewForm: React.FC = () => {
     }
   };
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setContents(event.target?.value || '');
   };
 
-  const handleChangeRating = (event: any, newScore: any): void => {
-    setScore(newScore);
+  const handleChangeRating = (event: React.ChangeEvent<Record<string, unknown>>, newScore: number | null): void => {
+    setScore(newScore || 0);
   };
 
   return (
     <div className={classes.root}>
-      <Rating value={score} onChange={handleChangeRating} size="large"/>
+      <Rating value={score} onChange={handleChangeRating} size="large" />
       <TextField
         value={contents}
         onChange={handleChange}
