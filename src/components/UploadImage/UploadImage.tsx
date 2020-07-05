@@ -28,7 +28,6 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
 
   const handleSubmit = () => {
     const result = isInstagramLink ? `${url.slice(0, url.length - 29)}/media/?size=l` : url;
-    console.log(result)
     callback(result || '');
     handleClose();
   };
