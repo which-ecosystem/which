@@ -1,6 +1,6 @@
 {
   "name": "which",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://ilyayudovin.github.io/which",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
