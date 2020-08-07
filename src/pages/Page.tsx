@@ -2,14 +2,14 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
 import AuthPage from './AuthPage/AuthPage';
 import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
-import PrivateRoute from './PrivateRoute';
+import Route from './Route';
 import urls from './urls';
 
 
@@ -41,11 +41,12 @@ const Page: React.FC = () => {
       >
         <div className={classes.root}>
           <Switch>
-            <PrivateRoute exact path={urls.home} component={HomePage} />
-            <PrivateRoute exact path={urls.login} component={AuthPage} />
-            <PrivateRoute exact path={urls.registration} component={AuthPage} />
-            <PrivateRoute exact path={urls.feed} component={FeedPage} />
-            <PrivateRoute exact path={urls.notifications} component={NotificationsPage} />
+            <Route exact path={urls.home} component={HomePage} />
+            <Route exact path={urls.login} component={AuthPage} />
+            <Route exact path={urls.registration} component={AuthPage} />
+            <Route exact path={urls.feed} component={FeedPage} />
+            <Route exact path={urls.notifications} component={NotificationsPage} />
+            <Route path={urls.profile} component={ProfilePage} />
           </Switch>
         </div>
       </SnackbarProvider>
