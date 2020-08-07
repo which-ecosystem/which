@@ -6,7 +6,8 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
-import AuthPage from './AuthPage/AuthPage';
+import LoginPage from './LoginPage/LoginPage';
+import RegistrationPage from './RegistrationPage/RegistrationPage';
 import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
 import Route from './Route';
@@ -42,8 +43,8 @@ const Page: React.FC = () => {
         <div className={classes.root}>
           <Switch>
             <Route exact path={urls.home} component={HomePage} />
-            <Route exact path={urls.login} component={AuthPage} />
-            <Route exact path={urls.registration} component={AuthPage} />
+            <Route exact path={urls.login} component={LoginPage} />
+            <Route exact path={urls.registration} component={RegistrationPage} />
             <Route exact path={urls.feed} component={FeedPage} />
             <Route exact path={urls.notifications} component={NotificationsPage} />
             <Route path={urls.profile} component={ProfilePage} />

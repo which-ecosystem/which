@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUpForm: React.FC = () => {
+const RegistrationPage: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
@@ -43,6 +43,8 @@ const SignUpForm: React.FC = () => {
         .then(() => navigate('profile'));
     } else setError(true);
   };
+
+  // TODO: add login redirect
 
   return (
     <>
@@ -70,4 +72,4 @@ const SignUpForm: React.FC = () => {
   );
 };
 
-export default SignUpForm;
+export default RegistrationPage;

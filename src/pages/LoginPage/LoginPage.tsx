@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInForm: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [remember, setRemember] = useState<boolean>(true);
   const classes = useStyles();
@@ -49,6 +49,8 @@ const SignInForm: React.FC = () => {
       });
     }
   };
+
+  // TODO: Add registration redirect
 
   return (
     <>
@@ -76,5 +78,5 @@ const SignInForm: React.FC = () => {
   );
 };
 
-export default SignInForm;
+export default LoginPage;
 
