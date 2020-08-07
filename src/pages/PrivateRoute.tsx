@@ -1,15 +1,8 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import urls from './urls';
 
-const urls = {
-  home: '/',
-  login: '/login',
-  registration: '/registration',
-  profile: '/profile',
-  feed: '/feed',
-  notifications: '/notifications'
-};
 
 const PrivateRoute: React.FC<any> = ({ component: ProtectedComponent, ...rest }) => {
   const { isAuthenticated } = useAuth();

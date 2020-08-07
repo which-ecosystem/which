@@ -9,8 +9,8 @@ import FeedPage from './FeedPage/FeedPage';
 import AuthPage from './AuthPage/AuthPage';
 import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
-import { useNavigate } from '../hooks/useNavigate';
 import PrivateRoute from './PrivateRoute';
+import urls from './urls';
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,17 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const urls = {
-  home: '/',
-  login: '/login',
-  registration: '/registration',
-  profile: '/profile',
-  feed: '/feed',
-  notifications: '/notifications'
-};
-
 const Page: React.FC = () => {
-  const { page } = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
