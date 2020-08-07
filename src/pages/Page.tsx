@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
@@ -32,26 +32,24 @@ const Page: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <BrowserRouter>
-      <SnackbarProvider
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: isMobile ? 'top' : 'bottom',
-          horizontal: 'right'
-        }}
-      >
-        <div className={classes.root}>
-          <Switch>
-            <Route exact path={urls.home} component={HomePage} />
-            <Route exact path={urls.login} component={LoginPage} />
-            <Route exact path={urls.registration} component={RegistrationPage} />
-            <Route exact path={urls.feed} component={FeedPage} />
-            <Route exact path={urls.notifications} component={NotificationsPage} />
-            <Route path={urls.profile} component={ProfilePage} />
-          </Switch>
-        </div>
-      </SnackbarProvider>
-    </BrowserRouter>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: isMobile ? 'top' : 'bottom',
+        horizontal: 'right'
+      }}
+    >
+      <div className={classes.root}>
+        <Switch>
+          <Route exact path={urls.home} component={HomePage} />
+          <Route exact path={urls.login} component={LoginPage} />
+          <Route exact path={urls.registration} component={RegistrationPage} />
+          <Route exact path={urls.feed} component={FeedPage} />
+          <Route exact path={urls.notifications} component={NotificationsPage} />
+          <Route path={urls.profile()} component={ProfilePage} />
+        </Switch>
+      </div>
+    </SnackbarProvider>
   );
 };
 

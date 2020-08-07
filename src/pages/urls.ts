@@ -2,7 +2,7 @@ export default {
   home: '/',
   login: '/login',
   registration: '/registration',
-  profile: '/profile',
+  profile: (username: string = '') => `/profile/${username.toLowerCase()}`,
   feed: '/feed',
   notifications: '/notifications'
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -11,10 +12,11 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import HomeIcon from '@material-ui/icons/Home';
-import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
+import { useAuth } from '../../hooks/useAuth';
 import SearchBar from './SearchBar';
+import urls from '../../pages/urls';
+
 
 const useStyles = makeStyles(theme => ({
   mobile: {
@@ -40,28 +42,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const Header: React.FC = () => {
   const classes = useStyles();
   const { user } = useAuth();
-  const { navigate } = useNavigate();
   const theme = useTheme();
+  const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleHome = (): void => {
-    navigate('home');
+    history.push(urls.home);
   };
 
   const handleFeed = (): void => {
-    navigate('feed');
+    history.push(urls.feed)
   };
 
   const handleProfile = (): void => {
-    if (user) navigate('profile');
-    else navigate('auth');
+    if (user) history.push(urls.profile(user.username));
+    else history.push(urls.login);
   };
 
   const handleNotifications = (): void => {
-    navigate('notifications');
+    history.push(urls.notifications);
   };
 
   const FeedButton = (

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
+import { BrowserRouter } from 'react-router-dom';
 import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
@@ -23,7 +24,7 @@ const theme = createMuiTheme({
 
 const App: React.FC = () => {
   return (
-    <NavigationProvider>
+    <BrowserRouter>
       <AuthProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -32,7 +33,7 @@ const App: React.FC = () => {
           <ScrollTopArrow />
         </ThemeProvider>
       </AuthProvider>
-    </NavigationProvider>
+    </BrowserRouter>
   );
 };
 
