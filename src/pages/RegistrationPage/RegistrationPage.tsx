@@ -80,7 +80,7 @@ const RegistrationPage: React.FC = () => {
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
       <div className={classes.formTransfer}>
-        <div>{'Already have an account?'}</div>
+        <div>Already have an account?</div>
         <span
           onClick={handleLogin}
           className={classes.transferButton}
