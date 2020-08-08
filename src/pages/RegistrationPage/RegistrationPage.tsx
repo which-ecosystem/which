@@ -43,7 +43,7 @@ const RegistrationPage: React.FC = () => {
   const history = useHistory();
 
   const handleSubmit = () => {
-    const username = usernameRef.current?.value;
+    const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
     if (username && password) {

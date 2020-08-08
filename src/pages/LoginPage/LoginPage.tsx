@@ -49,11 +49,11 @@ const LoginPage: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const name = nameRef.current?.value;
+    const name = nameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     if (name && password) {
       login(name, password, remember).then(success => {
-        if (success) history.push(`/profile/${login}`);
+        if (success) history.push(`/profile/${name}`);
         else setError(true);
       });
     }
