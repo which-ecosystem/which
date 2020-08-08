@@ -1,9 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import { Avatar, CardHeader } from '@material-ui/core/';
 import { User } from 'which-types';
-import { useNavigate } from '../../hooks/useNavigate';
 
 
 interface PropTypes {
@@ -30,11 +30,11 @@ const useStyles = makeStyles(theme => ({
 
 const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
   const classes = useStyles();
-  const { navigate } = useNavigate();
+  const history = useHistory();
   const { username, avatarUrl, verified } = user;
 
   const handleNavigate = () => {
-    navigate('profile', user._id);
+    history.push(`/profile/${username}`);
   };
 
   const avatar = (

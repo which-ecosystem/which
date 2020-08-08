@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { useSnackbar } from 'notistack';
 
 import { post } from '../../requests';
-import { useNavigate } from '../../hooks/useNavigate';
 
 const version = 'v1.0.0';
 
@@ -23,7 +23,7 @@ const ReviewForm: React.FC = () => {
   const [contents, setContents] = useState<string>('');
   const [score, setScore] = useState<number>(0);
   const classes = useStyles();
-  const { navigate } = useNavigate();
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = (): void => {
@@ -32,7 +32,7 @@ const ReviewForm: React.FC = () => {
         enqueueSnackbar('Your feedback has been submitted!', {
           variant: 'success'
         });
-        navigate('feed');
+        history.push('/feed');
       });
     }
   };

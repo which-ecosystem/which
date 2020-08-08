@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import {
   InputBase,
@@ -10,10 +11,9 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
+
 import { get } from '../../requests';
 import UserStrip from '../UserStrip/UserStrip';
-import { useNavigate } from '../../hooks/useNavigate';
-
 
 const INTERVAL = 300;
 const LIMIT = 7;
@@ -41,7 +41,7 @@ const SearchBar: React.FC = () => {
   const [results, setResults] = useState<User[]>([]);
   const [query, setQuery] = useState<string>('');
   const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
-  const { navigate } = useNavigate();
+  const history = useHistory();
   const classes = useStyles();
 
   useEffect(() => {
@@ -69,7 +69,8 @@ const SearchBar: React.FC = () => {
   };
 
   const handleNavigate = (index: number) => () => {
-    navigate('profile', results[index]._id);
+    const { username } = results[index];
+    history.push(`/profile/${username}`);
     handleClose();
   };
 

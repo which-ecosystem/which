@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,27 +21,40 @@ const useStyles = makeStyles(theme => ({
   formHeader: {
     textAlign: 'center',
     fontSize: 25
+  },
+  formTransfer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  transferButton: {
+    marginLeft: 10,
+    color: 'green',
+    cursor: 'pointer'
   }
 }));
 
-const SignUpForm: React.FC = () => {
+const RegistrationPage: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
-  const { navigate } = useNavigate();
+  const history = useHistory();
 
-  const onClick = () => {
-    const username = usernameRef.current?.value;
+  const handleSubmit = () => {
+    const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
     if (username && password) {
       post('/users', { username, password, email })
         .then(() => login(username, password))
-        .then(() => navigate('profile'));
+        .then(() => history.push(`/profile/${username}`));
     } else setError(true);
+  };
+
+  const handleLogin = () => {
+    history.push('/login');
   };
 
   return (
@@ -64,10 +77,20 @@ const SignUpForm: React.FC = () => {
           error={error}
           helperText={error && 'This field is required!'}
         />
-        <Button variant="contained" onClick={onClick}>submit</Button>
+        <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
+      <div className={classes.formTransfer}>
+        <div>Already have an account?</div>
+        <span
+          onClick={handleLogin}
+          className={classes.transferButton}
+          role="presentation"
+        >
+          Log in
+        </span>
+      </div>
     </>
   );
 };
 
-export default SignUpForm;
+export default RegistrationPage;

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -7,7 +8,6 @@ import {
   Switch
 } from '@material-ui/core';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,31 +23,44 @@ const useStyles = makeStyles(theme => ({
   formHeader: {
     textAlign: 'center',
     fontSize: 25
+  },
+  formTransfer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  transferButton: {
+    marginLeft: 10,
+    color: 'green',
+    cursor: 'pointer'
   }
 }));
 
-const SignInForm: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [remember, setRemember] = useState<boolean>(true);
   const classes = useStyles();
   const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
-  const { navigate } = useNavigate();
+  const history = useHistory();
 
   const handleCheck = () => {
     setRemember(!remember);
   };
 
   const handleSubmit = async () => {
-    const name = nameRef.current?.value;
+    const name = nameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     if (name && password) {
       login(name, password, remember).then(success => {
-        if (success) navigate('profile');
+        if (success) history.push(`/profile/${name}`);
         else setError(true);
       });
     }
+  };
+
+  const handleRegistration = () => {
+    history.push('/registration');
   };
 
   return (
@@ -72,9 +85,19 @@ const SignInForm: React.FC = () => {
         />
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
+      <div className={classes.formTransfer}>
+        <div>{'Don\'t have an account?'}</div>
+        <span
+          onClick={handleRegistration}
+          className={classes.transferButton}
+          role="presentation"
+        >
+          Sign up
+        </span>
+      </div>
     </>
   );
 };
 
-export default SignInForm;
+export default LoginPage;
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Typography,
   Divider,
@@ -12,7 +13,6 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
 
-import { useNavigate } from '../../hooks/useNavigate';
 import { useAuth } from '../../hooks/useAuth';
 import { get } from '../../requests';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 const HomePage: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const classes = useStyles();
-  const { navigate } = useNavigate();
+  const history = useHistory();
   const { isAuthenticated, user } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -60,11 +60,11 @@ const HomePage: React.FC = () => {
   }, []);
 
   const handleLetsGo = () => {
-    navigate('feed');
+    history.push('/feed');
   };
 
   const handleSignUp = () => {
-    navigate('auth');
+    history.push('/registration');
   };
 
   const GithubLink = <Link href="https://github.com/which-ecosystem">GitHub</Link>;

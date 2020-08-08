@@ -1,11 +1,11 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 const ITEM_HEIGHT = 48;
 
@@ -21,7 +21,7 @@ const MoreMenu: React.FC = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const { logout } = useAuth();
-  const { navigate } = useNavigate();
+  const history = useHistory();
 
   const open = Boolean(anchorEl);
 
@@ -31,7 +31,7 @@ const MoreMenu: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('auth');
+    history.push('/login');
   };
 
   const handleClose = () => {

@@ -2,13 +2,14 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import { Switch, Route } from 'react-router-dom';
 
 import ProfilePage from './ProfilePage/ProfilePage';
 import FeedPage from './FeedPage/FeedPage';
-import AuthPage from './AuthPage/AuthPage';
+import LoginPage from './LoginPage/LoginPage';
+import RegistrationPage from './RegistrationPage/RegistrationPage';
 import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
-import { useNavigate } from '../hooks/useNavigate';
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const Page: React.FC = () => {
-  const { page } = useNavigate();
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -37,11 +38,14 @@ const Page: React.FC = () => {
       }}
     >
       <div className={classes.root}>
-        { page.prefix === 'home' && <HomePage />}
-        { page.prefix === 'profile' && <ProfilePage />}
-        { page.prefix === 'feed' && <FeedPage /> }
-        { page.prefix === 'auth' && <AuthPage /> }
-        { page.prefix === 'notifications' && <NotificationsPage /> }
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/registration" component={RegistrationPage} />
+          <Route exact path="/feed" component={FeedPage} />
+          <Route exact path="/notifications" component={NotificationsPage} />
+          <Route path="/profile/:username" component={ProfilePage} />
+        </Switch>
       </div>
     </SnackbarProvider>
   );
