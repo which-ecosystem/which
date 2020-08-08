@@ -11,7 +11,6 @@ import RegistrationPage from './RegistrationPage/RegistrationPage';
 import HomePage from './HomePage/HomePage';
 import NotificationsPage from './NotificationsPage/NotificationsPage';
 import Route from './Route';
-import urls from './urls';
 
 
 const useStyles = makeStyles(theme => ({
@@ -41,12 +40,12 @@ const Page: React.FC = () => {
     >
       <div className={classes.root}>
         <Switch>
-          <Route exact path={urls.home} component={HomePage} />
-          <Route exact path={urls.login} component={LoginPage} />
-          <Route exact path={urls.registration} component={RegistrationPage} />
-          <Route exact path={urls.feed} component={FeedPage} />
-          <Route exact path={urls.notifications} component={NotificationsPage} />
-          <Route path={urls.profile(':username')} component={ProfilePage} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/registration" component={RegistrationPage} />
+          <Route exact path="/feed" component={FeedPage} />
+          <Route exact path="/notifications" component={NotificationsPage} />
+          <Route path="/profile/:username" component={ProfilePage} />
         </Switch>
       </div>
     </SnackbarProvider>

@@ -14,8 +14,6 @@ import { User } from 'which-types';
 
 import { get } from '../../requests';
 import UserStrip from '../UserStrip/UserStrip';
-import urls from '../../pages/urls';
-
 
 const INTERVAL = 300;
 const LIMIT = 7;
@@ -72,7 +70,7 @@ const SearchBar: React.FC = () => {
 
   const handleNavigate = (index: number) => () => {
     const { username } = results[index];
-    history.push(urls.profile(username));
+    history.push(`/profile/${username}`);
     handleClose();
   };
 

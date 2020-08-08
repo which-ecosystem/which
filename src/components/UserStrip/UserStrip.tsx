@@ -5,7 +5,6 @@ import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import { Avatar, CardHeader } from '@material-ui/core/';
 import { User } from 'which-types';
 
-import urls from '../../pages/urls';
 
 interface PropTypes {
   user: User;
@@ -35,7 +34,7 @@ const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
   const { username, avatarUrl, verified } = user;
 
   const handleNavigate = () => {
-    history.push(urls.profile(user.username));
+    history.push(`/profile/${username}`);
   };
 
   const avatar = (

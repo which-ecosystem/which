@@ -15,7 +15,6 @@ import HomeIcon from '@material-ui/icons/Home';
 
 import { useAuth } from '../../hooks/useAuth';
 import SearchBar from './SearchBar';
-import urls from '../../pages/urls';
 
 
 const useStyles = makeStyles(theme => ({
@@ -51,20 +50,20 @@ const Header: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleHome = (): void => {
-    history.push(urls.home);
+    history.push('/');
   };
 
   const handleFeed = (): void => {
-    history.push(urls.feed)
+    history.push('/feed')
   };
 
   const handleProfile = (): void => {
-    if (user) history.push(urls.profile(user.username));
-    else history.push(urls.login);
+    if (user) history.push(`/profile/${user.username}`);
+    else history.push('/login');
   };
 
   const handleNotifications = (): void => {
-    history.push(urls.notifications);
+    history.push('/notifications');
   };
 
   const FeedButton = (
