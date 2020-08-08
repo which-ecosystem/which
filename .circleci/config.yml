@@ -41,7 +41,7 @@ jobs:
 
       - add_ssh_keys:
           fingerprints:
-            - "53:07:6e:12:ca:13:d5:33:53:17:b2:67:5f:c9:f4:3f"
+            - "83:7c:ed:5d:c2:d5:6a:bb:25:b8:46:6d:7a:9c:c8:84"
 
       - run:
           name: Configure github user
