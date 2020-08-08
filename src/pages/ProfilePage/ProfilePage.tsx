@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { User, Poll } from 'which-types';
 import { Container } from '@material-ui/core';
 
@@ -6,28 +7,42 @@ import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 
 const ProfilePage: React.FC = () => {
   const [userInfo, setUserInfo] = useState<User>();
   const [polls, setPolls] = useState<Poll[]>([]);
   const [totalVotes, setTotalVotes] = useState<number>(0);
-  const { page, navigate } = useNavigate();
-  const { user } = useAuth();
   const [isInfoLoading, setIsInfoLoading] = useState(false);
   const [isPollsLoading, setIsPollsLoading] = useState(false);
+  const history = useHistory();
+  const { username } = useParams();
+  const { user } = useAuth();
 
   useEffect(() => {
-    const id = page?.id || user?._id;
     setIsInfoLoading(true);
-    setIsPollsLoading(true);
-    if (id) {
-      get(`/users/${id}`).then(response => {
-        setUserInfo(response.data);
+
+    const redirect = () => {
+      if (user) history.push(`/profile/${user.username}`);
+      else history.push('/login');
+    };
+
+    if (username) {
+      get(`/users?username=${username}`).then(response => {
+        if (!response.data.length) return redirect(); // TODO: handle this case
+        setUserInfo(response.data[0]);
         setIsInfoLoading(false);
-      });
-      get(`/profiles/${id}`).then(response => {
+      }).catch(() => redirect());
+    } else redirect()
+
+  }, [username, user, history]);
+
+
+  useEffect(() => {
+    if (userInfo?._id) {
+      setIsPollsLoading(true);
+
+      get(`/profiles/${userInfo._id}`).then(response => {
         setIsPollsLoading(false);
         setPolls([]);
         setPolls(response.data);
@@ -38,8 +53,8 @@ const ProfilePage: React.FC = () => {
           }, 0
         ));
       });
-    } else navigate('auth');
-  }, [navigate, page, user]);
+    }
+  }, [userInfo])
 
   return (
     <Container maxWidth="sm" disableGutters>

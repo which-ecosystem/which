@@ -46,7 +46,7 @@ const Page: React.FC = () => {
           <Route exact path={urls.registration} component={RegistrationPage} />
           <Route exact path={urls.feed} component={FeedPage} />
           <Route exact path={urls.notifications} component={NotificationsPage} />
-          <Route path={urls.profile()} component={ProfilePage} />
+          <Route path={urls.profile(':username')} component={ProfilePage} />
         </Switch>
       </div>
     </SnackbarProvider>
