@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +31,7 @@ const RegistrationPage: React.FC = () => {
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
-  const { navigate } = useNavigate();
+  const history = useHistory();
 
   const onClick = () => {
     const username = usernameRef.current?.value;
@@ -40,7 +40,7 @@ const RegistrationPage: React.FC = () => {
     if (username && password) {
       post('/users', { username, password, email })
         .then(() => login(username, password))
-        .then(() => navigate('profile'));
+        .then(() => history.push(`/profile/${username}`));
     } else setError(true);
   };
 

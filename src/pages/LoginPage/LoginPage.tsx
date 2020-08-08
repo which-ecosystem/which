@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -7,7 +8,6 @@ import {
   Switch
 } from '@material-ui/core';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from '../../hooks/useNavigate';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
   const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
-  const { navigate } = useNavigate();
+  const history = useHistory();
 
   const handleCheck = () => {
     setRemember(!remember);
@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
     const password = passwordRef.current?.value;
     if (name && password) {
       login(name, password, remember).then(success => {
-        if (success) navigate('profile');
+        if (success) history.push(`/profile/${login}`);
         else setError(true);
       });
     }
