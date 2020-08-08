@@ -21,6 +21,15 @@ const useStyles = makeStyles(theme => ({
   formHeader: {
     textAlign: 'center',
     fontSize: 25
+  },
+  formTransfer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  transferButton: {
+    marginLeft: 10,
+    color: 'green',
+    cursor: 'pointer'
   }
 }));
 
@@ -33,7 +42,7 @@ const RegistrationPage: React.FC = () => {
   const { login } = useAuth();
   const history = useHistory();
 
-  const onClick = () => {
+  const handleSubmit = () => {
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
@@ -44,7 +53,9 @@ const RegistrationPage: React.FC = () => {
     } else setError(true);
   };
 
-  // TODO: add login redirect
+  const handleLogin = () => {
+    history.push('/login');
+  };
 
   return (
     <>
@@ -66,8 +77,18 @@ const RegistrationPage: React.FC = () => {
           error={error}
           helperText={error && 'This field is required!'}
         />
-        <Button variant="contained" onClick={onClick}>submit</Button>
+        <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
+      <div className={classes.formTransfer}>
+        <div>{'Already have an account?'}</div>
+        <span
+          onClick={handleLogin}
+          className={classes.transferButton}
+          role="presentation"
+        >
+          Log in
+        </span>
+      </div>
     </>
   );
 };

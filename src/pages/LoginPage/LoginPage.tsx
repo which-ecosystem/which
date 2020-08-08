@@ -23,6 +23,15 @@ const useStyles = makeStyles(theme => ({
   formHeader: {
     textAlign: 'center',
     fontSize: 25
+  },
+  formTransfer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  transferButton: {
+    marginLeft: 10,
+    color: 'green',
+    cursor: 'pointer'
   }
 }));
 
@@ -50,7 +59,9 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // TODO: Add registration redirect
+  const handleRegistration = () => {
+    history.push('/registration');
+  };
 
   return (
     <>
@@ -74,6 +85,16 @@ const LoginPage: React.FC = () => {
         />
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
+      <div className={classes.formTransfer}>
+        <div>{'Don\'t have an account?'}</div>
+        <span
+          onClick={handleRegistration}
+          className={classes.transferButton}
+          role="presentation"
+        >
+          Sign up
+        </span>
+      </div>
     </>
   );
 };
