@@ -54,7 +54,7 @@ const Header: React.FC = () => {
   };
 
   const handleFeed = (): void => {
-    history.push('/feed')
+    history.push('/feed');
   };
 
   const handleProfile = (): void => {

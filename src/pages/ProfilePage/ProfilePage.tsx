@@ -29,12 +29,11 @@ const ProfilePage: React.FC = () => {
 
     if (username) {
       get(`/users?username=${username}`).then(response => {
-        if (!response.data.length) return redirect(); // TODO: handle this case
+        if (!response.data.length) redirect(); // TODO: handle this case
         setUserInfo(response.data[0]);
         setIsInfoLoading(false);
       }).catch(() => redirect());
-    } else redirect()
-
+    } else redirect();
   }, [username, user, history]);
 
 
@@ -54,7 +53,7 @@ const ProfilePage: React.FC = () => {
         ));
       });
     }
-  }, [userInfo])
+  }, [userInfo]);
 
   return (
     <Container maxWidth="sm" disableGutters>
