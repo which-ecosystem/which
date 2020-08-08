@@ -7,6 +7,7 @@ import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
 import { get } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
+import urls from '../urls';
 
 
 const ProfilePage: React.FC = () => {
@@ -23,8 +24,8 @@ const ProfilePage: React.FC = () => {
     setIsInfoLoading(true);
 
     const redirect = () => {
-      if (user) history.push(`/profile/${user.username}`);
-      else history.push('/login');
+      if (user) history.push(urls.profile(user.username));
+      else history.push(urls.login);
     };
 
     if (username) {
