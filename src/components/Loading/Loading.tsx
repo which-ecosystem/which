@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Loading: React.FC = () => {
+const Loading: React.FC = React.memo(() => {
   const classes = useStyles();
 
   return (
@@ -18,7 +18,7 @@ const Loading: React.FC = () => {
       <CircularProgress color="primary" style={{ margin: '0 auto' }} />
     </div>
   );
-};
+});
 
 export default Loading;
 
