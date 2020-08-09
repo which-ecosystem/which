@@ -8,7 +8,7 @@ import 'typeface-roboto';
 
 import Header from './components/Header/Header';
 import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
-import Page from './pages/Page';
+import Page from './containers/Page/Page';
 import { AuthProvider } from './hooks/useAuth';
 
 
