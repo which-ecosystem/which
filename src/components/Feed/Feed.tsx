@@ -2,7 +2,7 @@ import React from 'react';
 import { Poll } from 'which-types';
 import { WindowScroller, AutoSizer, List } from 'react-virtualized';
 import PollCard from '../PollCard/PollCard';
-import Loading from '../Loading/Loading';
+
 
 interface PropTypes {
   polls: Poll[];
@@ -26,7 +26,7 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
     );
   };
 
-  const list = (
+  return (
     <WindowScroller>
       {({
         height,
@@ -57,8 +57,6 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
       )}
     </WindowScroller>
   );
-
-  return polls.length ? list : <Loading />;
 };
 
 export default Feed;
