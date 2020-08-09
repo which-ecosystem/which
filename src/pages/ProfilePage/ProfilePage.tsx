@@ -15,11 +15,7 @@ const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
   const { data: userInfo, mutate: setUserInfo } = useUser(username);
-  const { data: polls, mutate: fetchPolls } = useProfile(userInfo?._id);
-
-  useEffect(() => {
-    fetchPolls();
-  }, [userInfo, fetchPolls])
+  const { data: polls } = useProfile(userInfo?._id);
 
   useEffect(() => {
     if (!username) {

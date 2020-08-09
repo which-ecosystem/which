@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Poll } from 'which-types';
 import { Container } from '@material-ui/core/';
 
 import Feed from '../../components/Feed/Feed';
-import { get } from '../../requests';
 import PollSubmission from './PollSubmission';
 import { useAuth } from '../../hooks/useAuth';
+import { useFeed } from '../../hooks/APIClient';
 
 const FeedPage: React.FC = () => {
-  const [polls, setPolls] = useState<Poll[]>([]);
+  const { data, mutate } = useFeed();
   const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    get('/feed').then(response => {
-      setPolls(response.data);
-    });
-  }, []);
-
   const addPoll = (poll: Poll): void => {
-    polls.unshift(poll);
-    setPolls([]);
-    setPolls(polls);
+    mutate([poll, ...data], true);
   };
 
   return (
     <Container maxWidth="sm" disableGutters>
       {isAuthenticated() && <PollSubmission addPoll={addPoll} />}
-      <Feed polls={polls} />
+      <Feed polls={data} />
     </Container>
   );
 };

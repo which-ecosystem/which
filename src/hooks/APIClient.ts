@@ -4,6 +4,10 @@ import { get } from '../requests';
 
 const fetcher = (endpoint: string) => get(endpoint).then(response => response.data);
 
+const arrayOptions = {
+  initialData: [],
+  revalidateOnMount: true
+};
 
 export const useUser = (username: string) => {
   return useSWR(
@@ -13,5 +17,9 @@ export const useUser = (username: string) => {
 };
 
 export const useProfile = (id: string) => {
-  return useSWR(id && `/profiles/${id}`, fetcher, { initialData: [] });
+  return useSWR(id && `/profiles/${id}`, fetcher, arrayOptions);
+};
+
+export const useFeed = () => {
+  return useSWR(`/feed`, fetcher, arrayOptions);
 };
