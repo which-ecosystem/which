@@ -20,7 +20,8 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
     return (
-      <div key={key} style={style}>
+      // To re-render on list resize, add this info to key
+      <div key={key + polls.length} style={style}> 
         <PollCard initialPoll={poll} />
       </div>
     );
