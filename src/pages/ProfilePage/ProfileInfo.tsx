@@ -16,7 +16,6 @@ interface PropTypes {
   totalVotes: number;
   userInfo: User | undefined;
   setUserInfo: (userInfo: User) => void;
-  isLoading: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -83,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const ProfileInfo: React.FC<PropTypes> = ({
-  savedPolls, totalVotes, setUserInfo, userInfo, isLoading
+  savedPolls, totalVotes, setUserInfo, userInfo
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
@@ -105,7 +104,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        isLoading
+        !userInfo
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
           : userInfo?._id === localStorage.getItem('userId')
             ? (
@@ -133,7 +132,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
             : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       }
       {
-        isLoading
+        !userInfo
           ? <Skeleton animation="wave" variant="rect" width={100} height={20} className={classes.skeleton} />
           : (
             <Typography variant="h5" className={classes.name}>
@@ -144,7 +143,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
       }
       <div className={classes.profileMenu}>
         {
-          isLoading
+          !userInfo
             ? (
               <>
                 <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />

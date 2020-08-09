@@ -1,59 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { User, Poll } from 'which-types';
+import { Poll } from 'which-types';
 import { Container } from '@material-ui/core';
 
 import ProfileInfo from './ProfileInfo';
 import Feed from '../../components/Feed/Feed';
-import { get } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
+import { useUser, useProfile } from '../../hooks/APIClient';
 
 
 const ProfilePage: React.FC = () => {
-  const [userInfo, setUserInfo] = useState<User>();
-  const [polls, setPolls] = useState<Poll[]>([]);
-  const [totalVotes, setTotalVotes] = useState<number>(0);
-  const [isInfoLoading, setIsInfoLoading] = useState(false);
-  const [isPollsLoading, setIsPollsLoading] = useState(false);
   const history = useHistory();
   const { username } = useParams();
   const { user } = useAuth();
 
-  useEffect(() => {
-    setIsInfoLoading(true);
+  const { data: userInfo, mutate: setUserInfo } = useUser(username);
+  const { data: polls, mutate: fetchPolls } = useProfile(userInfo?._id);
 
-    const redirect = () => {
+  useEffect(() => {
+    fetchPolls();
+  }, [userInfo, fetchPolls])
+
+  useEffect(() => {
+    if (!username) {
       if (user) history.push(`/profile/${user.username}`);
       else history.push('/login');
     };
-
-    if (username) {
-      get(`/users?username=${username}`).then(response => {
-        if (!response.data.length) redirect(); // TODO: handle this case
-        setUserInfo(response.data[0]);
-        setIsInfoLoading(false);
-      }).catch(() => redirect());
-    } else redirect();
-  }, [username, user, history]);
+  }, [username, history, user]);
 
 
-  useEffect(() => {
-    if (userInfo?._id) {
-      setIsPollsLoading(true);
-
-      get(`/profiles/${userInfo._id}`).then(response => {
-        setIsPollsLoading(false);
-        setPolls([]);
-        setPolls(response.data);
-        setTotalVotes(response.data.reduce(
-          (total: number, current: Poll) => {
-            const { left, right } = current.contents;
-            return total + left.votes + right.votes;
-          }, 0
-        ));
-      });
-    }
-  }, [userInfo]);
+  const totalVotes = useCallback(
+    polls.reduce(
+      (total: number, current: Poll) => {
+        const { left, right } = current.contents;
+        return total + left.votes + right.votes;
+      }, 0
+    ), [polls]);
 
   return (
     <Container maxWidth="sm" disableGutters>
@@ -62,9 +44,8 @@ const ProfilePage: React.FC = () => {
         setUserInfo={setUserInfo}
         savedPolls={polls.length}
         totalVotes={totalVotes}
-        isLoading={isInfoLoading}
       />
-      {isPollsLoading ? <Feed polls={[]} /> : (polls.length > 0 && <Feed polls={polls} />)}
+      <Feed polls={polls} />
     </Container>
   );
 };
