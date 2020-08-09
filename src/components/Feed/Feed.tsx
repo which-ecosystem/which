@@ -1,9 +1,8 @@
 import React from 'react';
 import { Poll } from 'which-types';
 import { WindowScroller, AutoSizer, List } from 'react-virtualized';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core';
 import PollCard from '../PollCard/PollCard';
+import Loading from '../Loading/Loading';
 
 interface PropTypes {
   polls: Poll[];
@@ -15,17 +14,8 @@ interface RenderPropTypes {
   style: React.CSSProperties;
 }
 
-const useStyles = makeStyles(theme => ({
-  loader: {
-    width: '100%',
-    textAlign: 'center',
-    marginTop: theme.spacing(10)
-  }
-}));
 
 const Feed: React.FC<PropTypes> = ({ polls }) => {
-  const classes = useStyles();
-
 
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
@@ -35,12 +25,6 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
       </div>
     );
   };
-
-  const loader = (
-    <div className={classes.loader}>
-      <CircularProgress color="primary" style={{ margin: '0 auto' }} />
-    </div>
-  );
 
   const list = (
     <WindowScroller>
@@ -74,7 +58,7 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
     </WindowScroller>
   );
 
-  return polls.length ? list : loader;
+  return polls.length ? list : <Loading />;
 };
 
 export default Feed;

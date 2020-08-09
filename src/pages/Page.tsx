@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import { Switch, Route } from 'react-router-dom';
+import Loading from '../components/Loading/Loading';
 
-import ProfilePage from './ProfilePage/ProfilePage';
-import FeedPage from './FeedPage/FeedPage';
-import LoginPage from './LoginPage/LoginPage';
-import RegistrationPage from './RegistrationPage/RegistrationPage';
-import HomePage from './HomePage/HomePage';
-import NotificationsPage from './NotificationsPage/NotificationsPage';
+const ProfilePage = React.lazy(() => import( './ProfilePage/ProfilePage'));
+const FeedPage = React.lazy(() => import( './FeedPage/FeedPage'));
+const LoginPage = React.lazy(() => import( './LoginPage/LoginPage'));
+const RegistrationPage = React.lazy(() => import( './RegistrationPage/RegistrationPage'));
+const HomePage = React.lazy(() => import( './HomePage/HomePage'));
+const NotificationsPage = React.lazy(() => import( './NotificationsPage/NotificationsPage'));
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,14 +39,16 @@ const Page: React.FC = () => {
       }}
     >
       <div className={classes.root}>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/registration" component={RegistrationPage} />
-          <Route exact path="/feed" component={FeedPage} />
-          <Route exact path="/notifications" component={NotificationsPage} />
-          <Route path="/profile/:username" component={ProfilePage} />
-        </Switch>
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/registration" component={RegistrationPage} />
+            <Route exact path="/feed" component={FeedPage} />
+            <Route exact path="/notifications" component={NotificationsPage} />
+            <Route path="/profile/:username" component={ProfilePage} />
+          </Switch>
+        </Suspense>
       </div>
     </SnackbarProvider>
   );
