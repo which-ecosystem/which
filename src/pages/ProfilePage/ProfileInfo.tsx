@@ -86,7 +86,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
-  const { setUser } = useAuth();
+  const { user } = useAuth();
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
@@ -94,10 +94,9 @@ const ProfileInfo: React.FC<PropTypes> = ({
   };
 
   const patchAvatar = (url: string) => {
-    const id = localStorage.getItem('userId');
+    const id = user?._id;
     patch(`/users/${id}`, { avatarUrl: url }).then(res => {
       setUserInfo(res.data);
-      setUser(res.data);
     });
   };
 
@@ -106,7 +105,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
       {
         !userInfo
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
-          : userInfo?._id === localStorage.getItem('userId')
+          : userInfo?._id === user?._id
             ? (
               <div>
                 <MoreMenu />

@@ -9,9 +9,9 @@ const arrayOptions = {
   revalidateOnMount: true
 };
 
-export const useUser = (username: string) => {
+export const useUser = (username: string | null) => {
   return useSWR(
-    `/users?username=${username}`,
+    username && `/users?username=${username}`,
     (url: string) => get(url).then(response => response.data[0])
   );
 };
@@ -21,5 +21,5 @@ export const useProfile = (id: string) => {
 };
 
 export const useFeed = () => {
-  return useSWR(`/feed`, fetcher, arrayOptions);
+  return useSWR('/feed', fetcher, arrayOptions);
 };

@@ -92,7 +92,7 @@ const HomePage: React.FC = () => {
         Here you can share your thougts about Which with us!
         Note that you can ony leave feedback once per application version (there will be plenty of them later).
       </p>
-      {isAuthenticated() ? <ReviewForm /> : (
+      {isAuthenticated ? <ReviewForm /> : (
         <>
           <p> You must be authorized to leave feedback.</p>
           <Button
@@ -142,7 +142,7 @@ const HomePage: React.FC = () => {
                 <Button variant="contained" color="primary" size="large" onClick={handleLetsGo}>
                   {'let\'s go!'}
                 </Button>
-                {!isAuthenticated() && (
+                {!isAuthenticated && (
                   <Button
                     variant="outlined"
                     color="primary"

@@ -17,7 +17,7 @@ const FeedPage: React.FC = () => {
 
   return (
     <Container maxWidth="sm" disableGutters>
-      {isAuthenticated() && <PollSubmission addPoll={addPoll} />}
+      {isAuthenticated && <PollSubmission addPoll={addPoll} />}
       <Feed polls={data} />
     </Container>
   );

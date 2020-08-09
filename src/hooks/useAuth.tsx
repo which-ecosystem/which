@@ -1,67 +1,60 @@
 import React, {
-  useState, useEffect, useContext, createContext
+  useEffect, useCallback, useMemo, useContext, createContext
 } from 'react';
 import { User } from 'which-types';
-import { post, get } from '../requests';
+import { post } from '../requests';
+import { useUser } from './APIClient';
+import useLocalStorage from './useLocalStorage';
 
 
 interface ContextType {
   user: User | null,
-  setUser: (user: User) => void;
   login: (username: string, password: string, remember?: boolean) => Promise<boolean>;
   logout: () => void;
-  isAuthenticated: () => boolean;
+  isAuthenticated: boolean;
 }
 
 const authContext = createContext<ContextType>({
   user: null,
-  setUser: () => {},
   login: async () => false,
   logout: () => {},
-  isAuthenticated: () => false
+  isAuthenticated: false
 });
 
 const useProvideAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [remember, setRemember] = useLocalStorage('remember');
+  const [username, setUsername] = useLocalStorage('username');
+  const [token, setToken] = useLocalStorage('token');
+  const { data: user } = useUser(username);
 
-  const login: ContextType['login'] = (username, password, remember = true) => {
+  const isAuthenticated = useMemo(() => Boolean(username), [username]);
+
+  const logout = useCallback(() => {
+    setToken(null);
+    setUsername(null);
+  }, [setToken, setUsername]);
+
+  useEffect(() => {
+    // If should not remember, logout
+    if (!remember) logout();
+  }, [remember, logout]);
+
+
+  const login: ContextType['login'] = (name, password, shouldRemember = true) => {
     return post('/authentication', {
       strategy: 'local',
-      username,
+      username: name,
       password
     }).then(response => {
-      const me = response.data.user;
-      const token = response.data.accessToken;
-      setUser(me);
-      localStorage.setItem('userId', me._id);
-      localStorage.setItem('token', token);
-      if (!remember) localStorage.setItem('shouldClear', 'true');
+      setToken(response.data.accessToken);
+      setUsername(name);
+      setRemember(shouldRemember ? 'true' : null);
       return true;
     }).catch(() => false);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-  };
-
-  const isAuthenticated = () => Boolean(user);
-
-  useEffect(() => {
-    if (localStorage.getItem('shouldClear')) {
-      localStorage.clear();
-    }
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      get(`/users/${userId}`).then(response => {
-        setUser(response.data);
-      });
-    }
-  }, []);
-
   return {
-    user, setUser, login, logout, isAuthenticated
+    user, login, logout, token, isAuthenticated
   };
 };
 

@@ -58,7 +58,7 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
   const handleVote = (which: Which) => {
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       enqueueSnackbar('Unauthorized users can not vote in polls', {
         variant: 'error'
       });

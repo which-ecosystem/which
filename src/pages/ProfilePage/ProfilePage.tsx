@@ -21,7 +21,7 @@ const ProfilePage: React.FC = () => {
     if (!username) {
       if (user) history.push(`/profile/${user.username}`);
       else history.push('/login');
-    };
+    }
   }, [username, history, user]);
 
 
@@ -31,7 +31,9 @@ const ProfilePage: React.FC = () => {
         const { left, right } = current.contents;
         return total + left.votes + right.votes;
       }, 0
-    ), [polls]);
+    ),
+    [polls]
+  );
 
   return (
     <Container maxWidth="sm" disableGutters>

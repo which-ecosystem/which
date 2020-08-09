@@ -16,12 +16,11 @@ interface RenderPropTypes {
 
 
 const Feed: React.FC<PropTypes> = ({ polls }) => {
-
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
     return (
       // To re-render on list resize, add this info to key
-      <div key={key + polls.length} style={style}> 
+      <div key={key + polls.length} style={style}>
         <PollCard initialPoll={poll} />
       </div>
     );

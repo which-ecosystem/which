@@ -5,12 +5,12 @@ import { SnackbarProvider } from 'notistack';
 import { Switch, Route } from 'react-router-dom';
 import Loading from '../components/Loading/Loading';
 
-const ProfilePage = React.lazy(() => import( './ProfilePage/ProfilePage'));
-const FeedPage = React.lazy(() => import( './FeedPage/FeedPage'));
-const LoginPage = React.lazy(() => import( './LoginPage/LoginPage'));
-const RegistrationPage = React.lazy(() => import( './RegistrationPage/RegistrationPage'));
-const HomePage = React.lazy(() => import( './HomePage/HomePage'));
-const NotificationsPage = React.lazy(() => import( './NotificationsPage/NotificationsPage'));
+const ProfilePage = React.lazy(() => import('./ProfilePage/ProfilePage'));
+const FeedPage = React.lazy(() => import('./FeedPage/FeedPage'));
+const LoginPage = React.lazy(() => import('./LoginPage/LoginPage'));
+const RegistrationPage = React.lazy(() => import('./RegistrationPage/RegistrationPage'));
+const HomePage = React.lazy(() => import('./HomePage/HomePage'));
+const NotificationsPage = React.lazy(() => import('./NotificationsPage/NotificationsPage'));
 
 
 const useStyles = makeStyles(theme => ({
