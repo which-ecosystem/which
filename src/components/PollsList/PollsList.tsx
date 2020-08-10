@@ -6,6 +6,7 @@ import PollCard from '../PollCard/PollCard';
 
 interface PropTypes {
   polls: Poll[];
+  mutate: (polls: Poll[], refetch: boolean) => void;
 }
 
 interface RenderPropTypes {
@@ -15,13 +16,24 @@ interface RenderPropTypes {
 }
 
 
-const Feed: React.FC<PropTypes> = ({ polls }) => {
+const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
+
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
+
+    const setPoll = (poll: Poll) => {
+      const newPolls = [...polls];
+      newPolls[index] = poll;
+
+      // Force-update list-size so everything re-renders
+      mutate([], false);
+      mutate(newPolls, false);
+    };
+
     return (
       // To re-render on list resize, add this info to key
-      <div key={key + polls.length} style={style}>
-        <PollCard initialPoll={poll} />
+      <div key={`${key}-${poll._id}-${polls.length}`} style={style}>
+        <PollCard poll={poll} setPoll={setPoll} />
       </div>
     );
   };
@@ -59,5 +71,5 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
   );
 };
 
-export default Feed;
+export default PollsList;
 

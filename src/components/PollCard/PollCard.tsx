@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -14,7 +14,8 @@ import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
 interface PropTypes {
-  initialPoll: Poll;
+  poll: Poll;
+  setPoll: (poll: Poll) => void;
 }
 
 const DATE_FORMAT = {
@@ -49,8 +50,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
-  const [poll, setPoll] = useState<Poll>(initialPoll);
+const PollCard: React.FC<PropTypes> = ({ poll, setPoll }) => {
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
   const { enqueueSnackbar } = useSnackbar();
@@ -68,15 +68,17 @@ const PollCard: React.FC<PropTypes> = ({ initialPoll }) => {
       });
     } else {
       const newVote = ({ which, pollId: poll._id });
-      post('votes/', newVote);
-      poll.contents[which].votes += 1;
-      poll.vote = {
+      const newPoll = { ...poll };
+      newPoll.contents[which].votes += 1;
+      newPoll.vote = {
         _id: '',
         authorId: '',
         createdAt: new Date(),
         ...newVote
       };
-      setPoll({ ...poll });
+      setPoll(newPoll);
+
+      post('votes/', newVote);
     }
   };
 

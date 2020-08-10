@@ -4,7 +4,7 @@ import { Poll } from 'which-types';
 import { Container } from '@material-ui/core';
 
 import ProfileInfo from './ProfileInfo';
-import Feed from '../../components/Feed/Feed';
+import PollsList from '../../components/PollsList/PollsList';
 import Loading from '../../components/Loading/Loading';
 import { useAuth } from '../../hooks/useAuth';
 import { useUser, useProfile } from '../../hooks/APIClient';
@@ -16,7 +16,7 @@ const ProfilePage: React.FC = () => {
   const { user } = useAuth();
 
   const { data: userInfo, mutate: setUserInfo } = useUser(username);
-  const { data: polls, isValidating } = useProfile(userInfo?._id);
+  const { data: polls, mutate: mutatePolls, isValidating } = useProfile(userInfo?._id);
 
   useEffect(() => {
     if (!username) {
@@ -44,9 +44,10 @@ const ProfilePage: React.FC = () => {
         savedPolls={polls.length}
         totalVotes={totalVotes}
       />
-      {!polls.length && isValidating
+      {
+        isValidating && !polls
         ? <Loading />
-        : <Feed polls={polls} />
+        : <PollsList polls={polls} mutate={mutatePolls} />
       }
     </Container>
   );
