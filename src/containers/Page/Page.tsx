@@ -32,7 +32,7 @@ const Page: React.FC = () => {
 
   return (
     <SnackbarProvider
-      maxSnack={3}
+      maxSnack={isMobile ? 1 : 3}
       anchorOrigin={{
         vertical: isMobile ? 'top' : 'bottom',
         horizontal: 'right'

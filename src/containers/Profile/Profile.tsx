@@ -16,7 +16,7 @@ const Profile: React.FC = () => {
   const { user } = useAuth();
 
   const { data: userInfo, mutate: setUserInfo } = useUser(username);
-  const { data: polls, mutate: mutatePolls, isValidating } = useProfile(userInfo?._id);
+  const { data: polls, mutate: mutatePolls, isValidating } = useProfile(username);
 
   useEffect(() => {
     if (!username) {
