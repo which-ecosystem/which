@@ -21,7 +21,7 @@ export const useProfile = (id: string) => {
 };
 
 export const useFeed = () => {
-  return useSWR('/feed', fetcher, arrayOptions);
+  return useSWR('/feed', fetcher, { ...arrayOptions, revalidateOnFocus: false });
 };
 
 export const useFeedback = () => {
