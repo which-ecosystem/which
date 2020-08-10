@@ -17,13 +17,12 @@ interface RenderPropTypes {
 
 
 const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
-
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
 
-    const setPoll = (poll: Poll) => {
+    const setPoll = (newPoll: Poll) => {
       const newPolls = [...polls];
-      newPolls[index] = poll;
+      newPolls[index] = newPoll;
 
       // Force-update list-size so everything re-renders
       mutate([], false);

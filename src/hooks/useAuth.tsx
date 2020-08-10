@@ -8,14 +8,14 @@ import useLocalStorage from './useLocalStorage';
 
 
 interface ContextType {
-  user: User | null,
+  user: User | undefined,
   login: (username: string, password: string, remember?: boolean) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
 }
 
 const authContext = createContext<ContextType>({
-  user: null,
+  user: undefined,
   login: async () => false,
   logout: () => {},
   isAuthenticated: false

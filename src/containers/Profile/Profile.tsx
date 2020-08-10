@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Poll } from 'which-types';
 import { Container } from '@material-ui/core';
@@ -26,15 +26,12 @@ const Profile: React.FC = () => {
   }, [username, history, user]);
 
 
-  const totalVotes = useCallback(
-    polls.reduce(
-      (total: number, current: Poll) => {
-        const { left, right } = current.contents;
-        return total + left.votes + right.votes;
-      }, 0
-    ),
-    [polls]
-  );
+  const totalVotes = useMemo(() => polls.reduce(
+    (total: number, current: Poll) => {
+      const { left, right } = current.contents;
+      return total + left.votes + right.votes;
+    }, 0
+  ), [polls]);
 
   return (
     <Container maxWidth="sm" disableGutters>
@@ -46,8 +43,8 @@ const Profile: React.FC = () => {
       />
       {
         isValidating && !polls
-        ? <Loading />
-        : <PollsList polls={polls} mutate={mutatePolls} />
+          ? <Loading />
+          : <PollsList polls={polls} mutate={mutatePolls} />
       }
     </Container>
   );
