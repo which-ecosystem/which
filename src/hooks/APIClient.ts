@@ -23,3 +23,7 @@ export const useProfile = (id: string) => {
 export const useFeed = () => {
   return useSWR('/feed', fetcher, arrayOptions);
 };
+
+export const useFeedback = () => {
+  return useSWR('/feedback', fetcher, arrayOptions);
+};

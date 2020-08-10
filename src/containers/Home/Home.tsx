@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Typography,
@@ -14,7 +14,7 @@ import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
 
 import { useAuth } from '../../hooks/useAuth';
-import { get } from '../../requests';
+import { useFeedback } from '../../hooks/APIClient';
 import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import ReviewForm from './ReviewForm';
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Home: React.FC = () => {
-  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const { data: feedbacks } = useFeedback();
   const classes = useStyles();
   const history = useHistory();
   const { isAuthenticated, user } = useAuth();
@@ -52,12 +52,6 @@ const Home: React.FC = () => {
     (acc: number, feedback: Feedback) => acc + feedback.score,
     0
   ) / feedbacks.length;
-
-  useEffect(() => {
-    get('/feedback').then(response => {
-      setFeedbacks(response.data);
-    });
-  }, []);
 
   const handleLetsGo = () => {
     history.push('/feed');
@@ -76,7 +70,7 @@ const Home: React.FC = () => {
 
   const Reviews = (
     <div className={classes.reviews}>
-      {feedbacks.map(feedback => <ReviewCard feedback={feedback} />)}
+      {feedbacks.map((feedback: Feedback) => <ReviewCard feedback={feedback} />)}
     </div>
   );
 
