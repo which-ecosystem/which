@@ -5,12 +5,12 @@ import { SnackbarProvider } from 'notistack';
 import { Switch, Route } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
 
-const ProfilePage = React.lazy(() => import('../ProfilePage/ProfilePage'));
-const FeedPage = React.lazy(() => import('../FeedPage/FeedPage'));
-const LoginPage = React.lazy(() => import('../LoginPage/LoginPage'));
-const RegistrationPage = React.lazy(() => import('../RegistrationPage/RegistrationPage'));
-const HomePage = React.lazy(() => import('../HomePage/HomePage'));
-const NotificationsPage = React.lazy(() => import('../NotificationsPage/NotificationsPage'));
+const Profile = React.lazy(() => import('../Profile/Profile'));
+const Feed = React.lazy(() => import('../Feed/Feed'));
+const Login = React.lazy(() => import('../Login/Login'));
+const Registration = React.lazy(() => import('../Registration/Registration'));
+const Home = React.lazy(() => import('../Home/Home'));
+const Notifications = React.lazy(() => import('../Notifications/Notifications'));
 
 
 const useStyles = makeStyles(theme => ({
@@ -41,12 +41,12 @@ const Page: React.FC = () => {
       <div className={classes.root}>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/registration" component={RegistrationPage} />
-            <Route exact path="/feed" component={FeedPage} />
-            <Route exact path="/notifications" component={NotificationsPage} />
-            <Route path="/profile/:username" component={ProfilePage} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/registration" component={Registration} />
+            <Route exact path="/feed" component={Feed} />
+            <Route exact path="/notifications" component={Notifications} />
+            <Route path="/profile/:username" component={Profile} />
           </Switch>
         </Suspense>
       </div>

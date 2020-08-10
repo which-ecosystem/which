@@ -7,7 +7,7 @@ import PollSubmission from './PollSubmission';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
 
-const FeedPage: React.FC = () => {
+const Feed: React.FC = () => {
   const { data: polls, mutate } = useFeed();
   const { isAuthenticated } = useAuth();
 
@@ -23,5 +23,5 @@ const FeedPage: React.FC = () => {
   );
 };
 
-export default FeedPage;
+export default Feed;
 

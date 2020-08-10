@@ -10,7 +10,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useUser, useProfile } from '../../hooks/APIClient';
 
 
-const ProfilePage: React.FC = () => {
+const Profile: React.FC = () => {
   const history = useHistory();
   const { username } = useParams();
   const { user } = useAuth();
@@ -53,4 +53,4 @@ const ProfilePage: React.FC = () => {
   );
 };
 
-export default ProfilePage;
+export default Profile;

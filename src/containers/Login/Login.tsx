@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { post } from '../../requests';
+import {
+  TextField,
+  Button,
+  FormControlLabel,
+  Switch
+} from '@material-ui/core';
 import { useAuth } from '../../hooks/useAuth';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,64 +35,69 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RegistrationPage: React.FC = () => {
+const Login: React.FC = () => {
   const [error, setError] = useState<boolean>(false);
+  const [remember, setRemember] = useState<boolean>(true);
   const classes = useStyles();
-  const usernameRef = useRef<HTMLInputElement>();
-  const emailRef = useRef<HTMLInputElement>();
+  const nameRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
   const history = useHistory();
 
-  const handleSubmit = () => {
-    const username = usernameRef.current?.value?.toLowerCase();
-    const password = passwordRef.current?.value;
-    const email = emailRef.current?.value;
-    if (username && password) {
-      post('/users', { username, password, email })
-        .then(() => login(username, password))
-        .then(() => history.push(`/profile/${username}`));
-    } else setError(true);
+  const handleCheck = () => {
+    setRemember(!remember);
   };
 
-  const handleLogin = () => {
-    history.push('/login');
+  const handleSubmit = async () => {
+    const name = nameRef.current?.value?.toLowerCase();
+    const password = passwordRef.current?.value;
+    if (name && password) {
+      login(name, password, remember).then(success => {
+        if (success) history.push(`/profile/${name}`);
+        else setError(true);
+      });
+    }
+  };
+
+  const handleRegistration = () => {
+    history.push('/registration');
   };
 
   return (
     <>
-      <div className={classes.formHeader}>Sign Up</div>
+      <div className={classes.formHeader}>Sign In</div>
       <form className={classes.root} noValidate autoComplete="off">
         <TextField
-          inputRef={usernameRef}
-          label="Username"
+          inputRef={nameRef}
           error={error}
-          helperText={error && 'This field is required!'}
-          required
+          label="Login"
         />
-        <TextField inputRef={emailRef} label="Email" />
         <TextField
           inputRef={passwordRef}
+          error={error}
+          helperText={error && 'Invalid credentials'}
           label="Password"
           type="password"
-          required
-          error={error}
-          helperText={error && 'This field is required!'}
+        />
+        <FormControlLabel
+          control={<Switch color="primary" onClick={handleCheck} checked={remember} size="small" />}
+          label="Remember me"
         />
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
       <div className={classes.formTransfer}>
-        <div>Already have an account?</div>
+        <div>{'Don\'t have an account?'}</div>
         <span
-          onClick={handleLogin}
+          onClick={handleRegistration}
           className={classes.transferButton}
           role="presentation"
         >
-          Log in
+          Sign up
         </span>
       </div>
     </>
   );
 };
 
-export default RegistrationPage;
+export default Login;
+

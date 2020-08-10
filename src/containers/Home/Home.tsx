@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const HomePage: React.FC = () => {
+const Home: React.FC = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const classes = useStyles();
   const history = useHistory();
@@ -199,5 +199,5 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default Home;
 
