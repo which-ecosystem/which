@@ -16,7 +16,6 @@ interface PropTypes {
   totalVotes: number;
   userInfo: User | undefined;
   setUserInfo: (userInfo: User) => void;
-  isLoading: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -83,11 +82,11 @@ const useStyles = makeStyles(theme => ({
 
 
 const ProfileInfo: React.FC<PropTypes> = ({
-  savedPolls, totalVotes, setUserInfo, userInfo, isLoading
+  savedPolls, totalVotes, setUserInfo, userInfo
 }) => {
   const classes = useStyles();
   const [input, setInput] = useState(false);
-  const { setUser } = useAuth();
+  const { user } = useAuth();
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
   const handleClick = () => {
@@ -95,19 +94,18 @@ const ProfileInfo: React.FC<PropTypes> = ({
   };
 
   const patchAvatar = (url: string) => {
-    const id = localStorage.getItem('userId');
+    const id = user?._id;
     patch(`/users/${id}`, { avatarUrl: url }).then(res => {
       setUserInfo(res.data);
-      setUser(res.data);
     });
   };
 
   return (
     <div className={classes.root}>
       {
-        isLoading
+        !userInfo
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
-          : userInfo?._id === localStorage.getItem('userId')
+          : userInfo?._id === user?._id
             ? (
               <div>
                 <MoreMenu />
@@ -133,7 +131,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
             : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
       }
       {
-        isLoading
+        !userInfo
           ? <Skeleton animation="wave" variant="rect" width={100} height={20} className={classes.skeleton} />
           : (
             <Typography variant="h5" className={classes.name}>
@@ -144,7 +142,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
       }
       <div className={classes.profileMenu}>
         {
-          isLoading
+          !userInfo
             ? (
               <>
                 <Skeleton animation="wave" variant="rect" width={170} height={20} className={classes.skeleton} />

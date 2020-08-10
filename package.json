@@ -15,6 +15,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-virtualized": "^9.21.2",
+    "swr": "^0.3.0",
     "typeface-roboto": "0.0.75",
     "which-types": "^1.6.1"
   },

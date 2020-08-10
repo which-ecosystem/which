@@ -14,7 +14,7 @@ requests.interceptors.request.use(config => {
 
 requests.interceptors.response.use(response => response, error => {
   if (error.message === 'Request failed with status code 401' && localStorage.getItem('token')) {
-    localStorage.setItem('shouldClear', 'true');
+    localStorage.removeItem('remember');
     window.location.reload();
   }
   return Promise.reject(error);

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Poll } from 'which-types';
 import { WindowScroller, AutoSizer, List } from 'react-virtualized';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core';
 import PollCard from '../PollCard/PollCard';
+
 
 interface PropTypes {
   polls: Poll[];
+  mutate: (polls: Poll[], refetch: boolean) => void;
 }
 
 interface RenderPropTypes {
@@ -15,34 +15,29 @@ interface RenderPropTypes {
   style: React.CSSProperties;
 }
 
-const useStyles = makeStyles(theme => ({
-  loader: {
-    width: '100%',
-    textAlign: 'center',
-    marginTop: theme.spacing(10)
-  }
-}));
 
-const Feed: React.FC<PropTypes> = ({ polls }) => {
-  const classes = useStyles();
-
-
+const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
   const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
     const poll = polls[index];
+
+    const setPoll = (newPoll: Poll) => {
+      const newPolls = [...polls];
+      newPolls[index] = newPoll;
+
+      // Force-update list-size so everything re-renders
+      mutate([], false);
+      mutate(newPolls, false);
+    };
+
     return (
-      <div key={key} style={style}>
-        <PollCard initialPoll={poll} />
+      // To re-render on list resize, add this info to key
+      <div key={`${key}-${poll._id}-${polls.length}`} style={style}>
+        <PollCard poll={poll} setPoll={setPoll} />
       </div>
     );
   };
 
-  const loader = (
-    <div className={classes.loader}>
-      <CircularProgress color="primary" style={{ margin: '0 auto' }} />
-    </div>
-  );
-
-  const list = (
+  return (
     <WindowScroller>
       {({
         height,
@@ -73,9 +68,7 @@ const Feed: React.FC<PropTypes> = ({ polls }) => {
       )}
     </WindowScroller>
   );
-
-  return polls.length ? list : loader;
 };
 
-export default Feed;
+export default PollsList;
 

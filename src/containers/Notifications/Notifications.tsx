@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NotificationsPage: React.FC = () => {
+const Notifications: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -19,5 +19,5 @@ const NotificationsPage: React.FC = () => {
   );
 };
 
-export default NotificationsPage;
+export default Notifications;
 

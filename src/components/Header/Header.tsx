@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Header: React.FC = () => {
+const Header: React.FC = React.memo(() => {
   const classes = useStyles();
   const { user } = useAuth();
   const theme = useTheme();
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
   );
 
   return isMobile ? MobileVersion : BrowserVersion;
-};
+});
 
 export default Header;
 

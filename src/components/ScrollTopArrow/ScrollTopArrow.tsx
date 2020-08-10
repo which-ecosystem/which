@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ScrollTopArrow: React.FC = () => {
+const ScrollTopArrow: React.FC = React.memo(() => {
   const [showScroll, setShowScroll] = useState(false);
   const theme = useTheme();
   const classes = useStyles();
@@ -52,6 +52,6 @@ const ScrollTopArrow: React.FC = () => {
       }
     </div>
   );
-};
+});
 
 export default ScrollTopArrow;

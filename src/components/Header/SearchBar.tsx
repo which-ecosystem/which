@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchBar: React.FC = () => {
+const SearchBar: React.FC = React.memo(() => {
   const [results, setResults] = useState<User[]>([]);
   const [query, setQuery] = useState<string>('');
   const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
@@ -104,7 +104,7 @@ const SearchBar: React.FC = () => {
       {results.length > 0 && SearchResults}
     </div>
   );
-};
+});
 
 
 export default SearchBar;
