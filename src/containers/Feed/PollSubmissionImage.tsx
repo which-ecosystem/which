@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useFilePicker, utils } from 'react-sage';
 import { makeStyles } from '@material-ui/core/styles';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
 import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
 
-import UploadImage from '../../components/UploadImage/UploadImage';
-
 interface PropTypes {
-  url: string;
-  setUrl: (url: string) => void;
+  file: File | undefined;
+  setFile: (file: File | undefined) => void;
 }
 
 const useStyles = makeStyles({
@@ -35,17 +34,11 @@ const useStyles = makeStyles({
 });
 
 
-const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
+const PollSubmissionImage: React.FC<PropTypes> = ({ file, setFile }) => {
   const classes = useStyles();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { files, onClick, HiddenFileInput } = useFilePicker();
+  const [url, setUrl] = useState<string>();
   const [isMediaHover, setIsMediaHover] = useState(false);
-
-  const handleClick = (): void => {
-    if (!isModalOpen) {
-      if (url) setUrl('');
-      else setIsModalOpen(!isModalOpen);
-    }
-  };
 
   const handleMouseEnter = (): void => {
     setIsMediaHover(true);
@@ -55,11 +48,27 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
     setIsMediaHover(false);
   };
 
+  useEffect(() => {
+    if (files?.length) {
+      const chosenFile = files[0];
+      setFile(chosenFile);
+      utils.loadFile(chosenFile).then(result => setUrl(result));
+    }
+  }, [files, setFile]);
+
+
+  const handleClick = () => {
+    if (file) {
+      setFile(undefined);
+    } else onClick();
+  };
+
 
   const Upload = (
     <>
       <CloudUploadIcon fontSize="large" color="primary" />
       <Typography variant="h5" className={classes.text}> Upload an image </Typography>
+      <HiddenFileInput accept=".jpg, .jpeg, .png, .gif" multiple={false} />
     </>
   );
 
@@ -77,9 +86,8 @@ const PollSubmissionImage: React.FC<PropTypes> = ({ url, setUrl }) => {
   return (
     <>
       <CardActionArea onClick={handleClick} className={classes.root}>
-        {url ? Media : Upload}
+        {file ? (url && Media) : Upload}
       </CardActionArea>
-      <UploadImage isOpen={isModalOpen} setIsOpen={setIsModalOpen} callback={setUrl} />
     </>
   );
 };

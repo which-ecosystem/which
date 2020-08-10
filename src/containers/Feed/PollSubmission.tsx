@@ -7,12 +7,13 @@ import {
   ClickAwayListener,
   Divider
 } from '@material-ui/core';
-import { Poll, Which } from 'which-types';
+import { Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
+import axios from 'axios';
+
 import PollSubmissionImage from './PollSubmissionImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
-import { post } from '../../requests';
-import { Contents } from './types';
+import { get, post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
 interface PropTypes{
@@ -29,37 +30,46 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const emptyContents: Contents = {
-  left: { url: '' },
-  right: { url: '' }
-};
-
 const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [contents, setContents] = useState<Contents>(emptyContents);
+  const [left, setLeft] = useState<File>();
+  const [right, setRight] = useState<File>();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
-  const readyToSubmit = contents.left.url && contents.right.url;
-
-  const setUrl = (which: Which) => (url: string): void => {
-    setContents({ ...contents, [which]: { url } });
-  };
+  const readyToSubmit = left && right;
 
   const handleClickAway = () => {
     setExpanded(false);
   };
 
-  const handleClick = () => {
+  const uploadImage = (file?: File) => {
+    const headers = { 'Content-Type': 'image/png' };
+    return get('/files')
+      .then(response => response.data)
+      .then(uploadUrl => axios.put(uploadUrl, file, { headers }))
+      .then(response => {
+        const { config: { url } } = response;
+        return url && url.slice(0, url.indexOf('.png') + 4);
+      });
+  };
+
+  const handleClick = async () => {
     if (expanded && readyToSubmit) {
+      const [leftUrl, rightUrl] = await Promise.all([uploadImage(left), uploadImage(right)]);
+
+      const contents = {
+        left: { url: leftUrl },
+        right: { url: rightUrl }
+      };
+
       post('/polls/', { contents }).then(response => {
         addPoll(response.data);
         enqueueSnackbar('Your poll has been successfully created!', {
           variant: 'success'
         });
       });
-      setContents({ ...emptyContents });
     }
     setExpanded(!expanded);
   };
@@ -71,8 +81,8 @@ const PollSubmission: React.FC<PropTypes> = ({ addPoll }) => {
           {user && <UserStrip user={user} info="" />}
           <Divider />
           <div className={classes.images}>
-            <PollSubmissionImage url={contents.left.url} setUrl={setUrl('left')} />
-            <PollSubmissionImage url={contents.right.url} setUrl={setUrl('right')} />
+            <PollSubmissionImage file={left} setFile={setLeft} />
+            <PollSubmissionImage file={right} setFile={setRight} />
           </div>
         </Collapse>
         <Button
