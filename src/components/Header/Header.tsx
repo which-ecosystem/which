@@ -10,7 +10,6 @@ import {
   Notifications,
   Home,
   Menu,
-  Search
 } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
@@ -75,12 +74,6 @@ const Header: React.FC = React.memo(() => {
     </IconButton>
   );
 
-  const search = (
-    <IconButton>
-      <Search />
-    </IconButton>
-  );
-
   const logo = (
     <Typography variant="h5" className={classes.logo} onClick={handleHome}>
       Which
@@ -99,7 +92,7 @@ const Header: React.FC = React.memo(() => {
 
   return isMobile ? (
     <>
-      <MobileHeader logo={logo} menu={menu} search={search} />
+      <MobileHeader logo={logo} menu={menu} />
       <BottomBar feed={feed} profile={profile} notifications={notifications} />
     </>
   ) : (

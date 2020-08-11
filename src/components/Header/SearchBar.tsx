@@ -15,6 +15,10 @@ import { User } from 'which-types';
 import { get } from '../../requests';
 import UserStrip from '../UserStrip/UserStrip';
 
+interface PropTypes {
+  callback?: () => void;
+}
+
 const INTERVAL = 300;
 const LIMIT = 7;
 
@@ -37,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SearchBar: React.FC = React.memo(() => {
+const SearchBar: React.FC<PropTypes> = React.memo(({ callback }) => {
   const [results, setResults] = useState<User[]>([]);
   const [query, setQuery] = useState<string>('');
   const [debouncedQuery, setDebouncedQuery] = useState<string>(query);
@@ -72,6 +76,7 @@ const SearchBar: React.FC = React.memo(() => {
     const { username } = results[index];
     history.push(`/profile/${username}`);
     handleClose();
+    if (callback) callback();
   };
 
   const SearchResults = (
