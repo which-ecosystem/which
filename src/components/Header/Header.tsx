@@ -1,46 +1,37 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  AppBar,
-  Toolbar,
   IconButton,
   Typography,
-  Avatar,
   useMediaQuery
 } from '@material-ui/core';
+import {
+  AccountCircle,
+  Notifications,
+  Home,
+  Menu,
+  Search
+} from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import HomeIcon from '@material-ui/icons/Home';
 
 import { useAuth } from '../../hooks/useAuth';
-import SearchBar from './SearchBar';
+import MobileHeader from './MobileHeader';
+import BottomBar from './BottomBar';
+import BrowserHeader from './BrowserHeader';
+import Avatar from '../Avatar/Avatar';
 
 
 const useStyles = makeStyles(theme => ({
-  mobile: {
-    top: 'auto',
-    bottom: 0
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-around'
-  },
-  browserToolbar: {
-    width: '60%',
-    margin: 'auto'
-  },
   logo: {
     fontWeight: 'bold',
     cursor: 'pointer',
     color: 'white'
   },
-  round: {
+  avatar: {
     width: theme.spacing(3),
     height: theme.spacing(3)
   }
 }));
-
 
 const Header: React.FC = React.memo(() => {
   const classes = useStyles();
@@ -66,58 +57,54 @@ const Header: React.FC = React.memo(() => {
     history.push('/notifications');
   };
 
-  const FeedButton = (
+  const feed = (
     <IconButton onClick={handleFeed}>
-      <HomeIcon />
+      <Home />
     </IconButton>
   );
 
-  const NotificationsButton = (
+  const notifications = (
     <IconButton onClick={handleNotifications}>
-      <NotificationsIcon />
+      <Notifications />
     </IconButton>
   );
 
-  const ProfileButton = (
+  const menu = (
+    <IconButton>
+      <Menu />
+    </IconButton>
+  );
+
+  const search = (
+    <IconButton>
+      <Search />
+    </IconButton>
+  );
+
+  const logo = (
+    <Typography variant="h5" className={classes.logo} onClick={handleHome}>
+      Which
+    </Typography>
+  );
+
+  const profile = (
     <IconButton onClick={handleProfile}>
       {
-        user?.avatarUrl
-          ? <Avatar className={classes.round} src={user?.avatarUrl} />
-          : <AccountCircle />
+        user
+          ? <Avatar className={classes.avatar} user={user} />
+          : <AccountCircle className={classes.avatar} />
       }
     </IconButton>
   );
 
-  const BrowserVersion = (
-    <AppBar position="fixed">
-      <Toolbar className={`${classes.toolbar} ${classes.browserToolbar}`}>
-        <Typography variant="h5" className={classes.logo} onClick={handleHome}>
-          Which
-        </Typography>
-        <SearchBar />
-        <div>
-          {FeedButton}
-          {NotificationsButton}
-          {ProfileButton}
-        </div>
-      </Toolbar>
-    </AppBar>
+  return isMobile ? (
+    <>
+      <MobileHeader logo={logo} menu={menu} search={search} />
+      <BottomBar feed={feed} profile={profile} notifications={notifications} />
+    </>
+  ) : (
+    <BrowserHeader logo={logo} profile={profile} notifications={notifications} feed={feed} />
   );
-
-  const MobileVersion = (
-    <AppBar position="fixed" className={classes.mobile}>
-      <Toolbar className={classes.toolbar}>
-        <IconButton onClick={handleHome}>
-          <Typography className={`${classes.logo} ${classes.round}`}>W</Typography>
-        </IconButton>
-        {FeedButton}
-        {NotificationsButton}
-        {ProfileButton}
-      </Toolbar>
-    </AppBar>
-  );
-
-  return isMobile ? MobileVersion : BrowserVersion;
 });
 
 export default Header;
