@@ -1,5 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, useScrollTrigger, Slide } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  useScrollTrigger,
+  Slide
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 interface PropTypes {
@@ -8,12 +13,12 @@ interface PropTypes {
   search: JSX.Element;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     display: 'flex',
-    justifyContent: 'space-between',
-  },
-}));
+    justifyContent: 'space-between'
+  }
+});
 
 
 const MobileHeader: React.FC<PropTypes> = React.memo(props => {

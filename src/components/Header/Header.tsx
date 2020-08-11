@@ -1,8 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  AppBar,
-  Toolbar,
   IconButton,
   Typography,
   Avatar,
@@ -13,31 +11,23 @@ import {
   Notifications,
   Home,
   Menu,
-  Search,
+  Search
 } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import { useAuth } from '../../hooks/useAuth';
-import SearchBar from './SearchBar';
 import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
+import BrowserHeader from './BrowserHeader';
 
 
 const useStyles = makeStyles(theme => ({
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-around'
-  },
-  browserToolbar: {
-    width: '60%',
-    margin: 'auto'
-  },
   logo: {
     fontWeight: 'bold',
     cursor: 'pointer',
     color: 'white'
   },
-  round: {
+  avatar: {
     width: theme.spacing(3),
     height: theme.spacing(3)
   }
@@ -86,7 +76,7 @@ const Header: React.FC = React.memo(() => {
   );
 
   const search = (
-    <IconButton onClick={handleNotifications}>
+    <IconButton>
       <Search />
     </IconButton>
   );
@@ -97,28 +87,14 @@ const Header: React.FC = React.memo(() => {
     </Typography>
   );
 
-  const profile= (
+  const profile = (
     <IconButton onClick={handleProfile}>
       {
         user?.avatarUrl
-          ? <Avatar className={classes.round} src={user?.avatarUrl} />
+          ? <Avatar className={classes.avatar} src={user?.avatarUrl} />
           : <AccountCircle />
       }
     </IconButton>
-  );
-
-  const BrowserVersion = (
-    <AppBar position="fixed">
-      <Toolbar className={`${classes.toolbar} ${classes.browserToolbar}`}>
-        {logo}
-        <SearchBar />
-        <div>
-          {feed}
-          {notifications}
-          {profile}
-        </div>
-      </Toolbar>
-    </AppBar>
   );
 
   return isMobile ? (
@@ -126,7 +102,9 @@ const Header: React.FC = React.memo(() => {
       <MobileHeader logo={logo} menu={menu} search={search} />
       <BottomBar feed={feed} profile={profile} notifications={notifications} />
     </>
-  ) : BrowserVersion;
+  ) : (
+    <BrowserHeader logo={logo} profile={profile} notifications={notifications} feed={feed} />
+  );
 });
 
 export default Header;

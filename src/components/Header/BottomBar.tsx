@@ -8,7 +8,7 @@ interface PropTypes {
   notifications: JSX.Element;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     top: 'auto',
     bottom: 0
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-around'
   }
-}));
+});
 
 
 const BottomBar: React.FC<PropTypes> = React.memo(props => {
