@@ -8,20 +8,22 @@ import {
   Avatar,
   useMediaQuery
 } from '@material-ui/core';
+import {
+  AccountCircle,
+  Notifications,
+  Home,
+  Menu,
+  Search,
+} from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import HomeIcon from '@material-ui/icons/Home';
 
 import { useAuth } from '../../hooks/useAuth';
 import SearchBar from './SearchBar';
+import MobileHeader from './MobileHeader';
+import BottomBar from './BottomBar';
 
 
 const useStyles = makeStyles(theme => ({
-  mobile: {
-    top: 'auto',
-    bottom: 0
-  },
   toolbar: {
     display: 'flex',
     justifyContent: 'space-around'
@@ -40,7 +42,6 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(3)
   }
 }));
-
 
 const Header: React.FC = React.memo(() => {
   const classes = useStyles();
@@ -66,19 +67,37 @@ const Header: React.FC = React.memo(() => {
     history.push('/notifications');
   };
 
-  const FeedButton = (
+  const feed = (
     <IconButton onClick={handleFeed}>
-      <HomeIcon />
+      <Home />
     </IconButton>
   );
 
-  const NotificationsButton = (
+  const notifications = (
     <IconButton onClick={handleNotifications}>
-      <NotificationsIcon />
+      <Notifications />
     </IconButton>
   );
 
-  const ProfileButton = (
+  const menu = (
+    <IconButton>
+      <Menu />
+    </IconButton>
+  );
+
+  const search = (
+    <IconButton onClick={handleNotifications}>
+      <Search />
+    </IconButton>
+  );
+
+  const logo = (
+    <Typography variant="h5" className={classes.logo} onClick={handleHome}>
+      Which
+    </Typography>
+  );
+
+  const profile= (
     <IconButton onClick={handleProfile}>
       {
         user?.avatarUrl
@@ -91,33 +110,23 @@ const Header: React.FC = React.memo(() => {
   const BrowserVersion = (
     <AppBar position="fixed">
       <Toolbar className={`${classes.toolbar} ${classes.browserToolbar}`}>
-        <Typography variant="h5" className={classes.logo} onClick={handleHome}>
-          Which
-        </Typography>
+        {logo}
         <SearchBar />
         <div>
-          {FeedButton}
-          {NotificationsButton}
-          {ProfileButton}
+          {feed}
+          {notifications}
+          {profile}
         </div>
       </Toolbar>
     </AppBar>
   );
 
-  const MobileVersion = (
-    <AppBar position="fixed" className={classes.mobile}>
-      <Toolbar className={classes.toolbar}>
-        <IconButton onClick={handleHome}>
-          <Typography className={`${classes.logo} ${classes.round}`}>W</Typography>
-        </IconButton>
-        {FeedButton}
-        {NotificationsButton}
-        {ProfileButton}
-      </Toolbar>
-    </AppBar>
-  );
-
-  return isMobile ? MobileVersion : BrowserVersion;
+  return isMobile ? (
+    <>
+      <MobileHeader logo={logo} menu={menu} search={search} />
+      <BottomBar feed={feed} profile={profile} notifications={notifications} />
+    </>
+  ) : BrowserVersion;
 });
 
 export default Header;
