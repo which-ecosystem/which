@@ -1,9 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
-import { Avatar, CardHeader } from '@material-ui/core/';
+import { CardHeader } from '@material-ui/core/';
 import { User } from 'which-types';
+
+import Avatar from '../Avatar/Avatar';
 
 
 interface PropTypes {
@@ -21,30 +22,15 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(0.5),
     width: theme.spacing(2),
     height: theme.spacing(2)
-  },
-  avatar: {
-    cursor: 'pointer'
   }
 }));
 
 
 const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
   const classes = useStyles();
-  const history = useHistory();
-  const { username, avatarUrl, verified } = user;
+  const { username, verified } = user;
 
-  const handleNavigate = () => {
-    history.push(`/profile/${username}`);
-  };
-
-  const avatar = (
-    <Avatar
-      src={avatarUrl}
-      alt={username[0].toUpperCase()}
-      onClick={handleNavigate}
-      className={classes.avatar}
-    />
-  );
+  const avatar = <Avatar user={user} />;
 
   const title = (
     <div className={classes.root}>

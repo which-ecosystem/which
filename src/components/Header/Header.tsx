@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import {
   IconButton,
   Typography,
-  Avatar,
   useMediaQuery
 } from '@material-ui/core';
 import {
@@ -19,6 +18,7 @@ import { useAuth } from '../../hooks/useAuth';
 import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
 import BrowserHeader from './BrowserHeader';
+import Avatar from '../Avatar/Avatar';
 
 
 const useStyles = makeStyles(theme => ({
@@ -90,9 +90,9 @@ const Header: React.FC = React.memo(() => {
   const profile = (
     <IconButton onClick={handleProfile}>
       {
-        user?.avatarUrl
-          ? <Avatar className={classes.avatar} src={user?.avatarUrl} />
-          : <AccountCircle />
+        user
+          ? <Avatar className={classes.avatar} user={user} />
+          : <AccountCircle className={classes.avatar} />
       }
     </IconButton>
   );

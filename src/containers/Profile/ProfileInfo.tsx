@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Badge, Typography } from '@material-ui/core/';
+import { Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
@@ -8,8 +8,10 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
+import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
+
 
 interface PropTypes {
   savedPolls: number;
@@ -116,19 +118,20 @@ const ProfileInfo: React.FC<PropTypes> = ({
                       vertical: 'bottom',
                       horizontal: 'right'
                     }}
+                    onClick={handleClick}
                     badgeContent={(
                       <div className={classes.badge}>
-                        <CameraAltIcon onClick={handleClick} />
+                        <CameraAltIcon />
                       </div>
                     )}
                   >
-                    <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
+                    <Avatar className={classes.avatar} user={userInfo} />
                   </Badge>
                 </div>
                 <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
               </div>
             )
-            : <Avatar className={classes.avatar} src={userInfo?.avatarUrl} />
+            : <Avatar className={classes.avatar} user={userInfo} />
       }
       {
         !userInfo
