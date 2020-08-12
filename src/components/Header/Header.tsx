@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   IconButton,
@@ -9,8 +9,7 @@ import {
   AccountCircle,
   Notifications,
   Home,
-  Menu,
-  Search
+  Menu
 } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
@@ -19,6 +18,7 @@ import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
 import BrowserHeader from './BrowserHeader';
 import Avatar from '../Avatar/Avatar';
+import Drawer from '../Drawer/Drawer';
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +39,7 @@ const Header: React.FC = React.memo(() => {
   const theme = useTheme();
   const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const handleHome = (): void => {
     history.push('/');
@@ -57,6 +58,10 @@ const Header: React.FC = React.memo(() => {
     history.push('/notifications');
   };
 
+  const handleMenu = (): void => {
+    setIsDrawerOpen(true);
+  };
+
   const feed = (
     <IconButton onClick={handleFeed}>
       <Home />
@@ -70,14 +75,8 @@ const Header: React.FC = React.memo(() => {
   );
 
   const menu = (
-    <IconButton>
+    <IconButton onClick={handleMenu}>
       <Menu />
-    </IconButton>
-  );
-
-  const search = (
-    <IconButton>
-      <Search />
     </IconButton>
   );
 
@@ -99,8 +98,9 @@ const Header: React.FC = React.memo(() => {
 
   return isMobile ? (
     <>
-      <MobileHeader logo={logo} menu={menu} search={search} />
+      <MobileHeader logo={logo} menu={menu} />
       <BottomBar feed={feed} profile={profile} notifications={notifications} />
+      <Drawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
     </>
   ) : (
     <BrowserHeader logo={logo} profile={profile} notifications={notifications} feed={feed} />

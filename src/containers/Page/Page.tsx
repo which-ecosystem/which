@@ -16,7 +16,7 @@ const Notifications = React.lazy(() => import('../Notifications/Notifications'))
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(15, 0, 12, 0)
+      margin: theme.spacing(12, 0, 12, 0)
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(15, 5, 8, 5)
@@ -32,6 +32,7 @@ const Page: React.FC = () => {
 
   return (
     <SnackbarProvider
+      preventDuplicate
       maxSnack={isMobile ? 1 : 3}
       anchorOrigin={{
         vertical: isMobile ? 'top' : 'bottom',

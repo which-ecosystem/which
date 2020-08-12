@@ -5,7 +5,6 @@ import { User } from 'which-types';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
-import MoreMenu from './MoreMenu';
 import Highlight from './Highlight';
 import UploadImage from '../../components/UploadImage/UploadImage';
 import Avatar from '../../components/Avatar/Avatar';
@@ -110,7 +109,6 @@ const ProfileInfo: React.FC<PropTypes> = ({
           : userInfo?._id === user?._id
             ? (
               <div>
-                <MoreMenu />
                 <div className={classes.avatarContainer}>
                   <Badge
                     overlap="circle"
