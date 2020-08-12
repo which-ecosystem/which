@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 
 interface PropTypes {
   logo: JSX.Element;
+  menu: JSX.Element;
   feed: JSX.Element;
   notifications: JSX.Element;
   profile: JSX.Element;
@@ -18,7 +19,8 @@ const useStyles = makeStyles({
     justifyContent: 'space-around'
   },
   group: {
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center'
   }
 });
 
@@ -27,6 +29,7 @@ const BrowserHeader: React.FC<PropTypes> = React.memo(props => {
   const classes = useStyles();
   const {
     logo,
+    menu,
     feed,
     notifications,
     profile
@@ -34,13 +37,18 @@ const BrowserHeader: React.FC<PropTypes> = React.memo(props => {
 
   return (
     <AppBar position="fixed">
-      <Toolbar className={classes.root}>
-        {logo}
-        <SearchBar />
-        <div className={classes.group}>
-          {feed}
-          {notifications}
-          {profile}
+      <Toolbar>
+        {menu}
+        <div className={classes.root}>
+          <div className={classes.group}>
+            {logo}
+          </div>
+          <SearchBar />
+          <div className={classes.group}>
+            {feed}
+            {notifications}
+            {profile}
+          </div>
         </div>
       </Toolbar>
     </AppBar>
