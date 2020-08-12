@@ -89,7 +89,7 @@ const Header: React.FC = React.memo(() => {
   const profile = (
     <IconButton onClick={handleProfile}>
       {
-        user
+        user?.avatarUrl
           ? <Avatar className={classes.avatar} user={user} />
           : <AccountCircle className={classes.avatar} />
       }
