@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   SwipeableDrawer,
@@ -33,23 +33,27 @@ const Drawer: React.FC<PropTypes> = React.memo(({ isOpen, setIsOpen }) => {
   const history = useHistory();
   const { user, logout } = useAuth();
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsOpen(true);
-  };
+  }, [setIsOpen]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
-  };
+  }, [setIsOpen]);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    // Close drawer on navigations
+    return history.listen(() => handleClose());
+  }, [history, handleClose])
+
+  const handleLogout = useCallback(() => {
     logout();
-    handleClose();
-  };
+    history.push('/login');
+  }, [logout, history]);
 
-  const handleAbout = () => {
+  const handleAbout = useCallback(() => {
     history.push('/');
-    handleClose();
-  };
+  }, [history]);
 
   const iOS = useMemo(() => {
     return /iPad|iPhone|iPod/.test(navigator.userAgent);
