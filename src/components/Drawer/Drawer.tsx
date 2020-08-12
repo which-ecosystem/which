@@ -44,7 +44,7 @@ const Drawer: React.FC<PropTypes> = React.memo(({ isOpen, setIsOpen }) => {
   useEffect(() => {
     // Close drawer on navigations
     return history.listen(() => handleClose());
-  }, [history, handleClose])
+  }, [history, handleClose]);
 
   const handleLogout = useCallback(() => {
     logout();

@@ -32,6 +32,7 @@ const Page: React.FC = () => {
 
   return (
     <SnackbarProvider
+      preventDuplicate
       maxSnack={isMobile ? 1 : 3}
       anchorOrigin={{
         vertical: isMobile ? 'top' : 'bottom',
