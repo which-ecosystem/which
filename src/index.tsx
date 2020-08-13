@@ -7,7 +7,6 @@ import teal from '@material-ui/core/colors/teal';
 import 'typeface-roboto';
 
 import Header from './components/Header/Header';
-import ScrollTopArrow from './components/ScrollTopArrow/ScrollTopArrow';
 import Page from './containers/Page/Page';
 import { AuthProvider } from './hooks/useAuth';
 
@@ -33,7 +32,6 @@ const App: React.FC = () => {
           <CssBaseline />
           <Header />
           <Page />
-          <ScrollTopArrow />
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
