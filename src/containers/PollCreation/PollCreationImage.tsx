@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useFilePicker, utils } from 'react-sage';
 import { makeStyles } from '@material-ui/core/styles';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import {
+  CardActionArea,
+  CardMedia,
+  Typography,
+  Button
+} from '@material-ui/core';
+import { CloudUpload, CancelOutlined, Link, Publish } from '@material-ui/icons/';
+import UploadImage from '../../components/UploadImage/UploadImage';
 
 interface PropTypes {
-  file: File | undefined;
-  setFile: (file: File | undefined) => void;
+  file?: File | string;
+  setFile: (file?: File | string) => void;
 }
 
 const useStyles = makeStyles({
@@ -15,7 +20,8 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '50%'
   },
   clearIcon: {
     opacity: '.5',
@@ -38,7 +44,8 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
   const classes = useStyles();
   const { files, onClick, HiddenFileInput } = useFilePicker();
   const [url, setUrl] = useState<string>();
-  const [isMediaHover, setIsMediaHover] = useState(false);
+  const [isMediaHover, setIsMediaHover] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleMouseEnter = (): void => {
     setIsMediaHover(true);
@@ -56,19 +63,37 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
     }
   }, [files, setFile]);
 
-
-  const handleClick = () => {
-    if (file) {
-      setFile(undefined);
-    } else onClick();
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
   };
 
+  const callback = (result: string) => {
+    setUrl(result);
+    setFile(result);
+  };
 
   const Upload = (
     <>
-      <CloudUploadIcon fontSize="large" color="primary" />
-      <Typography variant="h5" className={classes.text}> Upload an image </Typography>
       <HiddenFileInput accept=".jpg, .jpeg, .png, .gif" multiple={false} />
+      <Button 
+        onClick={onClick}
+        variant="contained"
+        color="primary"
+        size="large"
+        startIcon={<CloudUpload />}
+      > 
+        Upload
+      </Button>
+      <Typography variant="h6"> or </Typography>
+      <Button 
+        onClick={handleOpenModal}
+        variant="outlined"
+        color="primary"
+        startIcon={<Link />}
+      >
+        Attach a link
+      </Button>
+      <UploadImage callback={callback} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </>
   );
 
@@ -79,16 +104,14 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {isMediaHover && <CancelOutlinedIcon className={classes.clearIcon} />}
+      {isMediaHover && <CancelOutlined className={classes.clearIcon} />}
     </CardMedia>
   );
 
   return (
-    <>
-      <CardActionArea onClick={handleClick} className={classes.root}>
-        {file ? (url && Media) : Upload}
-      </CardActionArea>
-    </>
+    <div className={classes.root}>
+      {file ? (url && Media) : Upload}
+    </div>
   );
 };
 

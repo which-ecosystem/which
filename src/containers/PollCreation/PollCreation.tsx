@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
@@ -6,7 +7,6 @@ import {
   Divider,
   Container
 } from '@material-ui/core';
-import { Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 
@@ -14,10 +14,7 @@ import PollCreationImage from './PollCreationImage';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { get, post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
-
-interface PropTypes{
-  addPoll: (poll: Poll) => void;
-}
+import { useFeed } from '../../hooks/APIClient';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,29 +26,36 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollCreation: React.FC<PropTypes> = ({ addPoll }) => {
+const PollCreation: React.FC = () => {
   const classes = useStyles();
-  const [left, setLeft] = useState<File>();
-  const [right, setRight] = useState<File>();
+  const history = useHistory();
+  const [left, setLeft] = useState<File | string>();
+  const [right, setRight] = useState<File | string>();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
+  const { mutate: updateFeed } = useFeed();
 
   const readyToSubmit = left && right;
 
-  const uploadImage = (file?: File) => {
+  const uploadFile = (file: File): Promise<string> => {
     const headers = { 'Content-Type': 'image/png' };
     return get('/files')
       .then(response => response.data)
       .then(uploadUrl => axios.put(uploadUrl, file, { headers }))
       .then(response => {
         const { config: { url } } = response;
-        return url && url.slice(0, url.indexOf('.png') + 4);
+        return url?.slice(0, url?.indexOf('?')) || '';
       });
+  };
+
+  const resolveFile = async (file?: File | string): Promise<string> => {
+    if (file instanceof File) return uploadFile(file);
+    return file || '';
   };
 
   const handleClick = async () => {
     if (readyToSubmit) {
-      const [leftUrl, rightUrl] = await Promise.all([uploadImage(left), uploadImage(right)]);
+      const [leftUrl, rightUrl] = await Promise.all([resolveFile(left), resolveFile(right)]);
 
       const contents = {
         left: { url: leftUrl },
@@ -59,11 +63,13 @@ const PollCreation: React.FC<PropTypes> = ({ addPoll }) => {
       };
 
       post('/polls/', { contents }).then(response => {
-        addPoll(response.data);
+        updateFeed();
         enqueueSnackbar('Your poll has been successfully created!', {
           variant: 'success'
         });
       });
+
+      history.push('/feed');
     }
   };
 
