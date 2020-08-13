@@ -73,17 +73,17 @@ const PollCreation: React.FC = () => {
         {user && <UserStrip user={user} info="" />}
         <Divider />
         <div className={classes.images}>
-          <PollCreationImage callback={setLeft} />
-          <PollCreationImage callback={setRight} />
+          <PollCreationImage callback={setLeft} progress={progressLeft} />
+          <PollCreationImage callback={setRight} progress={progressRight} />
         </div>
         <Button
           color="primary"
-          disabled={!(isLeftReady && isRightReady)}
+          disabled={!(isLeftReady && isRightReady) || Boolean(progressLeft || progressRight)}
           variant="contained"
           onClick={handleClick}
           fullWidth
         >
-          Submit
+          {(progressLeft || progressRight) ? 'Waiting for upload' : 'Submit'}
         </Button>
       </Card>
     </Container>

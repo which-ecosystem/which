@@ -41,7 +41,10 @@ export default () => {
           const { config: { url } } = response;
           return url ? url.slice(0, url.indexOf('?')) : '';
         });
-    } else return url || '';
+    } else {
+      setProgress(100);
+      return url || '';
+    }
   }, [file, handleUploadProgress, url]);
 
   return { setValue, isReady, resolve, progress };
