@@ -15,7 +15,7 @@ interface PropTypes {
   callback: (url: string) => void;
 }
 
-const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
+const Modal: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState<string>('');
 
   const handleClose = () => {
@@ -44,10 +44,10 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   return (
     <div>
       <Dialog open={isOpen} onClose={handleClose}>
-        <DialogTitle>Upload an Image</DialogTitle>
+        <DialogTitle>Upload via link</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Unfortunetly we do not support uploading images yet. Please provide a valid URL to your image:
+            Provide a valid URL to your image:
           </DialogContentText>
           <TextField
             autoFocus
@@ -73,4 +73,4 @@ const UploadImage: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   );
 };
 
-export default UploadImage;
+export default Modal;

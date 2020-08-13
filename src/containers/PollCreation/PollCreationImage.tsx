@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useFilePicker, utils } from 'react-sage';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { CardActionArea, CardMedia, Typography } from '@material-ui/core';
-import CancelOutlinedIcon from '@material-ui/icons/CancelOutlined';
+import {
+  CardActionArea,
+  CardMedia,
+  Typography
+} from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/CancelOutlined';
+
+import AttachLink from '../../components/AttachLink/AttachLink';
+import FileUpload from '../../components/FileUpload/FileUpload';
 
 interface PropTypes {
-  file: File | undefined;
-  setFile: (file: File | undefined) => void;
+  callback: (file?: File | string) => void;
 }
 
 const useStyles = makeStyles({
@@ -15,7 +19,8 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '50%'
   },
   clearIcon: {
     opacity: '.5',
@@ -27,69 +32,41 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  text: {
-    textAlign: 'center'
   }
 });
 
 
-const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
+const PollCreationImage: React.FC<PropTypes> = ({ callback }) => {
   const classes = useStyles();
-  const { files, onClick, HiddenFileInput } = useFilePicker();
   const [url, setUrl] = useState<string>();
-  const [isMediaHover, setIsMediaHover] = useState(false);
 
-  const handleMouseEnter = (): void => {
-    setIsMediaHover(true);
+  const handleClear = (): void => {
+    setUrl(undefined);
+    callback(undefined);
   };
 
-  const handleMouseLeave = (): void => {
-    setIsMediaHover(false);
+  const childrenCallback = (fileUrl: string, file?: File) => {
+    setUrl(fileUrl);
+    callback(file || fileUrl);
   };
-
-  useEffect(() => {
-    if (files?.length) {
-      const chosenFile = files[0];
-      setFile(chosenFile);
-      utils.loadFile(chosenFile).then(result => setUrl(result));
-    }
-  }, [files, setFile]);
-
-
-  const handleClick = () => {
-    if (file) {
-      setFile(undefined);
-    } else onClick();
-  };
-
 
   const Upload = (
-    <>
-      <CloudUploadIcon fontSize="large" color="primary" />
-      <Typography variant="h5" className={classes.text}> Upload an image </Typography>
-      <HiddenFileInput accept=".jpg, .jpeg, .png, .gif" multiple={false} />
-    </>
+    <div className={classes.root}>
+      <FileUpload callback={childrenCallback} />
+      <Typography variant="h6"> or </Typography>
+      <AttachLink callback={childrenCallback} />
+    </div>
   );
 
   const Media = (
-    <CardMedia
-      image={url}
-      className={classes.media}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      {isMediaHover && <CancelOutlinedIcon className={classes.clearIcon} />}
-    </CardMedia>
+    <CardActionArea onClick={handleClear} className={classes.root}>
+      <CardMedia image={url} className={classes.media}>
+        <ClearIcon className={classes.clearIcon} />
+      </CardMedia>
+    </CardActionArea>
   );
 
-  return (
-    <>
-      <CardActionArea onClick={handleClick} className={classes.root}>
-        {file ? (url && Media) : Upload}
-      </CardActionArea>
-    </>
-  );
+  return url ? Media : Upload;
 };
 
 export default PollCreationImage;

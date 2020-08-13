@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
@@ -6,7 +6,7 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Highlight from './Highlight';
-import UploadImage from '../../components/UploadImage/UploadImage';
+import AttachLink from '../../components/AttachLink/AttachLink';
 import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
@@ -86,13 +86,8 @@ const ProfileInfo: React.FC<PropTypes> = ({
   savedPolls, totalVotes, setUserInfo, userInfo
 }) => {
   const classes = useStyles();
-  const [input, setInput] = useState(false);
   const { user } = useAuth();
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
-
-  const handleClick = () => {
-    setInput(!input);
-  };
 
   const patchAvatar = (url: string) => {
     const id = user?._id;
@@ -108,7 +103,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
           : userInfo?._id === user?._id
             ? (
-              <div>
+              <AttachLink callback={patchAvatar}>
                 <div className={classes.avatarContainer}>
                   <Badge
                     overlap="circle"
@@ -116,7 +111,6 @@ const ProfileInfo: React.FC<PropTypes> = ({
                       vertical: 'bottom',
                       horizontal: 'right'
                     }}
-                    onClick={handleClick}
                     badgeContent={(
                       <div className={classes.badge}>
                         <CameraAltIcon />
@@ -126,8 +120,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                     <Avatar className={classes.avatar} user={userInfo} />
                   </Badge>
                 </div>
-                <UploadImage isOpen={input} setIsOpen={setInput} callback={patchAvatar} />
-              </div>
+              </AttachLink>
             )
             : <Avatar className={classes.avatar} user={userInfo} />
       }
