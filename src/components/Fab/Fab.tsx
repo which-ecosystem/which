@@ -1,11 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'
-import {
-  Fab as FabBase,
-  useMediaQuery,
-  Slide,
-  useScrollTrigger
-} from '@material-ui/core/';
+import { useHistory } from 'react-router-dom';
+import { Fab as FabBase, Slide, useScrollTrigger } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import PlusIcon from '@material-ui/icons/Add';
 
@@ -15,7 +10,7 @@ interface PropTypes {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    zIndex: 1200,
+    zIndex: 1000,
     position: 'fixed',
 
     [theme.breakpoints.down('sm')]: {
@@ -29,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Fab: React.FC<PropTypes> = ({ hideOnScroll=false }) => {
+const Fab: React.FC<PropTypes> = ({ hideOnScroll = false }) => {
   const classes = useStyles();
   const history = useHistory();
   const trigger = useScrollTrigger();
@@ -40,7 +35,7 @@ const Fab: React.FC<PropTypes> = ({ hideOnScroll=false }) => {
 
   return (
     <Slide appear={false} direction="up" in={(!hideOnScroll) || !trigger}>
-      <FabBase 
+      <FabBase
         onClick={handleClick}
         className={classes.root}
         color="secondary"

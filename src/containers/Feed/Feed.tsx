@@ -1,6 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'
-import { Poll } from 'which-types';
 import { Container } from '@material-ui/core/';
 
 import PollsList from '../../components/PollsList/PollsList';
@@ -10,7 +8,6 @@ import { useFeed } from '../../hooks/APIClient';
 
 
 const Feed: React.FC = () => {
-  const classes = useStyles();
   const { data: polls, mutate } = useFeed();
   const { isAuthenticated } = useAuth();
 
