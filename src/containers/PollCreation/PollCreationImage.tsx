@@ -8,7 +8,7 @@ import {
   Button
 } from '@material-ui/core';
 import { CloudUpload, CancelOutlined, Link, Publish } from '@material-ui/icons/';
-import UploadImage from '../../components/UploadImage/UploadImage';
+import AttachLink from '../../components/AttachLink/AttachLink';
 
 interface PropTypes {
   file?: File | string;
@@ -45,7 +45,6 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
   const { files, onClick, HiddenFileInput } = useFilePicker();
   const [url, setUrl] = useState<string>();
   const [isMediaHover, setIsMediaHover] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleMouseEnter = (): void => {
     setIsMediaHover(true);
@@ -62,10 +61,6 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
       utils.loadFile(chosenFile).then(result => setUrl(result));
     }
   }, [files, setFile]);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
 
   const callback = (result: string) => {
     setUrl(result);
@@ -85,15 +80,7 @@ const PollCreationImage: React.FC<PropTypes> = ({ file, setFile }) => {
         Upload
       </Button>
       <Typography variant="h6"> or </Typography>
-      <Button 
-        onClick={handleOpenModal}
-        variant="outlined"
-        color="primary"
-        startIcon={<Link />}
-      >
-        Attach a link
-      </Button>
-      <UploadImage callback={callback} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      <AttachLink callback={callback} />
     </>
   );
 
