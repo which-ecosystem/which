@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Collapse from '@material-ui/core/Collapse';
 import {
   Button,
   Card,
-  ClickAwayListener,
   Divider,
   Container
 } from '@material-ui/core';
@@ -33,17 +31,12 @@ const useStyles = makeStyles(theme => ({
 
 const PollCreation: React.FC<PropTypes> = ({ addPoll }) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(true);
   const [left, setLeft] = useState<File>();
   const [right, setRight] = useState<File>();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
 
   const readyToSubmit = left && right;
-
-  const handleClickAway = () => {
-    setExpanded(false);
-  };
 
   const uploadImage = (file?: File) => {
     const headers = { 'Content-Type': 'image/png' };
@@ -57,7 +50,7 @@ const PollCreation: React.FC<PropTypes> = ({ addPoll }) => {
   };
 
   const handleClick = async () => {
-    if (expanded && readyToSubmit) {
+    if (readyToSubmit) {
       const [leftUrl, rightUrl] = await Promise.all([uploadImage(left), uploadImage(right)]);
 
       const contents = {
@@ -72,32 +65,27 @@ const PollCreation: React.FC<PropTypes> = ({ addPoll }) => {
         });
       });
     }
-    setExpanded(!expanded);
   };
 
   return (
     <Container maxWidth="sm" disableGutters>
-      <ClickAwayListener onClickAway={handleClickAway}>
-        <Card className={classes.root}>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            {user && <UserStrip user={user} info="" />}
-            <Divider />
-            <div className={classes.images}>
-              <PollCreationImage file={left} setFile={setLeft} />
-              <PollCreationImage file={right} setFile={setRight} />
-            </div>
-          </Collapse>
-          <Button
-            color="primary"
-            disabled={expanded && !readyToSubmit}
-            variant={expanded ? 'contained' : 'outlined'}
-            onClick={handleClick}
-            fullWidth
-          >
-            {expanded ? 'Submit' : 'Create a Poll'}
-          </Button>
-        </Card>
-      </ClickAwayListener>
+      <Card className={classes.root}>
+        {user && <UserStrip user={user} info="" />}
+        <Divider />
+        <div className={classes.images}>
+          <PollCreationImage file={left} setFile={setLeft} />
+          <PollCreationImage file={right} setFile={setRight} />
+        </div>
+        <Button
+          color="primary"
+          disabled={!readyToSubmit}
+          variant="contained"
+          onClick={handleClick}
+          fullWidth
+        >
+          Submit
+        </Button>
+      </Card>
     </Container>
   );
 };
