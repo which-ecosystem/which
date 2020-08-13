@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Card,
   Divider,
-  Container
+  Container,
+  LinearProgress
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
 
-import PollCreationImage from './PollCreationImage';
+import ImageInput from './ImageInput';
 import UserStrip from '../../components/UserStrip/UserStrip';
-import { get, post } from '../../requests';
+import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
+import useS3Preupload from '../../hooks/useS3Preupload';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,36 +28,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const PollCreation: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [left, setLeft] = useState<File | string>();
-  const [right, setRight] = useState<File | string>();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const { mutate: updateFeed } = useFeed();
-
-  const readyToSubmit = left && right;
-
-  const uploadFile = (file: File): Promise<string> => {
-    const headers = { 'Content-Type': 'image/png' };
-    return get('/files')
-      .then(response => response.data)
-      .then(uploadUrl => axios.put(uploadUrl, file, { headers }))
-      .then(response => {
-        const { config: { url } } = response;
-        return url?.slice(0, url?.indexOf('?')) || '';
-      });
-  };
-
-  const resolveFile = async (file?: File | string): Promise<string> => {
-    if (file instanceof File) return uploadFile(file);
-    return file || '';
-  };
+  const {
+    setValue: setLeft,
+    progress: progressLeft,
+    resolve: resolveLeft,
+    isReady: isLeftReady
+  } = useS3Preupload();
+  const {
+    setValue: setRight,
+    progress: progressRight,
+    resolve: resolveRight,
+    isReady: isRightReady
+  } = useS3Preupload();
 
   const handleClick = async () => {
-    if (readyToSubmit) {
-      const [leftUrl, rightUrl] = await Promise.all([resolveFile(left), resolveFile(right)]);
+    if (isLeftReady && isRightReady) {
+      const [leftUrl, rightUrl] = await Promise.all([resolveLeft(), resolveRight()]);
 
       const contents = {
         left: { url: leftUrl },
@@ -79,18 +74,24 @@ const PollCreation: React.FC = () => {
         {user && <UserStrip user={user} info="" />}
         <Divider />
         <div className={classes.images}>
-          <PollCreationImage callback={setLeft} />
-          <PollCreationImage callback={setRight} />
+          <ImageInput callback={setLeft} progress={progressLeft} />
+          <ImageInput callback={setRight} progress={progressRight} />
         </div>
-        <Button
-          color="primary"
-          disabled={!readyToSubmit}
-          variant="contained"
-          onClick={handleClick}
-          fullWidth
-        >
-          Submit
-        </Button>
+        {
+          progressLeft || progressRight
+            ? <LinearProgress color="primary" />
+            : (
+              <Button
+                color="primary"
+                disabled={!(isLeftReady && isRightReady)}
+                variant="contained"
+                onClick={handleClick}
+                fullWidth
+              >
+                Submit
+              </Button>
+            )
+        }
       </Card>
     </Container>
   );

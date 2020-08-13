@@ -3,15 +3,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   CardActionArea,
   CardMedia,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/CancelOutlined';
+import { Check, CancelOutlined } from '@material-ui/icons';
 
 import AttachLink from '../../components/AttachLink/AttachLink';
 import FileUpload from '../../components/FileUpload/FileUpload';
 
 interface PropTypes {
   callback: (file?: File | string) => void;
+  progress?: number;
 }
 
 const useStyles = makeStyles({
@@ -32,11 +34,25 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  darkOverlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    color: 'white',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    transitionDuration: '0.5s'
+  },
+  invisible: {
+    backgroundColor: 'rgba(0, 0, 0, 0)'
+  },
+  icon: {
+    color: 'white'
   }
 });
 
 
-const PollCreationImage: React.FC<PropTypes> = ({ callback }) => {
+const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
   const classes = useStyles();
   const [url, setUrl] = useState<string>();
 
@@ -59,9 +75,17 @@ const PollCreationImage: React.FC<PropTypes> = ({ callback }) => {
   );
 
   const Media = (
-    <CardActionArea onClick={handleClear} className={classes.root}>
+    <CardActionArea onClick={handleClear} className={classes.root} disabled={Boolean(progress)}>
       <CardMedia image={url} className={classes.media}>
-        <ClearIcon className={classes.clearIcon} />
+        <div className={`${classes.media} ${classes.darkOverlay} ${progress === 100 && classes.invisible}`}>
+          {
+            progress
+              ? progress < 100
+                ? <CircularProgress variant="static" value={progress} className={classes.icon} />
+                : <Check className={classes.icon} fontSize="large" />
+              : <CancelOutlined className={classes.icon} fontSize="large" />
+          }
+        </div>
       </CardMedia>
     </CardActionArea>
   );
@@ -69,4 +93,4 @@ const PollCreationImage: React.FC<PropTypes> = ({ callback }) => {
   return url ? Media : Upload;
 };
 
-export default PollCreationImage;
+export default ImageInput;
