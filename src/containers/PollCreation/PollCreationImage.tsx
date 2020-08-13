@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   CardActionArea,
   CardMedia,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/CancelOutlined';
 

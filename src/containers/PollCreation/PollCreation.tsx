@@ -62,7 +62,7 @@ const PollCreation: React.FC = () => {
         right: { url: rightUrl }
       };
 
-      post('/polls/', { contents }).then(response => {
+      post('/polls/', { contents }).then(() => {
         updateFeed();
         enqueueSnackbar('Your poll has been successfully created!', {
           variant: 'success'

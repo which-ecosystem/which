@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import LinkIcon from '@material-ui/icons/Link';
 import Modal from './Modal';
 
@@ -30,9 +30,10 @@ const AttachLink: React.FC<PropTypes> = ({ callback, children }) => {
   return (
     <>
       <Modal callback={callback} isOpen={isOpen} setIsOpen={setIsOpen} />
-      {React.isValidElement(child)
-        ? React.cloneElement(child, { onClick: handleOpen })
-        : defaultButton
+      {
+        React.isValidElement(child)
+          ? React.cloneElement(child, { onClick: handleOpen })
+          : defaultButton
       }
     </>
   );

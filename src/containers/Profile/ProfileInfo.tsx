@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';

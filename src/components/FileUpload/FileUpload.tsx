@@ -35,9 +35,10 @@ const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
   return (
     <>
       <HiddenFileInput accept=".jpg, .jpeg, .png, .gif" multiple={false} />
-      {React.isValidElement(child)
-        ? React.cloneElement(child, { onClick })
-        : defaultButton
+      {
+        React.isValidElement(child)
+          ? React.cloneElement(child, { onClick })
+          : defaultButton
       }
     </>
   );
