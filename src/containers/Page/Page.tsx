@@ -11,6 +11,7 @@ const Login = React.lazy(() => import('../Login/Login'));
 const Registration = React.lazy(() => import('../Registration/Registration'));
 const Home = React.lazy(() => import('../Home/Home'));
 const Notifications = React.lazy(() => import('../Notifications/Notifications'));
+const PollCreation = React.lazy(() => import('../PollCreation/PollCreation'));
 
 
 const useStyles = makeStyles(theme => ({
@@ -47,6 +48,7 @@ const Page: React.FC = () => {
             <Route exact path="/registration" component={Registration} />
             <Route exact path="/feed" component={Feed} />
             <Route exact path="/notifications" component={Notifications} />
+            <Route exact path="/new" component={PollCreation} />
             <Route path="/profile/:username" component={Profile} />
           </Switch>
         </Suspense>

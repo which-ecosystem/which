@@ -89,7 +89,7 @@ const Header: React.FC = React.memo(() => {
   const profile = (
     <IconButton onClick={handleProfile}>
       {
-        user
+        user?.avatarUrl
           ? <Avatar className={classes.avatar} user={user} />
           : <AccountCircle className={classes.avatar} />
       }
@@ -103,7 +103,10 @@ const Header: React.FC = React.memo(() => {
       <Drawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
     </>
   ) : (
-    <BrowserHeader logo={logo} profile={profile} notifications={notifications} feed={feed} />
+    <>
+      <BrowserHeader menu={menu} logo={logo} profile={profile} notifications={notifications} feed={feed} />
+      <Drawer isOpen={isDrawerOpen} setIsOpen={setIsDrawerOpen} />
+    </>
   );
 });
 

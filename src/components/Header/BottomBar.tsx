@@ -26,7 +26,7 @@ const BottomBar: React.FC<PropTypes> = React.memo(props => {
 
   return (
     <AppBar position="fixed" className={classes.root}>
-      <Toolbar className={classes.toolbar}>
+      <Toolbar variant="dense" className={classes.toolbar}>
         {notifications}
         {feed}
         {profile}

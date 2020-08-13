@@ -6,6 +6,7 @@ import { Container } from '@material-ui/core';
 import ProfileInfo from './ProfileInfo';
 import PollsList from '../../components/PollsList/PollsList';
 import Loading from '../../components/Loading/Loading';
+import Fab from '../../components/Fab/Fab';
 import { useAuth } from '../../hooks/useAuth';
 import { useUser, useProfile } from '../../hooks/APIClient';
 
@@ -46,6 +47,7 @@ const Profile: React.FC = () => {
           ? <Loading />
           : <PollsList polls={polls} mutate={mutatePolls} />
       }
+      {user?.username === username && <Fab />}
     </Container>
   );
 };
