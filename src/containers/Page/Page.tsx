@@ -1,8 +1,8 @@
-import React, { Suspense } from 'react';
+import React, { Suspense,  useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
 
 const Profile = React.lazy(() => import('../Profile/Profile'));
@@ -29,7 +29,14 @@ const useStyles = makeStyles(theme => ({
 const Page: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    return history.listen(() => {
+      window.scrollTo(0, 0);
+    });
+  }, [history])
 
   return (
     <SnackbarProvider
