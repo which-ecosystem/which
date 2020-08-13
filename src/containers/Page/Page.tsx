@@ -1,4 +1,4 @@
-import React, { Suspense,  useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
@@ -17,7 +17,7 @@ const PollCreation = React.lazy(() => import('../PollCreation/PollCreation'));
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(12, 0, 12, 0)
+      margin: theme.spacing(10, 0, 12, 0)
     },
     [theme.breakpoints.up('md')]: {
       margin: theme.spacing(15, 5, 8, 5)
@@ -36,7 +36,7 @@ const Page: React.FC = () => {
     return history.listen(() => {
       window.scrollTo(0, 0);
     });
-  }, [history])
+  }, [history]);
 
   return (
     <SnackbarProvider

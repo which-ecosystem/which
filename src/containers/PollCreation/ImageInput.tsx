@@ -44,7 +44,7 @@ const useStyles = makeStyles({
     transitionDuration: '0.5s'
   },
   invisible: {
-    backgroundColor: 'rgba(0, 0, 0, 0)',
+    backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   icon: {
     color: 'white'
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
 });
 
 
-const PollCreationImage: React.FC<PropTypes> = ({ callback, progress }) => {
+const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
   const classes = useStyles();
   const [url, setUrl] = useState<string>();
 
@@ -80,10 +80,10 @@ const PollCreationImage: React.FC<PropTypes> = ({ callback, progress }) => {
         <div className={`${classes.media} ${classes.darkOverlay} ${progress === 100 && classes.invisible}`}>
           {
             progress
-            ? progress < 100
-              ? <CircularProgress variant="static" value={progress} className={classes.icon} />
-              : <Check className={classes.icon} fontSize="large" />
-            : <CancelOutlined className={classes.icon} fontSize="large" />
+              ? progress < 100
+                ? <CircularProgress variant="static" value={progress} className={classes.icon} />
+                : <Check className={classes.icon} fontSize="large" />
+              : <CancelOutlined className={classes.icon} fontSize="large" />
           }
         </div>
       </CardMedia>
@@ -93,4 +93,4 @@ const PollCreationImage: React.FC<PropTypes> = ({ callback, progress }) => {
   return url ? Media : Upload;
 };
 
-export default PollCreationImage;
+export default ImageInput;

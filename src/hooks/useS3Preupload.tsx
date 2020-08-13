@@ -1,19 +1,28 @@
 import { useState, useCallback, useMemo } from 'react';
-import { get } from '../requests';
 import axios from 'axios';
+import { get } from '../requests';
 
 
-export default () => {
+interface ProgressEvent {
+  loaded: number;
+  total: number;
+}
+
+interface Hook {
+  setValue: (value: File | string | undefined) => void;
+  isReady: boolean;
+  resolve: () => Promise<string>;
+  progress: number;
+}
+
+export default (): Hook => {
   const [url, setUrl] = useState<string>();
   const [file, setFile] = useState<File>();
   const [progress, setProgress] = useState<number>(0);
 
   const isReady = useMemo(() => Boolean(file || url), [file, url]);
 
-
-  console.log({ file, url })
-
-  const setValue = useCallback((value: File | string | undefined): void => {
+  const setValue: Hook['setValue'] = useCallback(value => {
     if (value instanceof File) {
       setFile(value);
       setUrl(undefined);
@@ -23,7 +32,7 @@ export default () => {
     }
   }, [setUrl, setFile]);
 
-  const handleUploadProgress = useCallback((progressEvent: any) => {
+  const handleUploadProgress = useCallback((progressEvent: ProgressEvent): void => {
     setProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
   }, [setProgress]);
 
@@ -38,14 +47,18 @@ export default () => {
         .then(response => response.data)
         .then(uploadUrl => axios.put(uploadUrl, file, config))
         .then(response => {
-          const { config: { url } } = response;
-          return url ? url.slice(0, url.indexOf('?')) : '';
+          const uri = response.config.url;
+          return uri ? uri.slice(0, uri.indexOf('?')) : '';
         });
-    } else {
-      setProgress(100);
-      return url || '';
     }
+    setProgress(100);
+    return url || '';
   }, [file, handleUploadProgress, url]);
 
-  return { setValue, isReady, resolve, progress };
+  return {
+    setValue,
+    isReady,
+    resolve,
+    progress
+  };
 };

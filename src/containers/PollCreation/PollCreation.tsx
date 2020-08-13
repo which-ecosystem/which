@@ -5,11 +5,12 @@ import {
   Button,
   Card,
   Divider,
-  Container
+  Container,
+  LinearProgress
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
-import PollCreationImage from './PollCreationImage';
+import ImageInput from './ImageInput';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
@@ -73,18 +74,24 @@ const PollCreation: React.FC = () => {
         {user && <UserStrip user={user} info="" />}
         <Divider />
         <div className={classes.images}>
-          <PollCreationImage callback={setLeft} progress={progressLeft} />
-          <PollCreationImage callback={setRight} progress={progressRight} />
+          <ImageInput callback={setLeft} progress={progressLeft} />
+          <ImageInput callback={setRight} progress={progressRight} />
         </div>
-        <Button
-          color="primary"
-          disabled={!(isLeftReady && isRightReady) || Boolean(progressLeft || progressRight)}
-          variant="contained"
-          onClick={handleClick}
-          fullWidth
-        >
-          {(progressLeft || progressRight) ? 'Waiting for upload' : 'Submit'}
-        </Button>
+        {
+          progressLeft || progressRight
+            ? <LinearProgress color="primary" />
+            : (
+              <Button
+                color="primary"
+                disabled={!(isLeftReady && isRightReady)}
+                variant="contained"
+                onClick={handleClick}
+                fullWidth
+              >
+                Submit
+              </Button>
+            )
+        }
       </Card>
     </Container>
   );
