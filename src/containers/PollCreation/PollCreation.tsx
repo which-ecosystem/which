@@ -79,8 +79,8 @@ const PollCreation: React.FC = () => {
         {user && <UserStrip user={user} info="" />}
         <Divider />
         <div className={classes.images}>
-          <PollCreationImage file={left} setFile={setLeft} />
-          <PollCreationImage file={right} setFile={setRight} />
+          <PollCreationImage callback={setLeft} />
+          <PollCreationImage callback={setRight} />
         </div>
         <Button
           color="primary"

@@ -13,9 +13,9 @@ const AttachLink: React.FC<PropTypes> = ({ callback, children }) => {
   const handleOpen = (): void => {
     setIsOpen(true);
   };
-  
+
   const defaultButton = (
-    <Button 
+    <Button
       onClick={handleOpen}
       variant="outlined"
       color="primary"
@@ -26,7 +26,7 @@ const AttachLink: React.FC<PropTypes> = ({ callback, children }) => {
   );
 
   const child = children && React.Children.toArray(children)[0];
-  
+
   return (
     <>
       <Modal callback={callback} isOpen={isOpen} setIsOpen={setIsOpen} />
