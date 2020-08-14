@@ -2,8 +2,11 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import noContentIcon from '../../assets/noContent.svg';
+import constructionIcon from '../../assets/construction.svg';
+
 
 interface PropTypes {
+  variant?: 'default' | 'construction';
   message?: string;
 }
 
@@ -21,14 +24,27 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const EmptyState: React.FC<PropTypes> = ({ message }) => {
+const CONTEXT = {
+  default: {
+    icon: noContentIcon,
+    tagline: 'No content'
+  },
+  construction: {
+    icon: constructionIcon,
+    tagline: 'Coming soon'
+  }
+};
+
+const EmptyState: React.FC<PropTypes> = ({ variant = 'default', message }) => {
   const classes = useStyles();
+
+  const { icon, tagline } = CONTEXT[variant];
 
   return (
     <div className={classes.root}>
-      <img src={noContentIcon} className={classes.img} alt="No content" />
+      <img src={icon} className={classes.img} alt="No content" />
       <Typography variant="h5">
-        No content
+        {tagline}
       </Typography>
       <Typography color="textSecondary">
         <p>

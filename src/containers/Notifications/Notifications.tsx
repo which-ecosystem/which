@@ -1,11 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import EmptyState from '../../components/EmptyState/EmptyState';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: theme.spacing(25),
-    textAlign: 'center'
+    marginTop: theme.spacing(25)
   }
 }));
 
@@ -13,9 +12,9 @@ const Notifications: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <Typography variant="h4" className={classes.root}>
-      Sorry, this page is being constructed yet.
-    </Typography>
+    <div className={classes.root}>
+      <EmptyState variant="construction" message="We are building this page. Stay tuned." />
+    </div>
   );
 };
 
