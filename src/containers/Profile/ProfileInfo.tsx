@@ -22,7 +22,7 @@ interface PropTypes {
 const useStyles = makeStyles(theme => ({
   root: {
     position: 'relative',
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(4)
   },
   avatar: {
     width: 150,
