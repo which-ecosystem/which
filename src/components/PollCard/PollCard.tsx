@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PollCard: React.FC<PropTypes> = ({ poll, setPoll }) => {
+const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
   const { enqueueSnackbar } = useSnackbar();
@@ -114,6 +114,6 @@ const PollCard: React.FC<PropTypes> = ({ poll, setPoll }) => {
       </div>
     </Card>
   );
-};
+});
 
 export default PollCard;
