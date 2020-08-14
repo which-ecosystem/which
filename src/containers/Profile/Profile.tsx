@@ -28,6 +28,11 @@ const Profile: React.FC = () => {
   }, [username, history, user]);
 
   const isOwnProfile = useMemo(() => user?.username === username, [user, username]);
+  const message = useMemo(() => {
+    return isOwnProfile
+      ? 'Create a poll and it will show up here.'
+      : 'This user has not uploaded anything yet.';
+  }, [isOwnProfile]);
 
   const totalVotes = useMemo(() => polls?.reduce(
     (total: number, current: Poll) => {
@@ -48,7 +53,7 @@ const Profile: React.FC = () => {
         polls
           ? polls.length
             ? <PollsList polls={polls} mutate={mutatePolls} />
-            : <EmptyState message={isOwnProfile ? 'Create a poll and it will show up here.' : ''} />
+            : <EmptyState message={message} />
           : isValidating && <Loading />
       }
       {isOwnProfile && <Fab />}
