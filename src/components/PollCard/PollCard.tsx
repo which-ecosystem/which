@@ -1,15 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Card,
-  CardActionArea,
-  CardMedia
-} from '@material-ui/core/';
+import { Card, CardActionArea } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
 
 import PercentageBar from './PercentageBar';
 import UserStrip from '../UserStrip/UserStrip';
+import BackgroundImage from '../Image/BackgroundImage';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -27,11 +24,9 @@ const DATE_FORMAT = {
 };
 
 const useStyles = makeStyles(theme => ({
-  images: {
+  media: {
+    display: 'flex',
     height: theme.spacing(50)
-  },
-  imagesBlock: {
-    display: 'flex'
   },
   rateLine: {
     position: 'relative',
@@ -101,19 +96,13 @@ const PollCard: React.FC<PropTypes> = ({ poll, setPoll }) => {
   return (
     <Card>
       <UserStrip user={author} info={date} />
-      <div className={classes.imagesBlock}>
-        <CardActionArea onDoubleClick={handleLeft}>
-          <CardMedia
-            className={classes.images}
-            image={left.url}
-          />
+      <div className={classes.media}>
+        <CardActionArea onDoubleClick={handleLeft} className={classes.media}>
+          <BackgroundImage src={left.url} />
           <PercentageBar value={leftPercentage} which="left" like={vote?.which === 'left'} />
         </CardActionArea>
-        <CardActionArea onDoubleClick={handleRight}>
-          <CardMedia
-            className={classes.images}
-            image={right.url}
-          />
+        <CardActionArea onDoubleClick={handleRight} className={classes.media}>
+          <BackgroundImage src={right.url} />
           <PercentageBar value={rightPercentage} which="right" like={vote?.which === 'right'} />
         </CardActionArea>
       </div>

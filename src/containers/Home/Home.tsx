@@ -13,10 +13,11 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
 
+import ReviewCard from '../../components/ReviewCard/ReviewCard';
+import Image from '../../components/Image/Image';
+import ReviewForm from './ReviewForm';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeedback } from '../../hooks/APIClient';
-import ReviewCard from '../../components/ReviewCard/ReviewCard';
-import ReviewForm from './ReviewForm';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -109,7 +110,7 @@ const Home: React.FC = () => {
         <Grid item xs={12} md={4}>
           <Grid container direction="column" spacing={1} alignItems="center">
             <Grid item>
-              <img src={`${process.env.PUBLIC_URL}/which-logo-512.png`} alt="logo" className={classes.logo} />
+              <Image src={`${process.env.PUBLIC_URL}/which-logo-512.png`} alt="logo" className={classes.logo} />
             </Grid>
             <Grid item>
               {rating !== 0 && <Rating value={rating} readOnly size="large" />}
