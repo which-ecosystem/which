@@ -7,7 +7,7 @@ interface PropTypes {
   alt?: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     position: 'absolute',
     width: '100%',
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%'
   }
-}));
+});
 
 const BackgroundImage: React.FC<PropTypes> = ({ src, alt }) => {
   const classes = useStyles();
@@ -28,8 +28,8 @@ const BackgroundImage: React.FC<PropTypes> = ({ src, alt }) => {
     <picture className={classes.root}>
       <Image src={src} alt={alt} className={classes.image} />
     </picture>
-  )
-}
+  );
+};
 
 export default BackgroundImage;
 
