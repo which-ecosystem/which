@@ -1,9 +1,11 @@
-# which
-Social web-app focused on choosing between two options (images). 
+<p align="center">
+  <a href="https://which-ecosystem.github.io/" rel="noopener" target="_blank"><img width="150" src="public/which-logo-512.png" alt="Which logo"></a></p>
+</p>
+<h1 align="center"> Which </h1>
 
+<p align="center">Social web-app focused on choosing between two images.</p>
 
-_"Which one do **you** like?"_
-
+<p align="center"><i>"Which one do <b>you</b> like?"</i></p>
 
 ## Development :hammer_and_wrench:
 Track our progress - [KANBAN board](https://github.com/orgs/which-ecosystem/projects/1):fire:
