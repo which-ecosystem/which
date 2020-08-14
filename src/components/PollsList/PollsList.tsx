@@ -1,41 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Poll } from 'which-types';
 import { WindowScroller, AutoSizer, List } from 'react-virtualized';
-import PollCard from '../PollCard/PollCard';
-
+import RenderItem from './RenderItem';
 
 interface PropTypes {
   polls: Poll[];
   mutate: (polls: Poll[], refetch: boolean) => void;
 }
 
-interface RenderPropTypes {
-  index: number;
-  key: string;
-  style: React.CSSProperties;
-}
-
-
 const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
-  const RenderItem: React.FC<RenderPropTypes> = ({ index, style, key }) => {
-    const poll = polls[index];
-
-    const setPoll = (newPoll: Poll) => {
-      const newPolls = [...polls];
-      newPolls[index] = newPoll;
-
-      // Force-update list-size so everything re-renders
-      mutate([], false);
-      mutate(newPolls, false);
-    };
-
-    return (
-      // To re-render on list resize, add this info to key
-      <div key={`${key}-${poll._id}-${polls.length}`} style={style}>
-        <PollCard poll={poll} setPoll={setPoll} />
-      </div>
-    );
-  };
+  const rowRenderer = useCallback(({ index, style, key }) => (
+    <RenderItem
+      polls={polls}
+      mutate={mutate}
+      index={index}
+      style={style}
+      key={key}
+      _key={key}
+    />
+  ), [polls, mutate]);
 
   return (
     <WindowScroller>
@@ -56,11 +39,11 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
                 onScroll={onChildScroll}
                 rowCount={polls.length}
                 rowHeight={550}
-                rowRenderer={RenderItem}
+                rowRenderer={rowRenderer}
                 scrollTop={scrollTop}
                 width={width}
                 containerStyle={{ pointerEvents: 'auto' }}
-                overscanRowCount={1}
+                overscanRowCount={2}
               />
             </div>
           )}
