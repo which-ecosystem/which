@@ -16,6 +16,7 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
       index={index}
       style={style}
       key={key}
+      _key={key}
     />
   ), [polls, mutate]);
 
