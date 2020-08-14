@@ -21,7 +21,8 @@ interface PropTypes {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'relative'
+    position: 'relative',
+    marginBottom: theme.spacing(2)
   },
   avatar: {
     width: 150,
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     height: 50,
-    margin: '50px 0',
+    marginTop: theme.spacing(6),
     borderBottom: '1px solid lightgray'
   },
   menuButton: {

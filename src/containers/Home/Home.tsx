@@ -48,10 +48,10 @@ const Home: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const rating = feedbacks.length && feedbacks.reduce(
+  const rating = feedbacks?.length ? feedbacks.reduce(
     (acc: number, feedback: Feedback) => acc + feedback.score,
     0
-  ) / feedbacks.length;
+  ) / feedbacks.length : 0;
 
   const handleLetsGo = () => {
     history.push('/feed');
@@ -70,36 +70,38 @@ const Home: React.FC = () => {
 
   const Reviews = (
     <div className={classes.reviews}>
-      {feedbacks.map((feedback: Feedback) => <ReviewCard feedback={feedback} />)}
+      {feedbacks?.map((feedback: Feedback) => <ReviewCard feedback={feedback} />)}
     </div>
   );
 
-  const FeedbackSection = feedbacks.findIndex((feedback: Feedback) => feedback.author._id === user?._id) >= 0 ? (
+  const FeedbackSection = feedbacks && feedbacks.findIndex(
+    (feedback: Feedback) => feedback.author._id === user?._id
+  ) >= 0 ? (
     <p>
       You have already left feedback for this version.
       If you have more to say, please open GitHub issue or contact us directly via email: {EmailLink}.
       Alternatively, you can just wait for another application patch to come out.
     </p>
-  ) : (
-    <>
-      <p>
-        Here you can share your thougts about Which with us!
-        Note that you can ony leave feedback once per application version (there will be plenty of them later).
-      </p>
-      {isAuthenticated ? <ReviewForm /> : (
-        <>
-          <p> You must be authorized to leave feedback.</p>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleSignUp}
-          >
-            sign in
-          </Button>
-        </>
-      )}
-    </>
-  );
+    ) : (
+      <>
+        <p>
+          Here you can share your thougts about Which with us!
+          Note that you can ony leave feedback once per application version (there will be plenty of them later).
+        </p>
+        {isAuthenticated ? <ReviewForm /> : (
+          <>
+            <p> You must be authorized to leave feedback.</p>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleSignUp}
+            >
+              sign in
+            </Button>
+          </>
+        )}
+      </>
+    );
 
   return (
     <div className={classes.root}>
