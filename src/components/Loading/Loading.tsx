@@ -1,22 +1,17 @@
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core';
+import Message from '../Message/Message';
 
-const useStyles = makeStyles(theme => ({
-  loader: {
-    width: '100%',
-    textAlign: 'center',
-    marginTop: theme.spacing(10)
-  }
-}));
+interface PropTypes {
+  tagline?: string;
+  message?: string;
+}
 
-const Loading: React.FC = React.memo(() => {
-  const classes = useStyles();
-
+const Loading: React.FC<PropTypes> = React.memo(({ tagline, message }) => {
   return (
-    <div className={classes.loader}>
-      <CircularProgress color="primary" style={{ margin: '0 auto' }} />
-    </div>
+    <Message tagline={tagline} message={message}>
+      <CircularProgress color="primary" />
+    </Message>
   );
 });
 
