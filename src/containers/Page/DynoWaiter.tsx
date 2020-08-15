@@ -7,9 +7,7 @@ import React, {
 import { makeStyles } from '@material-ui/core/styles';
 import { get } from '../../requests';
 import Loading from '../../components/Loading/Loading';
-import Image from '../../components/Image/Image';
-import Message from '../../components/Message/Message';
-import coffeIcon from '../../assets/coffeeBreak.svg';
+import EmptyState from '../../components/EmptyState/EmptyState';
 
 const DYNO_WAKEUP_TIME = 30;
 
@@ -67,8 +65,8 @@ const DynoWaiter: React.FC = ({ children }) => {
     <>
       {!isReady && (
         <>
-          <Loading message={message} tagline={message && 'Waiting for the server'} />
-          {message && <Message><Image src={coffeIcon} className={classes.img} /></Message>}
+          <Loading />
+          {message && <EmptyState variant="waiting" smart message={message} />}
         </>
       )}
       <div className={isReady ? '' : classes.hidden}>
