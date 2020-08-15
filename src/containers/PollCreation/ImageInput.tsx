@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   CardActionArea,
-  CardMedia,
   Typography,
   CircularProgress
 } from '@material-ui/core';
@@ -10,6 +9,7 @@ import { Check, CancelOutlined } from '@material-ui/icons';
 
 import AttachLink from '../../components/AttachLink/AttachLink';
 import FileUpload from '../../components/FileUpload/FileUpload';
+import BackgroundImage from '../../components/Image/BackgroundImage';
 
 interface PropTypes {
   callback: (file?: File | string) => void;
@@ -28,19 +28,17 @@ const useStyles = makeStyles({
     opacity: '.5',
     fontSize: 50
   },
-  media: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  darkOverlay: {
+  overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
     color: 'white',
     position: 'absolute',
     top: 0,
     left: 0,
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     transitionDuration: '0.5s'
   },
   invisible: {
@@ -76,17 +74,16 @@ const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
 
   const Media = (
     <CardActionArea onClick={handleClear} className={classes.root} disabled={Boolean(progress)}>
-      <CardMedia image={url} className={classes.media}>
-        <div className={`${classes.media} ${classes.darkOverlay} ${progress === 100 && classes.invisible}`}>
-          {
-            progress
-              ? progress < 100
-                ? <CircularProgress variant="static" value={progress} className={classes.icon} />
-                : <Check className={classes.icon} fontSize="large" />
-              : <CancelOutlined className={classes.icon} fontSize="large" />
-          }
-        </div>
-      </CardMedia>
+      <BackgroundImage src={url} />
+      <div className={`${classes.overlay} ${progress === 100 && classes.invisible}`}>
+        {
+          progress
+            ? progress < 100
+              ? <CircularProgress variant="static" value={progress} className={classes.icon} />
+              : <Check className={classes.icon} fontSize="large" />
+            : <CancelOutlined className={classes.icon} fontSize="large" />
+        }
+      </div>
     </CardActionArea>
   );
 

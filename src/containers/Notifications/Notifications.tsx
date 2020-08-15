@@ -4,7 +4,7 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: theme.spacing(25)
+    marginTop: theme.spacing(16)
   }
 }));
 
