@@ -6,10 +6,11 @@ import Message from '../Message/Message';
 import noContentIcon from '../../assets/noContent.svg';
 import constructionIcon from '../../assets/construction.svg';
 import serverIcon from '../../assets/server.svg';
+import errorIcon from '../../assets/error.svg';
 
 
 interface PropTypes {
-  variant?: 'default' | 'construction' | 'waiting';
+  variant?: 'default' | 'construction' | 'waiting' | 'error';
   message?: string;
   smart?: boolean;
 }
@@ -32,6 +33,10 @@ const CONTEXT = {
   waiting: {
     icon: serverIcon,
     tagline: 'Waiting for server'
+  },
+  error: {
+    icon: errorIcon,
+    tagline: 'Something went wrong'
   }
 };
 

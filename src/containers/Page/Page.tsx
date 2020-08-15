@@ -2,11 +2,13 @@ import React, { Suspense, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useHistory } from 'react-router-dom';
 
 import Router from './Router';
 import DynoWaiter from './DynoWaiter';
 import Loading from '../../components/Loading/Loading';
+import EmptyState from '../../components/EmptyState/EmptyState';
 
 
 const useStyles = makeStyles(theme => ({
@@ -33,22 +35,26 @@ const Page: React.FC = () => {
   }, [history]);
 
   return (
-    <SnackbarProvider
-      preventDuplicate
-      maxSnack={isMobile ? 1 : 3}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
+    <ErrorBoundary
+      FallbackComponent={() => <EmptyState variant="error" message="Try reloading the page." />}
     >
-      <div className={classes.root}>
-        <Suspense fallback={<Loading />}>
-          <DynoWaiter>
-            <Router />
-          </DynoWaiter>
-        </Suspense>
-      </div>
-    </SnackbarProvider>
+      <SnackbarProvider
+        preventDuplicate
+        maxSnack={isMobile ? 1 : 3}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+      >
+        <div className={classes.root}>
+          <Suspense fallback={<Loading />}>
+            <DynoWaiter>
+              <Router />
+            </DynoWaiter>
+          </Suspense>
+        </div>
+      </SnackbarProvider>
+    </ErrorBoundary>
   );
 };
 
