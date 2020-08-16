@@ -73,7 +73,7 @@ const Drawer: React.FC<PropTypes> = React.memo(({ isOpen, setIsOpen }) => {
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
     >
-      <IconButton onClick={handleClose} style={{width: '48px'}}>
+      <IconButton onClick={handleClose} style={{ width: '48px' }}>
         <CloseIcon />
       </IconButton>
       {user && <UserInfo user={user} />}
