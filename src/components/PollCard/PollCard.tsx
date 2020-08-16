@@ -94,7 +94,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const dominant: Which = left.votes >= right.votes ? 'left' : 'right';
 
   return (
-    <Card>
+    <Card elevation={3}>
       <UserStrip user={author} info={date} />
       <div className={classes.media}>
         <CardActionArea onDoubleClick={handleLeft} className={classes.media}>

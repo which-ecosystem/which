@@ -22,6 +22,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const ErrorFallback: React.FC = () => (
+  <EmptyState variant="error" message="Try reloading the page." />
+);
+
 const Page: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
@@ -35,26 +39,24 @@ const Page: React.FC = () => {
   }, [history]);
 
   return (
-    <ErrorBoundary
-      FallbackComponent={() => <EmptyState variant="error" message="Try reloading the page." />}
+    <SnackbarProvider
+      preventDuplicate
+      maxSnack={isMobile ? 1 : 3}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right'
+      }}
     >
-      <SnackbarProvider
-        preventDuplicate
-        maxSnack={isMobile ? 1 : 3}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-      >
-        <div className={classes.root}>
+      <div className={classes.root}>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Suspense fallback={<Loading />}>
             <DynoWaiter>
               <Router />
             </DynoWaiter>
           </Suspense>
-        </div>
-      </SnackbarProvider>
-    </ErrorBoundary>
+        </ErrorBoundary>
+      </div>
+    </SnackbarProvider>
   );
 };
 
