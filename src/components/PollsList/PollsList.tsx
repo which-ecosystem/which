@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import {
   WindowScroller,
   AutoSizer,
@@ -32,14 +32,16 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
   ), [polls, mutate]);
 
   const loadMoreRows = useCallback(async () => {
-    setDisplayCount(previousCount => {
-      return _.min([polls.length, previousCount + PAGE_SIZE]) || polls.length;
-    });
-  }, [polls]);
+    setDisplayCount(previousCount => previousCount + PAGE_SIZE);
+  }, []);
 
   const isRowLoaded = useCallback(({ index }) => {
     return index < displayCount - 1 || displayCount === polls.length;
   }, [displayCount, polls]);
+
+  const rowCount = useMemo(() => {
+    return _.min([displayCount, polls.length]) || polls.length;
+  }, [displayCount, polls.length]);
 
   return (
     <WindowScroller>
@@ -56,7 +58,7 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
               <InfiniteLoader
                 isRowLoaded={isRowLoaded}
                 loadMoreRows={loadMoreRows}
-                rowCount={displayCount}
+                rowCount={rowCount}
                 threshold={1}
               >
                 {({ onRowsRendered, registerChild: ref }) => (
@@ -65,7 +67,7 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
                     height={height}
                     isScrolling={isScrolling}
                     onScroll={onChildScroll}
-                    rowCount={displayCount}
+                    rowCount={rowCount}
                     rowHeight={550}
                     rowRenderer={rowRenderer}
                     scrollTop={scrollTop}
