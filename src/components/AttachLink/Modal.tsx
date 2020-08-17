@@ -6,7 +6,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle, useTheme, useMediaQuery
 } from '@material-ui/core';
 
 interface PropTypes {
@@ -17,6 +17,8 @@ interface PropTypes {
 
 const Modal: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const [url, setUrl] = useState<string>('');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClose = () => {
     setIsOpen(false);
@@ -40,10 +42,9 @@ const Modal: React.FC<PropTypes> = ({ setIsOpen, isOpen, callback }) => {
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
     setUrl(event.target.value);
   };
-
   return (
     <div>
-      <Dialog open={isOpen} onClose={handleClose}>
+      <Dialog fullScreen={isMobile} open={isOpen} onClose={handleClose}>
         <DialogTitle>Upload via link</DialogTitle>
         <DialogContent>
           <DialogContentText>

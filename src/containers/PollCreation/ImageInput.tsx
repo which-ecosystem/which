@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '50%'
+    width: '50%',
   },
   clearIcon: {
     opacity: '.5',
