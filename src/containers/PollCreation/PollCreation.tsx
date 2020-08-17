@@ -1,4 +1,5 @@
 import React from 'react';
+import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -49,21 +50,22 @@ const PollCreation: React.FC = () => {
   } = useS3Preupload();
 
   const handleClick = async () => {
-    if (isLeftReady && isRightReady) {
-      const [leftUrl, rightUrl] = await Promise.all([resolveLeft(), resolveRight()]);
+    try {
+      const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
 
       const contents = {
         left: { url: leftUrl },
         right: { url: rightUrl }
       };
 
+      history.push('/feed');
+
       post('/polls/', { contents }).then(() => {
         updateFeed();
-        enqueueSnackbar('Your poll has been successfully created!', {
-          variant: 'success'
-        });
+        enqueueSnackbar('Your poll has been successfully created!', { variant: 'success' });
       });
-
+    } catch (error) {
+      enqueueSnackbar('Failed to create a poll. Please, try again.', { variant: 'error' });
       history.push('/feed');
     }
   };
