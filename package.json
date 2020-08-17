@@ -1,12 +1,13 @@
 {
   "name": "which",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "homepage": "https://which-ecosystem.github.io/",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
     "lodash": "^4.17.15",
     "notistack": "^0.9.17",
     "react": "^16.13.1",
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.32",
     "@types/lodash": "^4.14.157",
     "@types/node": "^12.12.44",
     "@types/react": "^16.9.35",
