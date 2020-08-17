@@ -35,7 +35,7 @@ const RenderItem: React.FC<PropTypes> = React.memo(({
   }, [mutate, index, polls]);
 
   return (
-    <div key={_key} style={style}>
+    <div key={`${_key}-${poll._id}`} style={style}>
       <PollCard poll={poll} setPoll={setPoll} />
     </div>
   );

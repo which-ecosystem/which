@@ -15,6 +15,9 @@ interface PropTypes {
 type Status = 'success' | 'loading' | 'error';
 
 const useStyles = makeStyles(theme => ({
+  image: {
+    imageOrientation: 'from-image'
+  },
   container: {
     width: '100%',
     height: '100%',
@@ -71,7 +74,7 @@ const Image: React.FC<PropTypes> = React.memo(({
     <img
       src={src}
       alt={alt}
-      className={`${className} ${classes[status]}`}
+      className={`${classes.image} ${classes[status]} ${className}`}
       style={{ transition }}
       onLoad={handleLoad}
       onError={handleError}

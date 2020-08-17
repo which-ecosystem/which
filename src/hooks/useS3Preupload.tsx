@@ -33,7 +33,8 @@ export default (): Hook => {
   }, [setUrl, setFile]);
 
   const handleUploadProgress = useCallback((progressEvent: ProgressEvent): void => {
-    setProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+    // Only allow upload progress reach 95%, and set 100% when request is resolved
+    setProgress(Math.round((progressEvent.loaded * 95) / progressEvent.total));
   }, [setProgress]);
 
   const resolve = useCallback(async (): Promise<string> => {
@@ -43,10 +44,12 @@ export default (): Hook => {
         onUploadProgress: handleUploadProgress
       };
 
+      setProgress(0.01);
       return get('/files')
         .then(response => response.data)
         .then(uploadUrl => axios.put(uploadUrl, file, config))
         .then(response => {
+          setProgress(100);
           const uri = response.config.url;
           return uri ? uri.slice(0, uri.indexOf('?')) : '';
         });
