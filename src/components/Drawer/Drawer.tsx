@@ -5,11 +5,9 @@ import {
   List,
   ListItem,
   Typography,
-  Divider,
-  IconButton
+  Divider
 } from '@material-ui/core';
 import { ExitToApp as LogoutIcon, Info } from '@material-ui/icons';
-import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 
 import UserInfo from './UserInfo';
@@ -26,9 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   icon: {
     marginRight: theme.spacing(1)
-  },
-  closeDrawer: {
-
   }
 }));
 
@@ -73,9 +68,6 @@ const Drawer: React.FC<PropTypes> = React.memo(({ isOpen, setIsOpen }) => {
       disableBackdropTransition={!iOS}
       disableDiscovery={iOS}
     >
-      <IconButton onClick={handleClose} style={{ width: '48px' }}>
-        <CloseIcon />
-      </IconButton>
       {user && <UserInfo user={user} />}
       <Divider />
       <List>
