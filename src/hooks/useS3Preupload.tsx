@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { get } from '../requests';
