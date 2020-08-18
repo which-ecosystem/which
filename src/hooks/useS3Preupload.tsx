@@ -46,15 +46,24 @@ export default (): Hook => {
 
       setProgress(0.01);
       return get('/files')
-        .then(response => response.data)
-        .then(uploadUrl => axios.put(uploadUrl, file, config))
-        .then(response => {
+        .then(function(response){
+          console.log({'resData': response.data});
+          debugger;
+          return response.data;
+        })
+        .then(function(uploadUrl){
+          console.log({'uploadUrl': uploadUrl});
+          return axios.put(uploadUrl, file, config);
+        })
+        .then(function(response){
           setProgress(100);
           const uri = response.config.url;
+          console.log({'uri': uri?.slice(0, uri.indexOf('?'))});
           return uri ? uri.slice(0, uri.indexOf('?')) : '';
         });
     }
     setProgress(100);
+    console.log({'url': url});
     return url || '';
   }, [file, handleUploadProgress, url]);
 

@@ -52,6 +52,8 @@ const PollCreation: React.FC = () => {
   const handleClick = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
+      console.log('leftUrl', leftUrl);
+      console.log('rightUrl', rightUrl);
 
       const contents = {
         left: { url: leftUrl },
