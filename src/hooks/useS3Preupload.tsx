@@ -20,11 +20,10 @@ interface Hook {
 
 const compressFile = (file: File, quality = 0.6): Promise<Blob> => {
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line no-new
-    new Compressor(file, {
+    return new Compressor(file, {
       success: result => resolve(result),
       error: err => reject(err),
-      quality,
+      quality
     });
   });
 };
