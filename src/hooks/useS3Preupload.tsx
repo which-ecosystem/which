@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
+import Bluebird from 'bluebird';
+import Compressor from 'compressorjs';
 import { get } from '../requests';
 
 
@@ -14,6 +16,17 @@ interface Hook {
   resolve: () => Promise<string>;
   progress: number;
 }
+
+
+const compressFile = (file: File, quality = 0.6): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    return new Compressor(file, {
+      success: result => resolve(result),
+      error: err => reject(err),
+      quality
+    });
+  });
+};
 
 export default (): Hook => {
   const [url, setUrl] = useState<string>();
@@ -37,7 +50,7 @@ export default (): Hook => {
     setProgress(Math.round((progressEvent.loaded * 95) / progressEvent.total));
   }, [setProgress]);
 
-  const resolve = useCallback(async (): Promise<string> => {
+  const resolve = useCallback(async (quality?: number): Promise<string> => {
     if (file) {
       const config = {
         headers: { 'Content-Type': 'image/png' },
@@ -45,11 +58,14 @@ export default (): Hook => {
       };
 
       setProgress(0.01);
+
       // Add querystring to avoid caching request in some browsers, see
       // https://stackoverflow.com/questions/59339561/safari-skipping-xmlhttprequests
-      return get(`/files?key=${file.name}`)
-        .then(response => response.data)
-        .then(uploadUrl => axios.put(uploadUrl, file, config))
+      return Bluebird.all([get(`/files?key=${file.name}`), compressFile(file, quality)])
+        .then(([response, compressedFile]) => {
+          const uploadUrl = response.data;
+          return axios.put(uploadUrl, compressedFile, config);
+        })
         .then(response => {
           setProgress(100);
           const uri = response.config.url;

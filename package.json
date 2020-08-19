@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "axios": "^0.19.2",
     "bluebird": "^3.7.2",
+    "compressorjs": "^1.0.6",
     "lodash": "^4.17.15",
     "notistack": "^0.9.17",
     "react": "^16.13.1",
