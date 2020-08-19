@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
-import { get } from '../requests';
+import { post } from '../requests';
 
 
 interface ProgressEvent {
@@ -46,7 +46,7 @@ export default (): Hook => {
       };
 
       setProgress(0.01);
-      return get('/files')
+      return post('/files')
         .then(function(response){
           console.log({'resData': response.data});
           debugger;
