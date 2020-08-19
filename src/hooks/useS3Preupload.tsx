@@ -45,7 +45,9 @@ export default (): Hook => {
       };
 
       setProgress(0.01);
-      return get('/files')
+      // Add querystring to avoid caching request in some browsers, see
+      // https://stackoverflow.com/questions/59339561/safari-skipping-xmlhttprequests
+      return get(`/files?key=${file.name}`)
         .then(response => response.data)
         .then(uploadUrl => axios.put(uploadUrl, file, config))
         .then(response => {
