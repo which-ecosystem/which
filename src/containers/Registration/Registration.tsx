@@ -34,7 +34,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Registration: React.FC = () => {
-  const [error, setError] = useState<boolean>(false);
+  const errorOutputs = {
+    usernameError: 'Username is required',
+    emailError: 'Incorrect email',
+    passwordError: 'Should be at least 6 characters'
+  };
+  const [errorPassword, setErrorPassword] = useState<boolean>(false);
+  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorUsername, setErrorUsername] = useState<boolean>(false);
+
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
   const emailRef = useRef<HTMLInputElement>();
@@ -50,11 +58,21 @@ const Registration: React.FC = () => {
       post('/users', { username, password, email })
         .then(() => login(username, password))
         .then(() => history.push(`/profile/${username}`));
-    } else setError(true);
+    }
   };
 
   const handleLogin = () => {
     history.push('/login');
+  };
+
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorUsername(e.currentTarget.value.length === 0);
+  };
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorEmail(!e.currentTarget.value.includes('@'));
+  };
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorPassword(e.currentTarget.value.length < 6);
   };
 
   return (
@@ -64,18 +82,26 @@ const Registration: React.FC = () => {
         <TextField
           inputRef={usernameRef}
           label="Username"
-          error={error}
-          helperText={error && 'This field is required!'}
+          error={errorUsername}
+          helperText={errorUsername && errorOutputs.usernameError}
           required
+          onChange={handleLoginChange}
         />
-        <TextField inputRef={emailRef} label="Email" />
+        <TextField
+          inputRef={emailRef}
+          label="Email"
+          error={errorEmail}
+          helperText={errorEmail && errorOutputs.emailError}
+          onChange={handleEmailChange}
+        />
         <TextField
           inputRef={passwordRef}
           label="Password"
           type="password"
           required
-          error={error}
-          helperText={error && 'This field is required!'}
+          error={errorPassword}
+          helperText={errorPassword && errorOutputs.passwordError}
+          onChange={handlePasswordChange}
         />
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
       </form>
