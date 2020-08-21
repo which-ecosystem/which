@@ -25,7 +25,7 @@ const AttachLink: React.FC<PropTypes> = ({ callback, children }) => {
     </Button>
   );
 
-  const child = children && React.Children.toArray(children)[0];
+  const child = children && React.Children.only(children);
 
   return (
     <>

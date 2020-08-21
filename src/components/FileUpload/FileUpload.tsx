@@ -23,7 +23,7 @@ const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
     if (inputRef?.current) inputRef.current.click();
   };
 
-  const child = children && React.Children.toArray(children)[0];
+  const child = children && React.Children.only(children);
 
   const defaultButton = (
     <Button
