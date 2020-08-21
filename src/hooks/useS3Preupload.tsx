@@ -1,9 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import Bluebird from 'bluebird';
-import Compressor from 'compressorjs';
 import { get } from '../requests';
-
+import { compressFile } from '../utils/files';
 
 interface ProgressEvent {
   loaded: number;
@@ -16,17 +15,6 @@ interface Hook {
   resolve: () => Promise<string>;
   progress: number;
 }
-
-
-const compressFile = (file: File, quality = 0.6): Promise<Blob> => {
-  return new Promise((resolve, reject) => {
-    return new Compressor(file, {
-      success: result => resolve(result),
-      error: err => reject(err),
-      quality
-    });
-  });
-};
 
 export default (): Hook => {
   const [url, setUrl] = useState<string>();
