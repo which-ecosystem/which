@@ -16,7 +16,6 @@
     "react-error-boundary": "^2.3.1",
     "react-icons": "^3.10.0",
     "react-router-dom": "^5.2.0",
-    "react-sage": "^0.1.2",
     "react-scripts": "3.4.1",
     "react-virtualized": "^9.21.2",
     "swr": "^0.3.0",

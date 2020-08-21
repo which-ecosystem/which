@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { utils } from 'react-sage';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
+import { getLocalFileUrl } from '../../utils/files';
 
 interface PropTypes {
   callback: (fileUrl: string, file: File) => void;
@@ -15,7 +15,7 @@ const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
     const files = event.target?.files;
     if (files?.length) {
       const file = files[0];
-      utils.loadFile(file).then(url => callback(url, file));
+      getLocalFileUrl(file).then(url => callback(url, file));
     };
   };
 
