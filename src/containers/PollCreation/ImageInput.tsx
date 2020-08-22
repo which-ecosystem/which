@@ -10,6 +10,7 @@ import { Check, CancelOutlined } from '@material-ui/icons';
 import AttachLink from '../../components/AttachLink/AttachLink';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import BackgroundImage from '../../components/Image/BackgroundImage';
+import getLocalFileUrl from '../../utils/getLocalFileUrl';
 
 interface PropTypes {
   callback: (file?: File | string) => void;
@@ -59,9 +60,12 @@ const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
     callback(undefined);
   };
 
-  const childrenCallback = (fileUrl: string, file?: File) => {
-    setUrl(fileUrl);
-    callback(file || fileUrl);
+  const childrenCallback = (value: File | string) => {
+    if (value instanceof File) {
+      getLocalFileUrl(value).then(localUrl => setUrl(localUrl));
+    } else setUrl(value);
+
+    callback(value);
   };
 
   const Upload = (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Badge, Typography } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import { User } from 'which-types';
@@ -6,10 +6,11 @@ import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Highlight from './Highlight';
-import AttachLink from '../../components/AttachLink/AttachLink';
+import FileUpload from '../../components/FileUpload/FileUpload';
 import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
+import uploadFileToS3 from '../../utils/uploadFileToS3';
 
 
 interface PropTypes {
@@ -88,14 +89,16 @@ const ProfileInfo: React.FC<PropTypes> = ({
 }) => {
   const classes = useStyles();
   const { user } = useAuth();
+
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
-  const patchAvatar = (url: string) => {
-    const id = user?._id;
-    patch(`/users/${id}`, { avatarUrl: url }).then(res => {
-      setUserInfo(res.data);
-    });
-  };
+  const handleUpdateAvatar = useCallback(async (file: File) => {
+    if (user) {
+      uploadFileToS3(file, 1)
+        .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
+        .then(response => setUserInfo(response.data));
+    }
+  }, [user, setUserInfo]);
 
   return (
     <div className={classes.root}>
@@ -104,7 +107,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
           : userInfo?._id === user?._id
             ? (
-              <AttachLink callback={patchAvatar}>
+              <FileUpload callback={handleUpdateAvatar}>
                 <div className={classes.avatarContainer}>
                   <Badge
                     overlap="circle"
@@ -121,7 +124,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                     <Avatar className={classes.avatar} user={userInfo} />
                   </Badge>
                 </div>
-              </AttachLink>
+              </FileUpload>
             )
             : <Avatar className={classes.avatar} user={userInfo} />
       }

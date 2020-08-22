@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import { getLocalFileUrl } from '../../utils/files';
 
 interface PropTypes {
-  callback: (fileUrl: string, file: File) => void;
+  callback: (file: File) => void;
 }
 
 
@@ -13,10 +12,7 @@ const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files;
-    if (files?.length) {
-      const file = files[0];
-      getLocalFileUrl(file).then(url => callback(url, file));
-    };
+    if (files?.length) callback(files[0]);
   };
 
   const handleClick = () => {

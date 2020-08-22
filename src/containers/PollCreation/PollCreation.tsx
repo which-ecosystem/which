@@ -12,12 +12,12 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
+import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
-import useS3Preupload from '../../hooks/useS3Preupload';
 
 
 const useStyles = makeStyles(theme => ({
