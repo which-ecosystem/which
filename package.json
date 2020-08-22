@@ -1,6 +1,6 @@
 {
   "name": "which",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "homepage": "https://which-ecosystem.github.io/",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
