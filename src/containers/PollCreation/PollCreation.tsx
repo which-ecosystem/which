@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
@@ -12,12 +11,12 @@ import {
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
+import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
-import useS3Preupload from '../../hooks/useS3Preupload';
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,23 +37,21 @@ const PollCreation: React.FC = () => {
   const { user } = useAuth();
   const { mutate: updateFeed } = useFeed();
   const {
-    setValue: setLeft,
-    progress: progressLeft,
+    file: left,
+    setFile: setLeft,
     resolve: resolveLeft,
-    isReady: isLeftReady
+    progress: leftProgress
   } = useS3Preupload();
   const {
-    setValue: setRight,
-    progress: progressRight,
+    file: right,
+    setFile: setRight,
     resolve: resolveRight,
-    isReady: isRightReady
+    progress: rightProgress
   } = useS3Preupload();
 
   const handleClick = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
-      console.log('leftUrl', leftUrl);
-      console.log('rightUrl', rightUrl);
 
       const contents = {
         left: { url: leftUrl },
@@ -79,16 +76,16 @@ const PollCreation: React.FC = () => {
         {user && <UserStrip user={user} info="" />}
         <Divider />
         <div className={classes.images}>
-          <ImageInput callback={setLeft} progress={progressLeft} />
-          <ImageInput callback={setRight} progress={progressRight} />
+          <ImageInput callback={setLeft} progress={leftProgress} />
+          <ImageInput callback={setRight} progress={rightProgress} />
         </div>
         {
-          progressLeft || progressRight
+          leftProgress || rightProgress
             ? <LinearProgress color="primary" />
             : (
               <Button
                 color="primary"
-                disabled={!(isLeftReady && isRightReady)}
+                disabled={!(left && right)}
                 variant="contained"
                 onClick={handleClick}
                 fullWidth

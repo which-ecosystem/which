@@ -1,16 +1,16 @@
-import React from 'react';
-import { Badge, Typography } from '@material-ui/core/';
+import React, { useState, useCallback } from 'react';
+import { Badge, Typography, CircularProgress } from '@material-ui/core/';
+import { CameraAlt, CheckCircleOutline } from '@material-ui/icons/';
 import { makeStyles } from '@material-ui/core/styles';
-import { User } from 'which-types';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import VerifiedIcon from '@material-ui/icons/CheckCircleOutline';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { User } from 'which-types';
+
 import Highlight from './Highlight';
-import AttachLink from '../../components/AttachLink/AttachLink';
+import FileUpload from '../../components/FileUpload/FileUpload';
 import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
-
+import uploadFileToS3 from '../../utils/uploadFileToS3';
 
 interface PropTypes {
   savedPolls: number;
@@ -66,7 +66,9 @@ const useStyles = makeStyles(theme => ({
   },
   avatarContainer: {
     position: 'relative',
-    textAlign: 'center'
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   menuNumber: {
     fontWeight: 800,
@@ -78,8 +80,11 @@ const useStyles = makeStyles(theme => ({
   skeleton: {
     margin: '10px auto',
     borderRadius: 2
+  },
+  progress: {
+    position: 'absolute',
+    color: 'white'
   }
-
 }));
 
 
@@ -88,14 +93,18 @@ const ProfileInfo: React.FC<PropTypes> = ({
 }) => {
   const classes = useStyles();
   const { user } = useAuth();
+  const [progress, setProgress] = useState<number>(0);
+
   const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
 
-  const patchAvatar = (url: string) => {
-    const id = user?._id;
-    patch(`/users/${id}`, { avatarUrl: url }).then(res => {
-      setUserInfo(res.data);
-    });
-  };
+  const handleUpdateAvatar = useCallback(async (file: File) => {
+    if (user) {
+      uploadFileToS3(file, 0.8, setProgress)
+        .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
+        .then(response => setUserInfo(response.data))
+        .then(() => setProgress(0));
+    }
+  }, [user, setUserInfo]);
 
   return (
     <div className={classes.root}>
@@ -104,24 +113,28 @@ const ProfileInfo: React.FC<PropTypes> = ({
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
           : userInfo?._id === user?._id
             ? (
-              <AttachLink callback={patchAvatar}>
-                <div className={classes.avatarContainer}>
-                  <Badge
-                    overlap="circle"
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right'
-                    }}
-                    badgeContent={(
+              <div className={classes.avatarContainer}>
+                <Badge
+                  overlap="circle"
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right'
+                  }}
+                  className={classes.avatarContainer}
+                  badgeContent={(
+                    <FileUpload callback={handleUpdateAvatar}>
                       <div className={classes.badge}>
-                        <CameraAltIcon />
+                        <CameraAlt />
                       </div>
-                    )}
-                  >
-                    <Avatar className={classes.avatar} user={userInfo} />
-                  </Badge>
-                </div>
-              </AttachLink>
+                    </FileUpload>
+                  )}
+                >
+                  <Avatar className={classes.avatar} user={userInfo} />
+                  {progress > 0 && (
+                    <CircularProgress variant="static" value={progress} className={classes.progress} />
+                  )}
+                </Badge>
+              </div>
             )
             : <Avatar className={classes.avatar} user={userInfo} />
       }
@@ -131,7 +144,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
           : (
             <Typography variant="h5" className={classes.name}>
               {userInfo?.username}
-              {userInfo?.verified && <VerifiedIcon className={classes.verified} color="primary" />}
+              {userInfo?.verified && <CheckCircleOutline className={classes.verified} color="primary" />}
             </Typography>
           )
       }

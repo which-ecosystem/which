@@ -1,28 +1,29 @@
-import React, { useEffect } from 'react';
-import { useFilePicker, utils } from 'react-sage';
+import React, { useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import CloudUpload from '@material-ui/icons/CloudUpload';
 
 interface PropTypes {
-  callback: (fileUrl: string, file: File) => void;
+  callback: (file: File) => void;
 }
 
 
 const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
-  const { files, onClick, HiddenFileInput } = useFilePicker();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (files?.length) {
-      const file = files[0];
-      utils.loadFile(file).then(url => callback(url, file));
-    }
-  }, [files, callback]);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target?.files;
+    if (files?.length) callback(files[0]);
+  };
 
-  const child = children && React.Children.toArray(children)[0];
+  const handleClick = () => {
+    if (inputRef?.current) inputRef.current.click();
+  };
+
+  const child = children && React.Children.only(children);
 
   const defaultButton = (
     <Button
-      onClick={onClick}
+      onClick={handleClick}
       variant="contained"
       color="primary"
       size="large"
@@ -34,10 +35,17 @@ const FileUpload: React.FC<PropTypes> = ({ callback, children }) => {
 
   return (
     <>
-      <HiddenFileInput accept=".jpg, .jpeg, .png, .gif" multiple={false} />
+      <input
+        type="file"
+        ref={inputRef}
+        multiple={false}
+        accept=".jpg, .jpeg, .png, .gif"
+        style={{ display: 'none' }}
+        onChange={handleChange}
+      />
       {
         React.isValidElement(child)
-          ? React.cloneElement(child, { onClick })
+          ? React.cloneElement(child, { onClick: handleClick })
           : defaultButton
       }
     </>
