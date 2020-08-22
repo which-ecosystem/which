@@ -1,39 +1,28 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import uploadFileToS3 from '../../utils/uploadFileToS3';
 
-
 interface Hook {
-  setValue: (value: File | string | undefined) => void;
-  isReady: boolean;
+  file: File | string | undefined;
+  setFile: (value: File | string | undefined) => void;
   resolve: () => Promise<string>;
   progress: number;
 }
 
 export default (): Hook => {
-  const [url, setUrl] = useState<string>();
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | string>();
   const [progress, setProgress] = useState<number>(0);
 
-  const isReady = useMemo(() => Boolean(file || url), [file, url]);
-
-  const setValue: Hook['setValue'] = useCallback(value => {
-    if (value instanceof File) {
-      setFile(value);
-      setUrl(undefined);
-    } else {
-      setUrl(value);
-      setFile(undefined);
-    }
-  }, [setUrl, setFile]);
-
   const resolve = useCallback(async (quality?: number): Promise<string> => {
-    if (file) return uploadFileToS3(file, quality, setProgress);
-    return url || '';
-  }, [file, url]);
+    // Indicate start
+    setProgress(0.01);
+
+    if (file instanceof File) return uploadFileToS3(file, quality, setProgress);
+    return file || '';
+  }, [file]);
 
   return {
-    setValue,
-    isReady,
+    file,
+    setFile,
     resolve,
     progress
   };

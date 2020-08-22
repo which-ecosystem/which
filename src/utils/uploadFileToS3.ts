@@ -8,10 +8,13 @@ interface ProgressEvent {
   total: number;
 }
 
+type SetProgress = (progress: number) => void;
+
+
 const compressFile = (file: File, quality = 0.6): Promise<File | Blob> => {
   return new Promise((resolve, reject) => {
-    if (quality === 1) resolve(file);
-    else return new Compressor(file, {
+    if (quality === 1) return resolve(file);
+    return new Compressor(file, {
       success: result => resolve(result),
       error: err => reject(err),
       quality
@@ -19,16 +22,12 @@ const compressFile = (file: File, quality = 0.6): Promise<File | Blob> => {
   });
 };
 
-export default (
-  file: File,
-  quality?: number,
-  setProgress?: (progress: number) => void
-): Promise<string> => {
-
+export default (file: File, quality?: number, setProgress?: SetProgress): Promise<string> => {
   const onUploadProgress = (progressEvent: ProgressEvent): void => {
     if (setProgress) {
+      const { loaded, total } = progressEvent;
       // Only allow upload progress reach 95%, and set 100% when request is resolved
-      const progress = Math.round((progressEvent.loaded * 95) / progressEvent.total);
+      const progress = Math.round((loaded * 95) / total);
       setProgress(progress);
     }
   };
@@ -37,9 +36,6 @@ export default (
     headers: { 'Content-Type': 'image/png' },
     onUploadProgress
   };
-
-  // Indicate start
-  if (setProgress) setProgress(0.01);
 
   // Add querystring to avoid caching request in some browsers, see
   // https://stackoverflow.com/questions/59339561/safari-skipping-xmlhttprequests
