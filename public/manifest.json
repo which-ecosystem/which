@@ -1,0 +1,15 @@
+{
+  "short_name": "Which",
+  "name": "Which",
+  "icons": [
+    {
+      "src": "which-logo-144.png",
+      "type": "image/png",
+      "sizes": "144x144",
+      "purpose": "maskable"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "#00796b",
+  "background_color": "#ffffff"
+}
