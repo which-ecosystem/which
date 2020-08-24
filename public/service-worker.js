@@ -40,7 +40,7 @@ this.addEventListener('fetch', event => {
 });
 
 this.addEventListener('activate', event => {
-  const cacheWhiteList = [CACHE_NAME, IMAGES_CACHE_NAME];
+  const cacheWhiteList = [CACHE_NAME];
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
