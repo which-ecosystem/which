@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v1.2.4'; // Per-version requests cache
+const CACHE_NAME = 'v1.2.5'; // Per-version requests cache
 const IMAGES_CACHE_NAME = 'images' // Long-term images cache
 
 const isS3Url = url => url.includes('amazonaws.com');
