@@ -3,14 +3,10 @@
   "name": "Which",
   "icons": [
     {
-      "src": "which-logo-512.png",
+      "src": "which-logo-144.png",
       "type": "image/png",
-      "sizes": "512x512"
-    },
-    {
-      "src": "which-logo-64.png",
-      "type": "image/png",
-      "sizes": "64x64"
+      "sizes": "144x144",
+      "purpose": "maskable"
     }
   ],
   "display": "standalone",
