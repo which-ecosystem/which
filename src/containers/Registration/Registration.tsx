@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import {
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton
+} from '@material-ui/core';
+import { CheckCircle, Visibility, VisibilityOff } from '@material-ui/icons';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -35,18 +38,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const inputStyle = { WebkitBoxShadow: '0 0 0 1000px snow inset' };
-
+interface ValidationStates {
+  validUsername: boolean | undefined;
+  validEmail: boolean | undefined;
+  validPassword: boolean | undefined;
+  showPassword: boolean;
+}
 
 const Registration: React.FC = () => {
-  const errorOutputs = {
-    usernameError: 'Username is required',
-    emailError: 'Invalid email address',
-    passwordError: 'Should be at least 6 characters'
-  };
-  const [errorPassword, setErrorPassword] = useState<boolean>(false);
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
-  const [errorUsername, setErrorUsername] = useState<boolean>(false);
+  const [values, setValues] = useState<ValidationStates>({
+    validUsername: undefined,
+    validEmail: undefined,
+    validPassword: undefined,
+    showPassword: false
+  });
 
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
@@ -55,11 +60,15 @@ const Registration: React.FC = () => {
   const { login } = useAuth();
   const history = useHistory();
 
+  const checkFromValidation = () => {
+    return values.validUsername && values.validEmail && values.validPassword;
+  };
+
   const handleSubmit = () => {
     const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
-    if (username && password) {
+    if (username && password && checkFromValidation()) {
       post('/users', { username, password, email })
         .then(() => login(username, password))
         .then(() => history.push(`/profile/${username}`));
@@ -70,14 +79,20 @@ const Registration: React.FC = () => {
     history.push('/login');
   };
 
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorUsername(e.currentTarget.value.length === 0);
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, validUsername: e.currentTarget.value.length > 0 });
   };
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorEmail(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value));
+    setValues({ ...values, validEmail: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value) });
   };
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorPassword(e.currentTarget.value.length < 6);
+    setValues({ ...values, validPassword: e.currentTarget.value.length > 6 });
   };
 
   return (
@@ -87,46 +102,54 @@ const Registration: React.FC = () => {
         <TextField
           inputRef={usernameRef}
           label="Username"
-          error={errorUsername}
-          helperText={errorUsername && errorOutputs.usernameError}
+          error={!values.validUsername}
+          helperText={!values.validUsername && 'This field is required'}
           required
-          onChange={handleLoginChange}
-          inputProps={{ style: inputStyle }}
+          onChange={handleUsernameChange}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {values.validUsername && values.validUsername !== undefined && <CheckCircle color="primary" />}
+              </InputAdornment>
+            )
+          }}
         />
         <TextField
           inputRef={emailRef}
           label="Email"
-          error={errorEmail}
-          helperText={errorEmail && errorOutputs.emailError}
+          error={!values.validEmail}
+          helperText={!values.validEmail && 'Invalid email address'}
           onChange={handleEmailChange}
-          InputProps={errorEmail ? {} : {
+          InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <CheckCircleIcon color="primary" />
+                {values.validEmail && values.validEmail !== undefined && <CheckCircle color="primary" />}
               </InputAdornment>
-            ),
-            inputProps: {
-              style: inputStyle
-            }
+            )
           }}
         />
         <TextField
           inputRef={passwordRef}
           label="Password"
-          type="password"
           required
-          error={errorPassword}
-          helperText={errorPassword && errorOutputs.passwordError}
+          error={!values.validPassword}
+          helperText={!values.validPassword && 'Should be at least 6 characters'}
+          type={values.showPassword ? 'text' : 'password'}
           onChange={handlePasswordChange}
-          InputProps={errorPassword ? {} : {
+          InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <CheckCircleIcon color="primary" />
+                <IconButton
+                  size="small"
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+                {values.validPassword && values.validPassword !== undefined && <CheckCircle color="primary" />}
               </InputAdornment>
-            ),
-            inputProps: {
-              style: inputStyle
-            }
+            )
           }}
         />
         <Button variant="contained" onClick={handleSubmit}>submit</Button>
