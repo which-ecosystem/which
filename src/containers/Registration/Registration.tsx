@@ -40,6 +40,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10,
     color: 'green',
     cursor: 'pointer'
+  },
+  textField: {
+    height: 70
   }
 }));
 
@@ -132,6 +135,7 @@ const Registration: React.FC = () => {
           onBlur={handleUsernameChange}
           onInput={handleToLowerCase}
           onFocus={handleFocus('username')}
+          className={classes.textField}
         />
         <TextField
           inputRef={emailRef}
@@ -140,6 +144,7 @@ const Registration: React.FC = () => {
           helperText={errors.email && 'Invalid email address'}
           onBlur={handleEmailChange}
           onFocus={handleFocus('email')}
+          className={classes.textField}
         />
         <TextField
           inputRef={passwordRef}
@@ -164,6 +169,7 @@ const Registration: React.FC = () => {
               </InputAdornment>
             )
           }}
+          className={classes.textField}
         />
         <Button variant="contained" type="submit">submit</Button>
       </form>
