@@ -38,14 +38,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-interface errors {
+interface ErrorStates {
   validUsername: boolean | undefined;
   validEmail: boolean | undefined;
   validPassword: boolean | undefined;
 }
 
 const Registration: React.FC = () => {
-  const [values, setValues] = useState<errors>({
+  const [values, setValues] = useState<ErrorStates>({
     validUsername: undefined,
     validEmail: undefined,
     validPassword: undefined,
