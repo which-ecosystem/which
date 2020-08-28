@@ -1,4 +1,9 @@
-import React, {useState, useRef, FormEvent, useMemo} from 'react';
+import React, {
+  useState,
+  useRef,
+  FormEvent,
+  useMemo
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -7,7 +12,7 @@ import {
   InputAdornment,
   IconButton
 } from '@material-ui/core';
-import { CheckCircle, Visibility, VisibilityOff } from '@material-ui/icons';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -46,9 +51,9 @@ interface ErrorStates {
 
 const Registration: React.FC = () => {
   const [values, setValues] = useState<ErrorStates>({
-    username: undefined,
-    email: undefined,
-    password: undefined,
+    username: false,
+    email: false,
+    password: false
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -60,16 +65,15 @@ const Registration: React.FC = () => {
   const history = useHistory();
 
   const isValid = useMemo(() => {
-    return values.username && values.email && values.password;
-  },[values]);
+    return !values.username && !values.email && !values.password;
+  }, [values]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
     if (username && password && isValid) {
-      console.log('yes');
       post('/users', { username, password, email })
         .then(() => login(username, password))
         .then(() => history.push(`/profile/${username}`));
@@ -88,19 +92,19 @@ const Registration: React.FC = () => {
   const handleUsernameChange = (e: React.FocusEvent<HTMLInputElement>) => {
     setValues({
       ...values,
-      username: e.currentTarget.value.length > 0
+      username: e.currentTarget.value.length === 0
     });
   };
   const handleEmailChange = (e: React.FocusEvent<HTMLInputElement>) => {
     setValues({
       ...values,
-      email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value)
+      email: !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value)
     });
   };
   const handlePasswordChange = (e: React.FocusEvent<HTMLInputElement>) => {
     setValues({
       ...values,
-      password: e.currentTarget.value.length > 6
+      password: e.currentTarget.value.length < 6
     });
   };
 
@@ -111,24 +115,24 @@ const Registration: React.FC = () => {
         <TextField
           inputRef={usernameRef}
           label="Username"
-          error={!values.username}
-          helperText={!values.username && 'This field is required'}
+          error={values.username}
+          helperText={values.username && 'This field is required'}
           required
           onBlur={handleUsernameChange}
         />
         <TextField
           inputRef={emailRef}
           label="Email"
-          error={!values.email}
-          helperText={!values.email && 'Invalid email address'}
+          error={values.email}
+          helperText={values.email && 'Invalid email address'}
           onBlur={handleEmailChange}
         />
         <TextField
           inputRef={passwordRef}
           label="Password"
           required
-          error={!values.password}
-          helperText={!values.password && 'Should be at least 6 characters'}
+          error={values.password}
+          helperText={values.password && 'Should be at least 6 characters'}
           type={showPassword ? 'text' : 'password'}
           onBlur={handlePasswordChange}
           InputProps={{
@@ -146,7 +150,7 @@ const Registration: React.FC = () => {
             )
           }}
         />
-        <Button variant="contained" type="submit" >submit</Button>
+        <Button variant="contained" type="submit">submit</Button>
       </form>
       <div className={classes.formTransfer}>
         <div>Already have an account?</div>
