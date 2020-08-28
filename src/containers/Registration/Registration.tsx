@@ -79,21 +79,29 @@ const Registration: React.FC = () => {
   const handleLogin = () => {
     history.push('/login');
   };
-
   const handleClickShowPassword = () => {
     setShowPassword(prevState => !prevState);
   };
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, username: e.currentTarget.value.length > 0 });
+  const handleUsernameChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    setValues({
+      ...values,
+      username: e.currentTarget.value.length > 0
+    });
   };
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value) });
+  const handleEmailChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    setValues({
+      ...values,
+      email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value)
+    });
   };
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, password: e.currentTarget.value.length > 6 });
+  const handlePasswordChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    setValues({
+      ...values,
+      password: e.currentTarget.value.length > 6
+    });
   };
 
   return (
@@ -106,14 +114,14 @@ const Registration: React.FC = () => {
           error={!values.username}
           helperText={!values.username && 'This field is required'}
           required
-          onChange={handleUsernameChange}
+          onBlur={handleUsernameChange}
         />
         <TextField
           inputRef={emailRef}
           label="Email"
           error={!values.email}
           helperText={!values.email && 'Invalid email address'}
-          onChange={handleEmailChange}
+          onBlur={handleEmailChange}
         />
         <TextField
           inputRef={passwordRef}
@@ -122,7 +130,7 @@ const Registration: React.FC = () => {
           error={!values.password}
           helperText={!values.password && 'Should be at least 6 characters'}
           type={showPassword ? 'text' : 'password'}
-          onChange={handlePasswordChange}
+          onBlur={handlePasswordChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
