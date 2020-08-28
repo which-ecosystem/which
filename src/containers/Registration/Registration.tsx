@@ -38,20 +38,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-interface ValidationStates {
+interface errors {
   validUsername: boolean | undefined;
   validEmail: boolean | undefined;
   validPassword: boolean | undefined;
-  showPassword: boolean;
 }
 
 const Registration: React.FC = () => {
-  const [values, setValues] = useState<ValidationStates>({
+  const [values, setValues] = useState<errors>({
     validUsername: undefined,
     validEmail: undefined,
     validPassword: undefined,
-    showPassword: false
   });
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const classes = useStyles();
   const usernameRef = useRef<HTMLInputElement>();
@@ -82,7 +81,7 @@ const Registration: React.FC = () => {
   };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setShowPassword(prevState => !prevState);
   };
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -108,13 +107,6 @@ const Registration: React.FC = () => {
           helperText={!values.validUsername && 'This field is required'}
           required
           onChange={handleUsernameChange}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {values.validUsername && values.validUsername !== undefined && <CheckCircle color="primary" />}
-              </InputAdornment>
-            )
-          }}
         />
         <TextField
           inputRef={emailRef}
@@ -122,13 +114,6 @@ const Registration: React.FC = () => {
           error={!values.validEmail}
           helperText={!values.validEmail && 'Invalid email address'}
           onChange={handleEmailChange}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {values.validEmail && values.validEmail !== undefined && <CheckCircle color="primary" />}
-              </InputAdornment>
-            )
-          }}
         />
         <TextField
           inputRef={passwordRef}
@@ -136,7 +121,7 @@ const Registration: React.FC = () => {
           required
           error={!values.validPassword}
           helperText={!values.validPassword && 'Should be at least 6 characters'}
-          type={values.showPassword ? 'text' : 'password'}
+          type={showPassword ? 'text' : 'password'}
           onChange={handlePasswordChange}
           InputProps={{
             endAdornment: (
@@ -147,7 +132,7 @@ const Registration: React.FC = () => {
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
                 {values.validPassword && values.validPassword !== undefined && <CheckCircle color="primary" />}
               </InputAdornment>
