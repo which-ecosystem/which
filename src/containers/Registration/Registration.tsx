@@ -44,13 +44,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ErrorStates {
-  username: boolean | undefined;
-  email: boolean | undefined;
-  password: boolean | undefined;
+  username: boolean;
+  email: boolean;
+  password: boolean;
 }
 
 const Registration: React.FC = () => {
-  const [values, setValues] = useState<ErrorStates>({
+  const [errors, setErrors] = useState<ErrorStates>({
     username: false,
     email: false,
     password: false
@@ -65,10 +65,10 @@ const Registration: React.FC = () => {
   const history = useHistory();
 
   const isValid = useMemo(() => {
-    return !values.username && !values.email && !values.password;
-  }, [values]);
+    return !errors.username && !errors.email && !errors.password;
+  }, [errors]);
 
-  const handleSubmit = (event:FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
@@ -89,23 +89,27 @@ const Registration: React.FC = () => {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const handleUsernameChange = (e: React.FocusEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      username: e.currentTarget.value.length === 0
+  const handleUsernameChange = (event: React.FocusEvent<HTMLInputElement>) => {
+    setErrors({
+      ...errors,
+      username: event.currentTarget.value.length === 0
     });
   };
-  const handleEmailChange = (e: React.FocusEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      email: !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value)
+  const handleEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
+    setErrors({
+      ...errors,
+      email: !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(event.currentTarget.value)
     });
   };
-  const handlePasswordChange = (e: React.FocusEvent<HTMLInputElement>) => {
-    setValues({
-      ...values,
-      password: e.currentTarget.value.length < 6
+  const handlePasswordChange = (event: React.FocusEvent<HTMLInputElement>) => {
+    setErrors({
+      ...errors,
+      password: event.currentTarget.value.length < 6
     });
+  };
+
+  const handleToLowerCase = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = ("" + e.target.value).toLowerCase();
   };
 
   return (
@@ -115,24 +119,25 @@ const Registration: React.FC = () => {
         <TextField
           inputRef={usernameRef}
           label="Username"
-          error={values.username}
-          helperText={values.username && 'This field is required'}
+          error={errors.username}
+          helperText={errors.username && 'This field is required'}
           required
           onBlur={handleUsernameChange}
+          onInput={handleToLowerCase}
         />
         <TextField
           inputRef={emailRef}
           label="Email"
-          error={values.email}
-          helperText={values.email && 'Invalid email address'}
+          error={errors.email}
+          helperText={errors.email && 'Invalid email address'}
           onBlur={handleEmailChange}
         />
         <TextField
           inputRef={passwordRef}
           label="Password"
           required
-          error={values.password}
-          helperText={values.password && 'Should be at least 6 characters'}
+          error={errors.password}
+          helperText={errors.password && 'Should be at least 6 characters'}
           type={showPassword ? 'text' : 'password'}
           onBlur={handlePasswordChange}
           InputProps={{
