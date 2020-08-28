@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, FormEvent} from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -64,11 +64,13 @@ const Registration: React.FC = () => {
     return values.validUsername && values.validEmail && values.validPassword;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
     if (username && password && checkFromValidation()) {
+      console.log('yes');
       post('/users', { username, password, email })
         .then(() => login(username, password))
         .then(() => history.push(`/profile/${username}`));
@@ -98,7 +100,7 @@ const Registration: React.FC = () => {
   return (
     <>
       <div className={classes.formHeader}>Sign Up</div>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
         <TextField
           inputRef={usernameRef}
           label="Username"
@@ -152,7 +154,7 @@ const Registration: React.FC = () => {
             )
           }}
         />
-        <Button variant="contained" onClick={handleSubmit}>submit</Button>
+        <Button variant="contained" type="submit" >submit</Button>
       </form>
       <div className={classes.formTransfer}>
         <div>Already have an account?</div>
