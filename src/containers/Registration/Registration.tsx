@@ -1,4 +1,4 @@
-import React, {useState, useRef, FormEvent} from 'react';
+import React, {useState, useRef, FormEvent, useMemo} from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -39,16 +39,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ErrorStates {
-  validUsername: boolean | undefined;
-  validEmail: boolean | undefined;
-  validPassword: boolean | undefined;
+  username: boolean | undefined;
+  email: boolean | undefined;
+  password: boolean | undefined;
 }
 
 const Registration: React.FC = () => {
   const [values, setValues] = useState<ErrorStates>({
-    validUsername: undefined,
-    validEmail: undefined,
-    validPassword: undefined,
+    username: undefined,
+    email: undefined,
+    password: undefined,
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -59,16 +59,16 @@ const Registration: React.FC = () => {
   const { login } = useAuth();
   const history = useHistory();
 
-  const checkFromValidation = () => {
-    return values.validUsername && values.validEmail && values.validPassword;
-  };
+  const isValid = useMemo(() => {
+    return values.username && values.email && values.password;
+  },[values]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const username = usernameRef.current?.value?.toLowerCase();
     const password = passwordRef.current?.value;
     const email = emailRef.current?.value;
-    if (username && password && checkFromValidation()) {
+    if (username && password && isValid) {
       console.log('yes');
       post('/users', { username, password, email })
         .then(() => login(username, password))
@@ -87,13 +87,13 @@ const Registration: React.FC = () => {
     event.preventDefault();
   };
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, validUsername: e.currentTarget.value.length > 0 });
+    setValues({ ...values, username: e.currentTarget.value.length > 0 });
   };
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, validEmail: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value) });
+    setValues({ ...values, email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value) });
   };
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, validPassword: e.currentTarget.value.length > 6 });
+    setValues({ ...values, password: e.currentTarget.value.length > 6 });
   };
 
   return (
@@ -103,24 +103,24 @@ const Registration: React.FC = () => {
         <TextField
           inputRef={usernameRef}
           label="Username"
-          error={!values.validUsername}
-          helperText={!values.validUsername && 'This field is required'}
+          error={!values.username}
+          helperText={!values.username && 'This field is required'}
           required
           onChange={handleUsernameChange}
         />
         <TextField
           inputRef={emailRef}
           label="Email"
-          error={!values.validEmail}
-          helperText={!values.validEmail && 'Invalid email address'}
+          error={!values.email}
+          helperText={!values.email && 'Invalid email address'}
           onChange={handleEmailChange}
         />
         <TextField
           inputRef={passwordRef}
           label="Password"
           required
-          error={!values.validPassword}
-          helperText={!values.validPassword && 'Should be at least 6 characters'}
+          error={!values.password}
+          helperText={!values.password && 'Should be at least 6 characters'}
           type={showPassword ? 'text' : 'password'}
           onChange={handlePasswordChange}
           InputProps={{
@@ -134,7 +134,6 @@ const Registration: React.FC = () => {
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
-                {values.validPassword && values.validPassword !== undefined && <CheckCircle color="primary" />}
               </InputAdornment>
             )
           }}
