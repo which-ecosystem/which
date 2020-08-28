@@ -44,16 +44,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface ErrorStates {
-  username: boolean;
-  email: boolean;
-  password: boolean;
+  username: boolean | undefined;
+  email: boolean | undefined;
+  password: boolean | undefined;
 }
 
 const Registration: React.FC = () => {
   const [errors, setErrors] = useState<ErrorStates>({
-    username: false,
-    email: false,
-    password: false
+    username: undefined,
+    email: undefined,
+    password: undefined
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -112,6 +112,13 @@ const Registration: React.FC = () => {
     e.target.value = e.target.value.toString().toLowerCase();
   };
 
+  const handleFocus = (value: string) => () => {
+    setErrors({
+      ...errors,
+      [value]: undefined
+    });
+  };
+
   return (
     <>
       <div className={classes.formHeader}>Sign Up</div>
@@ -124,6 +131,7 @@ const Registration: React.FC = () => {
           required
           onBlur={handleUsernameChange}
           onInput={handleToLowerCase}
+          onFocus={handleFocus('username')}
         />
         <TextField
           inputRef={emailRef}
@@ -131,6 +139,7 @@ const Registration: React.FC = () => {
           error={errors.email}
           helperText={errors.email && 'Invalid email address'}
           onBlur={handleEmailChange}
+          onFocus={handleFocus('email')}
         />
         <TextField
           inputRef={passwordRef}
@@ -140,6 +149,7 @@ const Registration: React.FC = () => {
           helperText={errors.password && 'Should be at least 6 characters'}
           type={showPassword ? 'text' : 'password'}
           onBlur={handlePasswordChange}
+          onFocus={handleFocus('password')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
