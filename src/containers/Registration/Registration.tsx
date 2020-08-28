@@ -109,7 +109,7 @@ const Registration: React.FC = () => {
   };
 
   const handleToLowerCase = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = ("" + e.target.value).toLowerCase();
+    e.target.value = e.target.value.toString().toLowerCase();
   };
 
   return (
