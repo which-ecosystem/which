@@ -45,7 +45,7 @@ const Page: React.FC = () => {
       anchorOrigin={
         isMobile
           ? { vertical: 'top', horizontal: 'right' }
-          : { vertical: 'bottom', horizontal: 'left'}
+          : { vertical: 'bottom', horizontal: 'left' }
       }
     >
       <div className={classes.root}>
