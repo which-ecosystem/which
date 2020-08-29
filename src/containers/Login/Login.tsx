@@ -53,7 +53,6 @@ const Login: React.FC = () => {
   const history = useHistory();
 
   const handleSubmit = async ({ username, password, remember }: Fields) => {
-    console.log({ username, password, remember })
     if (username && password) {
       login(username, password, remember).then(success => {
         if (success) history.push(`/profile/${username}`);
@@ -76,7 +75,7 @@ const Login: React.FC = () => {
         initialValues={{ username: '', password: '', remember: true }}
         onSubmit={handleSubmit}
       >
-        {({ values, touched, isSubmitting }) => (
+        {({ values, isSubmitting }) => (
           <Form className={classes.root} autoComplete="off">
             <Field
               name="username"
@@ -96,11 +95,7 @@ const Login: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      size="small"
-                      aria-label="toggle password visibility"
-                      onClick={toggleShowPassword}
-                    >
+                    <IconButton size="small" onClick={toggleShowPassword}>
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>

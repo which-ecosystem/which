@@ -28,7 +28,7 @@ const validationSchema = Yup.object({
     .required('This field is required'),
   password: Yup.string()
     .min(6, 'Should be at least 6 characters')
-    .required('This field is required'),
+    .required('This field is required')
 });
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10,
     color: 'green',
     cursor: 'pointer'
-  },
+  }
 }));
 
 const Registration: React.FC = () => {
@@ -71,7 +71,7 @@ const Registration: React.FC = () => {
     post('/users', { username, email, password })
       .then(() => login(username, password))
       .then(() => history.push(`/profile/${username}`));
-  }
+  };
 
   const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
@@ -118,7 +118,7 @@ const Registration: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton size="small" onClick={toggleShowPassword} >
+                    <IconButton size="small" onClick={toggleShowPassword}>
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
