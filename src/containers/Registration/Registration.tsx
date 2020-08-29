@@ -1,10 +1,7 @@
-import React, {
-  useState,
-  useRef,
-  FormEvent,
-  useMemo
-} from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -16,6 +13,22 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
+interface Fields {
+  username: string;
+  email: string;
+  password: string;
+}
+
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .required('This field is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('This field is required'),
+  password: Yup.string()
+    .min(6, 'Should be at least 6 characters')
+    .required('This field is required'),
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -42,137 +55,89 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer'
   },
   textField: {
-    height: 70
+    height: theme.spacing(8)
   }
 }));
 
-interface ErrorStates {
-  username: boolean | undefined;
-  email: boolean | undefined;
-  password: boolean | undefined;
-}
-
 const Registration: React.FC = () => {
-  const [errors, setErrors] = useState<ErrorStates>({
-    username: undefined,
-    email: undefined,
-    password: undefined
-  });
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const classes = useStyles();
-  const usernameRef = useRef<HTMLInputElement>();
-  const emailRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
   const history = useHistory();
-
-  const isValid = useMemo(() => {
-    return !errors.username && !errors.email && !errors.password;
-  }, [errors]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const username = usernameRef.current?.value?.toLowerCase();
-    const password = passwordRef.current?.value;
-    const email = emailRef.current?.value;
-    if (username && password && isValid) {
-      post('/users', { username, password, email })
-        .then(() => login(username, password))
-        .then(() => history.push(`/profile/${username}`));
-    }
-  };
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = () => {
     history.push('/login');
   };
+
+  const handleSubmit = ({ username, email, password }: Fields) => {
+    post('/users', { username, email, password })
+      .then(() => login(username, password))
+      .then(() => history.push(`/profile/${username}`));
+  }
+
   const handleClickShowPassword = () => {
     setShowPassword(prevState => !prevState);
-  };
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-  const handleUsernameChange = (event: React.FocusEvent<HTMLInputElement>) => {
-    setErrors({
-      ...errors,
-      username: event.currentTarget.value.length === 0
-    });
-  };
-  const handleEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
-    setErrors({
-      ...errors,
-      email: !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(event.currentTarget.value)
-    });
-  };
-  const handlePasswordChange = (event: React.FocusEvent<HTMLInputElement>) => {
-    setErrors({
-      ...errors,
-      password: event.currentTarget.value.length < 6
-    });
-  };
-
-  const handleToLowerCase = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = e.target.value.toString().toLowerCase();
-  };
-
-  const handleFocus = (value: string) => () => {
-    setErrors({
-      ...errors,
-      [value]: undefined
-    });
   };
 
   return (
     <>
       <div className={classes.formHeader}>Sign Up</div>
-      <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <TextField
-          inputRef={usernameRef}
-          label="Username"
-          error={errors.username}
-          helperText={errors.username && 'This field is required'}
-          required
-          onBlur={handleUsernameChange}
-          onInput={handleToLowerCase}
-          onFocus={handleFocus('username')}
-          className={classes.textField}
-        />
-        <TextField
-          inputRef={emailRef}
-          label="Email"
-          error={errors.email}
-          helperText={errors.email && 'Invalid email address'}
-          onBlur={handleEmailChange}
-          onFocus={handleFocus('email')}
-          className={classes.textField}
-        />
-        <TextField
-          inputRef={passwordRef}
-          label="Password"
-          required
-          error={errors.password}
-          helperText={errors.password && 'Should be at least 6 characters'}
-          type={showPassword ? 'text' : 'password'}
-          onBlur={handlePasswordChange}
-          onFocus={handleFocus('password')}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
-          className={classes.textField}
-        />
-        <Button variant="contained" type="submit">submit</Button>
-      </form>
+      <Formik
+        initialValues={{ username: '', email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, errors, touched, isSubmitting }) => (
+          <Form className={classes.root}>
+            <Field
+              id="username"
+              name="username"
+              label="Username"
+              value={values.username.toLowerCase()}
+              error={touched.username && !!errors.username}
+              helperText={touched.username && errors.username}
+              required
+              className={classes.textField}
+              as={TextField}
+            />
+            <Field
+              name="email"
+              label="Email"
+              value={values.email}
+              error={touched.email && !!errors.email}
+              helperText={touched.email && errors.email}
+              required
+              className={classes.textField}
+              as={TextField}
+            />
+            <Field
+              name="password"
+              label="Password"
+              value={values.password}
+              error={touched.password && !!errors.password}
+              helperText={touched.password && errors.password}
+              required
+              type={showPassword ? 'text' : 'password'}
+              as={TextField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      size="small"
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+              className={classes.textField}
+            />
+            <Button variant="contained" type="submit" disabled={isSubmitting}>submit</Button>
+          </Form>
+        )}
+      </Formik>
       <div className={classes.formTransfer}>
         <div>Already have an account?</div>
         <span
