@@ -42,10 +42,11 @@ const Page: React.FC = () => {
     <SnackbarProvider
       preventDuplicate
       maxSnack={isMobile ? 1 : 3}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
+      anchorOrigin={
+        isMobile
+          ? { vertical: 'top', horizontal: 'right' }
+          : { vertical: 'bottom', horizontal: 'left'}
+      }
     >
       <div className={classes.root}>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
