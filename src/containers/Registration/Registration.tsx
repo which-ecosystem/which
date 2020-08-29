@@ -21,6 +21,7 @@ interface Fields {
 
 const validationSchema = Yup.object({
   username: Yup.string()
+    .lowercase('Must be lowercase')
     .required('This field is required'),
   email: Yup.string()
     .email('Invalid email address')
@@ -54,9 +55,6 @@ const useStyles = makeStyles(theme => ({
     color: 'green',
     cursor: 'pointer'
   },
-  textField: {
-    height: theme.spacing(8)
-  }
 }));
 
 const Registration: React.FC = () => {
@@ -75,7 +73,7 @@ const Registration: React.FC = () => {
       .then(() => history.push(`/profile/${username}`));
   }
 
-  const handleClickShowPassword = () => {
+  const toggleShowPassword = () => {
     setShowPassword(prevState => !prevState);
   };
 
@@ -88,7 +86,7 @@ const Registration: React.FC = () => {
         onSubmit={handleSubmit}
       >
         {({ values, errors, touched, isSubmitting }) => (
-          <Form className={classes.root}>
+          <Form className={classes.root} autoComplete="off">
             <Field
               id="username"
               name="username"
@@ -97,7 +95,6 @@ const Registration: React.FC = () => {
               error={touched.username && !!errors.username}
               helperText={touched.username && errors.username}
               required
-              className={classes.textField}
               as={TextField}
             />
             <Field
@@ -107,7 +104,6 @@ const Registration: React.FC = () => {
               error={touched.email && !!errors.email}
               helperText={touched.email && errors.email}
               required
-              className={classes.textField}
               as={TextField}
             />
             <Field
@@ -122,17 +118,12 @@ const Registration: React.FC = () => {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      size="small"
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                    >
+                    <IconButton size="small" onClick={toggleShowPassword} >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 )
               }}
-              className={classes.textField}
             />
             <Button variant="contained" type="submit" disabled={isSubmitting}>submit</Button>
           </Form>
