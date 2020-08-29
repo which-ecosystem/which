@@ -1,13 +1,35 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import {
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton
+} from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
+interface Fields {
+  username: string;
+  email: string;
+  password: string;
+}
+
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .lowercase('Must be lowercase')
+    .required('This field is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('This field is required'),
+  password: Yup.string()
+    .min(6, 'Should be at least 6 characters')
+    .required('This field is required')
+});
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,102 +57,78 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const inputStyle = { WebkitBoxShadow: '0 0 0 1000px snow inset' };
-
-
 const Registration: React.FC = () => {
-  const errorOutputs = {
-    usernameError: 'Username is required',
-    emailError: 'Invalid email address',
-    passwordError: 'Should be at least 6 characters'
-  };
-  const [errorPassword, setErrorPassword] = useState<boolean>(false);
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
-  const [errorUsername, setErrorUsername] = useState<boolean>(false);
-
   const classes = useStyles();
-  const usernameRef = useRef<HTMLInputElement>();
-  const emailRef = useRef<HTMLInputElement>();
-  const passwordRef = useRef<HTMLInputElement>();
   const { login } = useAuth();
   const history = useHistory();
-
-  const handleSubmit = () => {
-    const username = usernameRef.current?.value?.toLowerCase();
-    const password = passwordRef.current?.value;
-    const email = emailRef.current?.value;
-    if (username && password) {
-      post('/users', { username, password, email })
-        .then(() => login(username, password))
-        .then(() => history.push(`/profile/${username}`));
-    }
-  };
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleLogin = () => {
     history.push('/login');
   };
 
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorUsername(e.currentTarget.value.length === 0);
+  const handleSubmit = ({ username, email, password }: Fields) => {
+    post('/users', { username, email, password })
+      .then(() => login(username, password))
+      .then(() => history.push(`/profile/${username}`));
   };
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorEmail(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(e.currentTarget.value));
-  };
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrorPassword(e.currentTarget.value.length < 6);
+
+  const toggleShowPassword = () => {
+    setShowPassword(prevState => !prevState);
   };
 
   return (
     <>
       <div className={classes.formHeader}>Sign Up</div>
-      <form className={classes.root} noValidate autoComplete="off">
-        <TextField
-          inputRef={usernameRef}
-          label="Username"
-          error={errorUsername}
-          helperText={errorUsername && errorOutputs.usernameError}
-          required
-          onChange={handleLoginChange}
-          inputProps={{ style: inputStyle }}
-        />
-        <TextField
-          inputRef={emailRef}
-          label="Email"
-          error={errorEmail}
-          helperText={errorEmail && errorOutputs.emailError}
-          onChange={handleEmailChange}
-          InputProps={errorEmail ? {} : {
-            endAdornment: (
-              <InputAdornment position="end">
-                <CheckCircleIcon color="primary" />
-              </InputAdornment>
-            ),
-            inputProps: {
-              style: inputStyle
-            }
-          }}
-        />
-        <TextField
-          inputRef={passwordRef}
-          label="Password"
-          type="password"
-          required
-          error={errorPassword}
-          helperText={errorPassword && errorOutputs.passwordError}
-          onChange={handlePasswordChange}
-          InputProps={errorPassword ? {} : {
-            endAdornment: (
-              <InputAdornment position="end">
-                <CheckCircleIcon color="primary" />
-              </InputAdornment>
-            ),
-            inputProps: {
-              style: inputStyle
-            }
-          }}
-        />
-        <Button variant="contained" onClick={handleSubmit}>submit</Button>
-      </form>
+      <Formik
+        initialValues={{ username: '', email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, errors, touched, isSubmitting }) => (
+          <Form className={classes.root} autoComplete="off">
+            <Field
+              id="username"
+              name="username"
+              label="Username"
+              value={values.username.toLowerCase()}
+              error={touched.username && !!errors.username}
+              helperText={touched.username && errors.username}
+              required
+              as={TextField}
+            />
+            <Field
+              name="email"
+              label="Email"
+              value={values.email}
+              error={touched.email && !!errors.email}
+              helperText={touched.email && errors.email}
+              required
+              as={TextField}
+            />
+            <Field
+              name="password"
+              label="Password"
+              value={values.password}
+              error={touched.password && !!errors.password}
+              helperText={touched.password && errors.password}
+              required
+              type={showPassword ? 'text' : 'password'}
+              as={TextField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton size="small" onClick={toggleShowPassword}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+            <Button variant="contained" type="submit" disabled={isSubmitting}>submit</Button>
+          </Form>
+        )}
+      </Formik>
       <div className={classes.formTransfer}>
         <div>Already have an account?</div>
         <span
