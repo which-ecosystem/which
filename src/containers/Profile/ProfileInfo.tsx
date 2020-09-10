@@ -27,7 +27,11 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 150,
     height: 150,
+    position: 'relative',
     margin: '0 auto'
+  },
+  darken: {
+    filter: 'brightness(50%)'
   },
   name: {
     margin: theme.spacing(1, 0),
@@ -129,7 +133,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                     </FileUpload>
                   )}
                 >
-                  <Avatar className={classes.avatar} user={userInfo} />
+                  <Avatar className={[classes.avatar, progress && classes.darken].join(' ')} user={userInfo} />
                   {progress > 0 && (
                     <CircularProgress variant="static" value={progress} className={classes.progress} />
                   )}
