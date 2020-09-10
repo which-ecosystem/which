@@ -51,25 +51,8 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { isAuthenticated } = useAuth();
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
-  let timer: any;
-  let delay = 200;
+  let timer: ReturnType<typeof setTimeout>;
   let prevent = false;
-
-  const handleClick = (which: Which) => () => {
-    if(!prevent) {
-      prevent = true;
-      timer = setTimeout(() => {
-        console.log('single click', prevent);
-        prevent = false;
-      }, delay)
-    }
-    else {
-      clearTimeout(timer);
-      prevent = false;
-      console.log('double click', prevent);
-      handleVote(which);
-    }
-  };
 
   const handleVote = (which: Which) => {
     if (!isAuthenticated) {
@@ -93,6 +76,19 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
       setPoll(newPoll);
 
       post('votes/', newVote);
+    }
+  };
+
+  const handleClick = (which: Which) => () => {
+    if (!prevent) {
+      prevent = true;
+      timer = setTimeout(() => {
+        prevent = false;
+      }, 200);
+    } else {
+      clearTimeout(timer);
+      prevent = false;
+      handleVote(which);
     }
   };
 
