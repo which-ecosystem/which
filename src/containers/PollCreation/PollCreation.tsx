@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -32,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const PollCreation: React.FC = () => {
   const classes = useStyles();
+  const ref = useRef<HTMLTextAreaElement>(null);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
@@ -57,10 +58,10 @@ const PollCreation: React.FC = () => {
         left: { url: leftUrl },
         right: { url: rightUrl }
       };
-
+      const description = ref?.current?.value;
       history.push('/feed');
 
-      post('/polls/', { contents }).then(() => {
+      post('/polls/', { contents, description }).then(() => {
         updateFeed();
         enqueueSnackbar('Your poll has been successfully created!', { variant: 'success' });
       });
@@ -75,6 +76,7 @@ const PollCreation: React.FC = () => {
       <Card className={classes.root}>
         {user && <UserStrip user={user} info="" />}
         <Divider />
+        <textarea ref={ref} />
         <div className={classes.images}>
           <ImageInput callback={setLeft} progress={leftProgress} />
           <ImageInput callback={setRight} progress={rightProgress} />
