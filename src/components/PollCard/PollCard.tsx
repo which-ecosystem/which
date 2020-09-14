@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     height: theme.spacing(2),
     backgroundColor: theme.palette.primary.light,
     transitionDuration: '0.5s'
+  },
+  description: {
+    padding: '0px 16px 10px'
   }
 }));
 
@@ -93,6 +96,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   return (
     <Card elevation={3}>
       <UserStrip user={author} info={date} />
+      <div className={classes.description}>{poll.description}</div>
       <div className={classes.media}>
         <CardActionArea onDoubleClick={handleVote('left')} className={classes.media}>
           <BackgroundImage src={left.url} />

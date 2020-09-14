@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Container, LinearProgress } from '@material-ui/core';
+import { Card, Container, LinearProgress, Divider } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
 
@@ -25,8 +25,9 @@ const useStyles = makeStyles(theme => ({
 
 const PollCreation: React.FC = () => {
   const classes = useStyles();
-  const { user } = useAuth();
+  const ref = useRef<HTMLTextAreaElement>(null);
   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuth();
   const { mutate: updateFeed } = useFeed();
   const { mutate: updateProfile } = useProfile(user?.username || '');
   const {
@@ -50,8 +51,8 @@ const PollCreation: React.FC = () => {
         left: { url: leftUrl },
         right: { url: rightUrl }
       };
-
-      post('/polls/', { contents }).then(() => {
+      const description = ref?.current?.value;
+      post('/polls/', { contents, description }).then(() => {
         updateFeed();
         updateProfile();
         enqueueSnackbar('Your poll has been successfully created!', { variant: 'success' });
@@ -71,6 +72,8 @@ const PollCreation: React.FC = () => {
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
           {user && <UserStrip user={user} info="" />}
+          <Divider />
+          <textarea ref={ref} />
           <div className={classes.images}>
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
