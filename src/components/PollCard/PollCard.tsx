@@ -52,7 +52,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const { isAuthenticated } = useAuth();
   const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
-  const handleVote = (which: Which) => {
+  const handleVote = (which: Which) => () => {
     if (!isAuthenticated) {
       enqueueSnackbar('Unauthorized users can not vote in polls', {
         variant: 'error'
@@ -77,9 +77,6 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
     }
   };
 
-  const handleLeft = () => handleVote('left');
-  const handleRight = () => handleVote('right');
-
   let leftPercentage;
   let rightPercentage;
 
@@ -97,11 +94,11 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
     <Card elevation={3}>
       <UserStrip user={author} info={date} />
       <div className={classes.media}>
-        <CardActionArea onDoubleClick={handleLeft} className={classes.media}>
+        <CardActionArea onDoubleClick={handleVote('left')} className={classes.media}>
           <BackgroundImage src={left.url} />
           <PercentageBar value={leftPercentage} which="left" like={vote?.which === 'left'} />
         </CardActionArea>
-        <CardActionArea onDoubleClick={handleRight} className={classes.media}>
+        <CardActionArea onDoubleClick={handleVote('right')} className={classes.media}>
           <BackgroundImage src={right.url} />
           <PercentageBar value={rightPercentage} which="right" like={vote?.which === 'right'} />
         </CardActionArea>
