@@ -1,7 +1,7 @@
-import React, {useRef} from 'react';
+import React, { useState } from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Container, LinearProgress, Divider } from '@material-ui/core';
+import { Card, Container, LinearProgress, Divider, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
 
@@ -19,13 +19,20 @@ const useStyles = makeStyles(theme => ({
   images: {
     height: theme.spacing(50),
     display: 'flex'
+  },
+  textarea: {
+    width: '100%',
+    height: 100
+  },
+  descriptionText: {
+    padding: 10
   }
 }));
 
 
 const PollCreation: React.FC = () => {
+  const [description, setDescription] = useState<string>('');
   const classes = useStyles();
-  const ref = useRef<HTMLTextAreaElement>(null);
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const { mutate: updateFeed } = useFeed();
@@ -43,15 +50,18 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
+  const handleDescriptionChange = (e: any) => {
+    setDescription(e.target.value);
+  };
+
   const handleSubmit = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
-
       const contents = {
         left: { url: leftUrl },
         right: { url: rightUrl }
       };
-      const description = ref?.current?.value;
+
       post('/polls/', { contents, description }).then(() => {
         updateFeed();
         updateProfile();
@@ -73,7 +83,15 @@ const PollCreation: React.FC = () => {
         <Card elevation={3}>
           {user && <UserStrip user={user} info="" />}
           <Divider />
-          <textarea ref={ref} />
+          <TextField
+            multiline
+            rows={2}
+            placeholder="Add a description"
+            fullWidth
+            InputProps={{
+              className: classes.descriptionText,
+            }}
+          />
           <div className={classes.images}>
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
