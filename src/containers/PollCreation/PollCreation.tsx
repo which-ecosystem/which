@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Container, LinearProgress, Divider, TextField } from '@material-ui/core';
@@ -50,7 +50,7 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
-  const handleDescriptionChange = (e: any) => {
+  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
     setDescription(e.target.value);
   };
 
@@ -86,8 +86,9 @@ const PollCreation: React.FC = () => {
           <TextField
             multiline
             rows={2}
-            placeholder="Add a description"
             fullWidth
+            placeholder="Add a description"
+            onChange={handleDescriptionChange}
             InputProps={{
               className: classes.descriptionText,
             }}
