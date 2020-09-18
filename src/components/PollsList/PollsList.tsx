@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, {useCallback, useState, useMemo, useRef, useEffect} from 'react';
 import {
   WindowScroller,
   AutoSizer,
@@ -24,6 +24,10 @@ const PAGE_SIZE = 10;
 
 const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
   const [displayCount, setDisplayCount] = useState<number>(PAGE_SIZE);
+
+  useEffect(()=> {
+    cache.clearAll();
+  },[polls]);
 
   const rowRenderer = useCallback(({ index, style, key, parent }) => (
     <RenderItem

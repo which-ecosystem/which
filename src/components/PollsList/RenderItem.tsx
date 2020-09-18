@@ -27,7 +27,6 @@ const RenderItem: React.FC<PropTypes> = React.memo(({
   polls, mutate, index, style, cache, parent, _key
 }) => {
   const poll = polls[index];
-
   const setPoll = useCallback((newPoll: Poll) => {
     const newPolls = [...polls];
     newPolls[index] = newPoll;
@@ -44,7 +43,7 @@ const RenderItem: React.FC<PropTypes> = React.memo(({
       rowIndex={index}
       parent={parent}
     >
-      <div key={`${_key}-${poll._id}`} style={{...style, paddingBottom: '40px' }}>
+      <div key={`${_key}-${poll._id}`} style={{...style, paddingBottom: '20px' }}>
         <PollCard poll={poll} setPoll={setPoll} />
       </div>
     </CellMeasurer>
