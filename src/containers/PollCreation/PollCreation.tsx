@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +7,7 @@ import {
   Card,
   Divider,
   Container,
-  LinearProgress
+  LinearProgress, TextField
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
@@ -26,13 +26,20 @@ const useStyles = makeStyles(theme => ({
   images: {
     height: theme.spacing(50),
     display: 'flex'
+  },
+  textarea: {
+    width: '100%',
+    height: 100
+  },
+  descriptionText: {
+    padding: 10
   }
 }));
 
 
 const PollCreation: React.FC = () => {
+  const [description, setDescription] = useState<string>('');
   const classes = useStyles();
-  const ref = useRef<HTMLTextAreaElement>(null);
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
@@ -50,15 +57,17 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
+  const handleDescriptionChange = (e: any) => {
+    setDescription(e.target.value);
+  };
+
   const handleClick = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
-
       const contents = {
         left: { url: leftUrl },
         right: { url: rightUrl }
       };
-      const description = ref?.current?.value;
       history.push('/feed');
 
       post('/polls/', { contents, description }).then(() => {
@@ -76,7 +85,16 @@ const PollCreation: React.FC = () => {
       <Card className={classes.root}>
         {user && <UserStrip user={user} info="" />}
         <Divider />
-        <textarea ref={ref} />
+        <TextField
+          multiline
+          rows={2}
+          placeholder="Add a description"
+          fullWidth
+          InputProps={{
+            className: classes.descriptionText,
+          }}
+          onChange={handleDescriptionChange}
+        />
         <div className={classes.images}>
           <ImageInput callback={setLeft} progress={leftProgress} />
           <ImageInput callback={setRight} progress={rightProgress} />
