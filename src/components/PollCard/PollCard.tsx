@@ -96,7 +96,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   return (
     <Card elevation={3}>
       <UserStrip user={author} info={date} />
-      <div className={classes.description}>{poll.description}</div>
+      {poll.description && <div className={classes.description}>{poll.description}</div>}
       <div className={classes.media}>
         <CardActionArea onDoubleClick={handleVote('left')} className={classes.media}>
           <BackgroundImage src={left.url} />
