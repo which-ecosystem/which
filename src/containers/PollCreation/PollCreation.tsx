@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -57,7 +57,7 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
-  const handleDescriptionChange = (e: any) => {
+  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement|HTMLInputElement>) => {
     setDescription(e.target.value);
   };
 
@@ -91,7 +91,7 @@ const PollCreation: React.FC = () => {
           placeholder="Add a description"
           fullWidth
           InputProps={{
-            className: classes.descriptionText,
+            className: classes.descriptionText
           }}
           onChange={handleDescriptionChange}
         />

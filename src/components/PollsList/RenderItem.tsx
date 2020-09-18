@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Poll } from 'which-types';
-import PollCard from '../PollCard/PollCard';
 import { CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
+import PollCard from '../PollCard/PollCard';
 
 
 interface PropTypes {
@@ -43,7 +43,7 @@ const RenderItem: React.FC<PropTypes> = React.memo(({
       rowIndex={index}
       parent={parent}
     >
-      <div key={`${_key}-${poll._id}`} style={{...style, paddingBottom: '20px' }}>
+      <div key={`${_key}-${poll._id}`} style={{ ...style, paddingBottom: '20px' }}>
         <PollCard poll={poll} setPoll={setPoll} />
       </div>
     </CellMeasurer>

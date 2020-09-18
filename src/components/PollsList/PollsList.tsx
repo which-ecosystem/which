@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useMemo, useRef, useEffect} from 'react';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import {
   WindowScroller,
   AutoSizer,
@@ -17,7 +17,7 @@ interface PropTypes {
 }
 
 const cache = new CellMeasurerCache({
-  fixedWidth: true,
+  fixedWidth: true
 });
 
 const PAGE_SIZE = 10;
@@ -25,9 +25,9 @@ const PAGE_SIZE = 10;
 const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
   const [displayCount, setDisplayCount] = useState<number>(PAGE_SIZE);
 
-  useEffect(()=> {
+  useEffect(() => {
     cache.clearAll();
-  },[polls]);
+  }, [polls]);
 
   const rowRenderer = useCallback(({ index, style, key, parent }) => (
     <RenderItem
