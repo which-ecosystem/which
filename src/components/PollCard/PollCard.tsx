@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
     transitionDuration: '0.5s'
   },
   description: {
-    padding: '0px 16px 10px'
+    padding: '0px 16px 10px',
+    overflowWrap: 'break-word'
   }
 }));
 
