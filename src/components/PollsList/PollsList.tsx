@@ -3,7 +3,8 @@ import {
   WindowScroller,
   AutoSizer,
   List,
-  InfiniteLoader
+  InfiniteLoader,
+  CellMeasurerCache
 } from 'react-virtualized';
 import _ from 'lodash';
 import { Poll } from 'which-types';
@@ -15,17 +16,23 @@ interface PropTypes {
   mutate: (polls: Poll[], refetch: boolean) => void;
 }
 
+const cache = new CellMeasurerCache({
+  fixedWidth: true,
+});
+
 const PAGE_SIZE = 10;
 
 const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
   const [displayCount, setDisplayCount] = useState<number>(PAGE_SIZE);
 
-  const rowRenderer = useCallback(({ index, style, key }) => (
+  const rowRenderer = useCallback(({ index, style, key, parent }) => (
     <RenderItem
       polls={polls}
       mutate={mutate}
       index={index}
       style={style}
+      cache={cache}
+      parent={parent}
       key={key}
       _key={key}
     />
@@ -68,7 +75,7 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
                     isScrolling={isScrolling}
                     onScroll={onChildScroll}
                     rowCount={rowCount}
-                    rowHeight={550}
+                    rowHeight={cache.rowHeight}
                     rowRenderer={rowRenderer}
                     scrollTop={scrollTop}
                     width={width}
@@ -76,6 +83,7 @@ const PollsList: React.FC<PropTypes> = ({ polls, mutate }) => {
                     overscanRowCount={2}
                     onRowsRendered={onRowsRendered}
                     ref={ref}
+                    deferredMeasurementCache={cache}
                   />
                 )}
               </InfiniteLoader>
