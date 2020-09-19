@@ -23,7 +23,6 @@ const theme = createMuiTheme({
   }
 });
 
-
 const App: React.FC = () => {
   return (
     <BrowserRouter>

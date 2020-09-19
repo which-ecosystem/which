@@ -8,7 +8,6 @@ import EmptyState from '../../components/EmptyState/EmptyState';
 import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
 
-
 const Feed: React.FC = () => {
   const { data: polls, isValidating, mutate } = useFeed();
   const { isAuthenticated } = useAuth();

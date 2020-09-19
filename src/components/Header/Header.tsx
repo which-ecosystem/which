@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   IconButton,
@@ -12,7 +12,7 @@ import {
   Menu
 } from '@material-ui/icons';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
+import { useLocation } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
@@ -40,6 +40,13 @@ const Header: React.FC = React.memo(() => {
   const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [path, setPath] = useState<string>(useLocation().pathname);
+
+  useEffect(() => {
+    return history.listen(location => {
+      setPath(location.pathname);
+    });
+  }, [history]);
 
   const handleHome = (): void => {
     history.push('/');
@@ -64,13 +71,21 @@ const Header: React.FC = React.memo(() => {
 
   const feed = (
     <IconButton onClick={handleFeed}>
-      <Home />
+      {
+        path === '/feed'
+          ? <Home style={{ color: 'white' }} />
+          : <Home />
+      }
     </IconButton>
   );
 
   const notifications = (
     <IconButton onClick={handleNotifications}>
-      <Notifications />
+      {
+        path === '/notifications'
+          ? <Notifications style={{ color: 'white' }} />
+          : <Notifications />
+      }
     </IconButton>
   );
 
@@ -89,9 +104,12 @@ const Header: React.FC = React.memo(() => {
   const profile = (
     <IconButton onClick={handleProfile}>
       {
-        user?.avatarUrl
-          ? <Avatar className={classes.avatar} user={user} />
+        path.includes('/profile')
+          ? <AccountCircle className={classes.avatar} style={{ color: 'white' }} />
           : <AccountCircle className={classes.avatar} />
+        // user?.avatarUrl
+        //   ? <Avatar className={classes.avatar} user={user} />
+        //   : <AccountCircle className={classes.avatar} />
       }
     </IconButton>
   );
