@@ -17,7 +17,6 @@ import { useAuth } from '../../hooks/useAuth';
 import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
 import BrowserHeader from './BrowserHeader';
-import Avatar from '../Avatar/Avatar';
 import Drawer from '../Drawer/Drawer';
 
 
@@ -71,21 +70,13 @@ const Header: React.FC = React.memo(() => {
 
   const feed = (
     <IconButton onClick={handleFeed}>
-      {
-        path === '/feed'
-          ? <Home style={{ color: 'white' }} />
-          : <Home />
-      }
+      <Home style={path === '/feed' ? { color: 'white' } : {}} />
     </IconButton>
   );
 
   const notifications = (
     <IconButton onClick={handleNotifications}>
-      {
-        path === '/notifications'
-          ? <Notifications style={{ color: 'white' }} />
-          : <Notifications />
-      }
+      <Notifications style={path === '/notifications' ? { color: 'white' } : {}} />
     </IconButton>
   );
 
@@ -103,14 +94,14 @@ const Header: React.FC = React.memo(() => {
 
   const profile = (
     <IconButton onClick={handleProfile}>
-      {
-        path.includes('/profile')
-          ? <AccountCircle className={classes.avatar} style={{ color: 'white' }} />
-          : <AccountCircle className={classes.avatar} />
-        // user?.avatarUrl
-        //   ? <Avatar className={classes.avatar} user={user} />
-        //   : <AccountCircle className={classes.avatar} />
-      }
+      <AccountCircle
+        className={classes.avatar}
+        style={
+          path.includes('/profile')
+            ? { color: 'white' }
+            : {}
+        }
+      />
     </IconButton>
   );
 
