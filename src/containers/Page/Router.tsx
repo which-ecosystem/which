@@ -1,5 +1,8 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
+import { Location } from 'history';
+
+import PollCreation from '../PollCreation/PollCreation';
 
 const Profile = React.lazy(() => import('../Profile/Profile'));
 const Feed = React.lazy(() => import('../Feed/Feed'));
@@ -7,20 +10,35 @@ const Login = React.lazy(() => import('../Login/Login'));
 const Registration = React.lazy(() => import('../Registration/Registration'));
 const Home = React.lazy(() => import('../Home/Home'));
 const Notifications = React.lazy(() => import('../Notifications/Notifications'));
-const PollCreation = React.lazy(() => import('../PollCreation/PollCreation'));
 
+export interface LocationState {
+  background?: Location;
+}
 
-const Router: React.FC = React.memo(() => (
-  <Switch>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/login" component={Login} />
-    <Route exact path="/registration" component={Registration} />
-    <Route exact path="/feed" component={Feed} />
-    <Route exact path="/notifications" component={Notifications} />
-    <Route exact path="/new" component={PollCreation} />
-    <Route path="/profile/:username" component={Profile} />
-  </Switch>
-));
+const Router: React.FC = React.memo(() => {
+  const location = useLocation<LocationState>();
+  const background = location.state && location.state.background;
+
+  const ModalSwitch = (
+    <Switch>
+      <Route path="/new" component={PollCreation} />
+    </Switch>
+  );
+
+  return (
+    <>
+      {background && ModalSwitch}
+      <Switch location={background || location}>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/registration" component={Registration} />
+        <Route exact path="/notifications" component={Notifications} />
+        <Route path="/feed" component={Feed} />
+        <Route path="/profile/:username" component={Profile} />
+      </Switch>
+    </>
+  );
+});
 
 
 export default Router;

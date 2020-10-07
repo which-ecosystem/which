@@ -5,11 +5,14 @@ import { SnackbarProvider } from 'notistack';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useHistory } from 'react-router-dom';
 
-import Router from './Router';
+import Router, { LocationState } from './Router';
 import DynoWaiter from './DynoWaiter';
 import Loading from '../../components/Loading/Loading';
 import EmptyState from '../../components/EmptyState/EmptyState';
 
+interface HistoryChange {
+  state?: LocationState | null;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,11 +35,13 @@ const Page: React.FC = () => {
   const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    return history.listen(() => {
+  useEffect(() => history.listen((update: HistoryChange) => {
+    console.log(update)
+    if (!update.state?.background) {
+      console.log('scrolling')
       window.scrollTo(0, 0);
-    });
-  }, [history]);
+    }
+  }), [history]);
 
   return (
     <SnackbarProvider

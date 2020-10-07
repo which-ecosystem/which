@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Fab as FabBase, Slide, useScrollTrigger } from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 import PlusIcon from '@material-ui/icons/Add';
@@ -26,22 +26,19 @@ const useStyles = makeStyles(theme => ({
 
 const Fab: React.FC<PropTypes> = ({ hideOnScroll = false }) => {
   const classes = useStyles();
-  const history = useHistory();
+  const location = useLocation();
   const trigger = useScrollTrigger();
-
-  const handleClick = () => {
-    history.push('/new');
-  };
 
   return (
     <Slide appear={false} direction="up" in={(!hideOnScroll) || !trigger}>
-      <FabBase
-        onClick={handleClick}
-        className={classes.root}
-        color="secondary"
-      >
-        <PlusIcon />
-      </FabBase>
+      <Link to={{ pathname: '/new', state: { background: location } }}>
+        <FabBase
+          className={classes.root}
+          color="secondary"
+        >
+          <PlusIcon />
+        </FabBase>
+      </Link>
     </Slide>
   );
 };
