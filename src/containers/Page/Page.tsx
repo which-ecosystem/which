@@ -36,11 +36,7 @@ const Page: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => history.listen((update: HistoryChange) => {
-    console.log(update)
-    if (!update.state?.background) {
-      console.log('scrolling')
-      window.scrollTo(0, 0);
-    }
+    if (!update.state?.background) window.scrollTo(0, 0);
   }), [history]);
 
   return (
