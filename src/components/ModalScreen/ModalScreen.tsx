@@ -12,11 +12,12 @@ import {
   useTheme
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import { TransitionProps } from '@material-ui/core/transitions';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface PropTypes {
   title: string;
+  rightIcon?: JSX.Element;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -37,7 +38,7 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>
 ) => <Slide direction="left" ref={ref} {...props} />);
 
-const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
+const ModalScreen: React.FC<PropTypes> = ({ title, rightIcon, children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const classes = useStyles();
   const theme = useTheme();
@@ -64,9 +65,11 @@ const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
           <Typography variant="h6">
             { title }
           </Typography>
-          <IconButton style={{ opacity: 0, pointerEvents: 'none' }}>
-            <CloseIcon />
-          </IconButton>
+          { rightIcon || (
+            <IconButton style={{ visibility: 'hidden' }}>
+              <CloseIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
       <Divider />

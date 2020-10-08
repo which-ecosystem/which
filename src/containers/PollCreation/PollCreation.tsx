@@ -3,11 +3,12 @@ import Bluebird from 'bluebird';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Button,
+  IconButton,
   Card,
   Container,
   LinearProgress
 } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
 
 import useS3Preupload from './useS3Preupload';
@@ -46,7 +47,7 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
 
@@ -67,8 +68,14 @@ const PollCreation: React.FC = () => {
     }
   };
 
+  const submitIcon = (
+    <IconButton onClick={handleSubmit} disabled={!(left && right)}>
+      <SendIcon />
+    </IconButton>
+  );
+
   return (
-    <ModalScreen title="Create a poll">
+    <ModalScreen title="Create a poll" rightIcon={submitIcon}>
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
           {user && <UserStrip user={user} info="" />}
@@ -76,21 +83,7 @@ const PollCreation: React.FC = () => {
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
           </div>
-          {
-            leftProgress || rightProgress
-              ? <LinearProgress color="primary" />
-              : (
-                <Button
-                  color="primary"
-                  disabled={!(left && right)}
-                  variant="contained"
-                  onClick={handleClick}
-                  fullWidth
-                >
-                  Submit
-                </Button>
-              )
-          }
+          {(leftProgress > 0 || rightProgress > 0) && <LinearProgress color="primary" />}
         </Card>
       </Container>
     </ModalScreen>
