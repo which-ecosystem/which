@@ -12,7 +12,7 @@ const Home = React.lazy(() => import('../Home/Home'));
 const Notifications = React.lazy(() => import('../Notifications/Notifications'));
 
 export interface LocationState {
-  background?: Location;
+  background: Location;
 }
 
 const Router: React.FC = React.memo(() => {

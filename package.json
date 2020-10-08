@@ -10,7 +10,6 @@
     "bluebird": "^3.7.2",
     "compressorjs": "^1.0.6",
     "formik": "^2.1.5",
-    "history": "^5.0.0",
     "lodash": "^4.17.15",
     "notistack": "^0.9.17",
     "react": "^16.13.1",
