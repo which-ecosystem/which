@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useMemo } from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Container, LinearProgress, InputBase, Typography } from '@material-ui/core';
@@ -72,12 +72,14 @@ const PollCreation: React.FC = () => {
     }
   };
 
+  const isSubmitting = useMemo(() => leftProgress + rightProgress > 0, [leftProgress, rightProgress]);
+
   return (
     <ModalScreen
       title="Create a poll"
       actionIcon={<SendIcon />}
       handleAction={handleSubmit}
-      isActionDisabled={!(left && right) || leftProgress + rightProgress > 0}
+      isActionDisabled={!(left && right) || isSubmitting}
     >
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
@@ -89,6 +91,7 @@ const PollCreation: React.FC = () => {
               placeholder="Add description"
               onChange={handleDescriptionChange}
               className={classes.description}
+              readOnly={isSubmitting}
             />
           </Typography>
           <div className={classes.images}>
@@ -96,7 +99,7 @@ const PollCreation: React.FC = () => {
             <ImageInput callback={setRight} progress={rightProgress} />
           </div>
         </Card>
-        {(leftProgress + rightProgress > 0) && (
+        {isSubmitting && (
           <>
             <LinearProgress color="primary" />
             <Message
