@@ -27,7 +27,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default
   },
   content: {
-    padding: theme.spacing(6, 0)
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(4)
+    }
   },
   toolbar: {
     display: 'flex',

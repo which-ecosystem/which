@@ -1,6 +1,6 @@
 {
   "name": "which",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "homepage": "https://which-ecosystem.github.io/",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
@@ -21,7 +21,7 @@
     "react-virtualized": "^9.21.2",
     "swr": "^0.3.0",
     "typeface-roboto": "0.0.75",
-    "which-types": "^1.6.1",
+    "which-types": "^1.6.2",
     "yup": "^0.29.3"
   },
   "scripts": {
