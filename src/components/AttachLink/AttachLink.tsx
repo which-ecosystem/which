@@ -21,7 +21,7 @@ const AttachLink: React.FC<PropTypes> = ({ callback, children }) => {
       color="primary"
       startIcon={<LinkIcon />}
     >
-      Attach a link
+      Link
     </Button>
   );
 
