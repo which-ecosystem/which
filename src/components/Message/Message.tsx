@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 interface PropTypes {
   tagline?: string;
   message?: string;
+  noMargin?: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -13,7 +14,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
+  },
+  margin: {
     marginTop: theme.spacing(6)
   },
   content: {
@@ -21,11 +24,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Message: React.FC<PropTypes> = React.memo(({ tagline, message, children }) => {
+const Message: React.FC<PropTypes> = React.memo(({ tagline, message, noMargin, children }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} ${!noMargin && classes.margin}`}>
       <div className={classes.content}>
         {children}
       </div>
