@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Card,
-  Divider,
   Container,
   LinearProgress
 } from '@material-ui/core';
@@ -13,16 +12,14 @@ import { useSnackbar } from 'notistack';
 
 import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
+import ModalScreen from '../../components/ModalScreen/ModalScreen';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
-import { useAuth } from '../../hooks/useAuth';
 import { useFeed } from '../../hooks/APIClient';
+import { useAuth } from '../../hooks/useAuth';
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    marginBottom: theme.spacing(4)
-  },
   images: {
     height: theme.spacing(50),
     display: 'flex'
@@ -33,8 +30,8 @@ const useStyles = makeStyles(theme => ({
 const PollCreation: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
-  const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
   const { mutate: updateFeed } = useFeed();
   const {
     file: left,
@@ -71,31 +68,32 @@ const PollCreation: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm" disableGutters>
-      <Card className={classes.root}>
-        {user && <UserStrip user={user} info="" />}
-        <Divider />
-        <div className={classes.images}>
-          <ImageInput callback={setLeft} progress={leftProgress} />
-          <ImageInput callback={setRight} progress={rightProgress} />
-        </div>
-        {
-          leftProgress || rightProgress
-            ? <LinearProgress color="primary" />
-            : (
-              <Button
-                color="primary"
-                disabled={!(left && right)}
-                variant="contained"
-                onClick={handleClick}
-                fullWidth
-              >
-                Submit
-              </Button>
-            )
-        }
-      </Card>
-    </Container>
+    <ModalScreen title="Create a poll">
+      <Container maxWidth="sm" disableGutters>
+        <Card elevation={3}>
+          {user && <UserStrip user={user} info="" />}
+          <div className={classes.images}>
+            <ImageInput callback={setLeft} progress={leftProgress} />
+            <ImageInput callback={setRight} progress={rightProgress} />
+          </div>
+          {
+            leftProgress || rightProgress
+              ? <LinearProgress color="primary" />
+              : (
+                <Button
+                  color="primary"
+                  disabled={!(left && right)}
+                  variant="contained"
+                  onClick={handleClick}
+                  fullWidth
+                >
+                  Submit
+                </Button>
+              )
+          }
+        </Card>
+      </Container>
+    </ModalScreen>
   );
 };
 
