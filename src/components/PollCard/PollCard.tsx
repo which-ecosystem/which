@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardActionArea } from '@material-ui/core/';
+import { Card, CardActionArea, Typography } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
 
@@ -44,8 +44,7 @@ const useStyles = makeStyles(theme => ({
     transitionDuration: '0.5s'
   },
   description: {
-    padding: '0px 16px 10px',
-    overflowWrap: 'break-word'
+    padding: theme.spacing(0.5, 2)
   }
 }));
 
@@ -97,7 +96,11 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   return (
     <Card elevation={3}>
       <UserStrip user={author} info={date} />
-      {poll.description && <div className={classes.description}>{poll.description}</div>}
+      {poll.description && (
+        <Typography gutterBottom className={classes.description}>
+          {poll.description}
+        </Typography>
+      )}
       <div className={classes.media}>
         <CardActionArea onDoubleClick={handleVote('left')} className={classes.media}>
           <BackgroundImage src={left.url} />
