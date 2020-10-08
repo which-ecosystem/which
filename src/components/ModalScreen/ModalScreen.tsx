@@ -17,7 +17,9 @@ import CloseIcon from '@material-ui/icons/Close';
 
 interface PropTypes {
   title: string;
-  rightIcon?: JSX.Element;
+  actionIcon?: JSX.Element;
+  handleAction?: () => void;
+  isActionDisabled?: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +40,7 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>
 ) => <Slide direction="left" ref={ref} {...props} />);
 
-const ModalScreen: React.FC<PropTypes> = ({ title, rightIcon, children }) => {
+const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isActionDisabled, children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const classes = useStyles();
   const theme = useTheme();
@@ -47,6 +49,11 @@ const ModalScreen: React.FC<PropTypes> = ({ title, rightIcon, children }) => {
 
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
   const onExited = useCallback(() => history.goBack(), [history]);
+
+  const handleClickAction = useCallback(async () => {
+    if (handleAction) await handleAction();
+    return handleClose();
+  }, [handleAction, handleClose]);
 
   return (
     <Dialog
@@ -66,11 +73,9 @@ const ModalScreen: React.FC<PropTypes> = ({ title, rightIcon, children }) => {
           <Typography variant="h6">
             { title }
           </Typography>
-          { rightIcon || (
-            <IconButton style={{ visibility: 'hidden' }}>
-              <CloseIcon />
-            </IconButton>
-          )}
+          <IconButton onClick={handleClickAction} disabled={isActionDisabled}>
+            { actionIcon }
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Divider />
