@@ -10,10 +10,6 @@ import DynoWaiter from './DynoWaiter';
 import Loading from '../../components/Loading/Loading';
 import EmptyState from '../../components/EmptyState/EmptyState';
 
-interface HistoryChange {
-  state?: LocationState | null;
-}
-
 const useStyles = makeStyles(theme => ({
   root: {
     [theme.breakpoints.down('sm')]: {
@@ -32,10 +28,10 @@ const ErrorFallback: React.FC = () => (
 const Page: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const history = useHistory();
+  const history = useHistory<LocationState>();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => history.listen((update: HistoryChange) => {
+  useEffect(() => history.listen(update => {
     if (!update.state?.background) window.scrollTo(0, 0);
   }), [history]);
 

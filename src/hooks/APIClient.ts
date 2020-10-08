@@ -13,8 +13,8 @@ export const useUser = (username: string | null): Response<User> => {
   );
 };
 
-export const useProfile = (id: string): Response<Poll[]> => {
-  return useSWR(id && `/profiles/${id}`, fetcher);
+export const useProfile = (username: string): Response<Poll[]> => {
+  return useSWR(username && `/profiles/${username}`, fetcher);
 };
 
 export const useFeed = (): Response<Poll[]> => {

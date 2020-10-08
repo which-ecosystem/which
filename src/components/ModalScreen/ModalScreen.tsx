@@ -12,11 +12,14 @@ import {
   useTheme
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
 import { TransitionProps } from '@material-ui/core/transitions';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface PropTypes {
   title: string;
+  actionIcon?: JSX.Element;
+  handleAction?: () => void;
+  isActionDisabled?: boolean;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default
   },
   content: {
-    padding: theme.spacing(3, 0, 0, 0)
+    padding: theme.spacing(6, 0)
   },
   toolbar: {
     display: 'flex',
@@ -37,7 +40,7 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>
 ) => <Slide direction="left" ref={ref} {...props} />);
 
-const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
+const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isActionDisabled, children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const classes = useStyles();
   const theme = useTheme();
@@ -47,13 +50,20 @@ const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
   const onExited = useCallback(() => history.goBack(), [history]);
 
+  const handleClickAction = useCallback(async () => {
+    if (handleAction) await handleAction();
+    return handleClose();
+  }, [handleAction, handleClose]);
+
   return (
     <Dialog
       open={isOpen}
+      onClose={handleClose}
       onExited={onExited}
       TransitionComponent={Transition}
       PaperProps={{ className: classes.root }}
       fullScreen={isMobile}
+      maxWidth="md"
       fullWidth
     >
       <AppBar position="static">
@@ -64,8 +74,8 @@ const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
           <Typography variant="h6">
             { title }
           </Typography>
-          <IconButton style={{ opacity: 0, pointerEvents: 'none' }}>
-            <CloseIcon />
+          <IconButton onClick={handleClickAction} disabled={isActionDisabled}>
+            { actionIcon }
           </IconButton>
         </Toolbar>
       </AppBar>

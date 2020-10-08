@@ -1,21 +1,17 @@
 import React from 'react';
 import Bluebird from 'bluebird';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  Card,
-  Container,
-  LinearProgress
-} from '@material-ui/core';
+import { Card, Container, LinearProgress } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
 
 import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
 import ModalScreen from '../../components/ModalScreen/ModalScreen';
+import Message from '../../components/Message/Message';
 import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
-import { useFeed } from '../../hooks/APIClient';
+import { useFeed, useProfile } from '../../hooks/APIClient';
 import { useAuth } from '../../hooks/useAuth';
 
 
@@ -29,10 +25,10 @@ const useStyles = makeStyles(theme => ({
 
 const PollCreation: React.FC = () => {
   const classes = useStyles();
-  const history = useHistory();
   const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: updateFeed } = useFeed();
+  const { mutate: updateProfile } = useProfile(user?.username || '');
   const {
     file: left,
     setFile: setLeft,
@@ -46,7 +42,7 @@ const PollCreation: React.FC = () => {
     progress: rightProgress
   } = useS3Preupload();
 
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     try {
       const [leftUrl, rightUrl] = await Bluebird.all([resolveLeft(), resolveRight()]);
 
@@ -55,20 +51,23 @@ const PollCreation: React.FC = () => {
         right: { url: rightUrl }
       };
 
-      history.push('/feed');
-
       post('/polls/', { contents }).then(() => {
         updateFeed();
+        updateProfile();
         enqueueSnackbar('Your poll has been successfully created!', { variant: 'success' });
       });
     } catch (error) {
       enqueueSnackbar('Failed to create a poll. Please, try again.', { variant: 'error' });
-      history.push('/feed');
     }
   };
 
   return (
-    <ModalScreen title="Create a poll">
+    <ModalScreen
+      title="Create a poll"
+      actionIcon={<SendIcon />}
+      handleAction={handleSubmit}
+      isActionDisabled={!(left && right) || leftProgress > 0 || rightProgress > 0}
+    >
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
           {user && <UserStrip user={user} info="" />}
@@ -76,22 +75,17 @@ const PollCreation: React.FC = () => {
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
           </div>
-          {
-            leftProgress || rightProgress
-              ? <LinearProgress color="primary" />
-              : (
-                <Button
-                  color="primary"
-                  disabled={!(left && right)}
-                  variant="contained"
-                  onClick={handleClick}
-                  fullWidth
-                >
-                  Submit
-                </Button>
-              )
-          }
         </Card>
+        {(leftProgress > 0 || rightProgress > 0) && (
+          <>
+            <LinearProgress color="primary" />
+            <Message
+              tagline="You can close this window now"
+              message="We will upload your images in the background."
+              noMargin
+            />
+          </>
+        )}
       </Container>
     </ModalScreen>
   );

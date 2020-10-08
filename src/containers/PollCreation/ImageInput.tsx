@@ -17,13 +17,33 @@ interface PropTypes {
   progress?: number;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
+    width: '50%',
+    display: 'flex'
+  },
+  mediaRoot: {
+    display: 'flex'
+  },
+  uploadRoot: {
+    flex: 1,
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(4)
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(8, 1)
+    }
+  },
+  outline: {
+    padding: theme.spacing(2),
+    flex: 1,
+    border: '2px dashed gray',
+    borderRadius: theme.spacing(1),
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    alignItems: 'center',
-    width: '50%'
+    alignItems: 'center'
   },
   clearIcon: {
     opacity: '.5',
@@ -48,7 +68,7 @@ const useStyles = makeStyles({
   icon: {
     color: 'white'
   }
-});
+}));
 
 
 const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
@@ -69,15 +89,17 @@ const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
   };
 
   const Upload = (
-    <div className={classes.root}>
-      <FileUpload callback={childrenCallback} />
-      <Typography variant="h6"> or </Typography>
-      <AttachLink callback={childrenCallback} />
+    <div className={classes.uploadRoot}>
+      <div className={classes.outline}>
+        <FileUpload callback={childrenCallback} />
+        <Typography variant="h6"> or </Typography>
+        <AttachLink callback={childrenCallback} />
+      </div>
     </div>
   );
 
   const Media = (
-    <CardActionArea onClick={handleClear} className={classes.root} disabled={Boolean(progress)}>
+    <CardActionArea onClick={handleClear} className={classes.mediaRoot} disabled={Boolean(progress)}>
       <BackgroundImage src={url} />
       <div className={`${classes.overlay} ${progress === 100 && classes.invisible}`}>
         {
@@ -91,7 +113,11 @@ const ImageInput: React.FC<PropTypes> = ({ callback, progress }) => {
     </CardActionArea>
   );
 
-  return url ? Media : Upload;
+  return (
+    <div className={classes.root}>
+      {url ? Media : Upload}
+    </div>
+  );
 };
 
 export default ImageInput;
