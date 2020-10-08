@@ -32,12 +32,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement<any, any> },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((
+  props: TransitionProps & { children?: React.ReactElement },
+  ref: React.Ref<unknown>
+) => <Slide direction="left" ref={ref} {...props} />);
 
 const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -47,7 +45,7 @@ const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
   const history = useHistory();
 
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
-  const onExited = useCallback(() => history.goBack(), [history])
+  const onExited = useCallback(() => history.goBack(), [history]);
 
   return (
     <Dialog
