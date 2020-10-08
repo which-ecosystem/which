@@ -44,7 +44,9 @@ const useStyles = makeStyles(theme => ({
     transitionDuration: '0.5s'
   },
   description: {
-    padding: theme.spacing(1, 2)
+    padding: theme.spacing(1, 2),
+    wordWrap: 'break-word',
+    whiteSpace: 'pre-wrap'
   }
 }));
 
