@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     display: 'flex',
+    justifyContent: 'space-between'
   }
 }));
 
@@ -35,7 +36,7 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>,
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="left" ref={ref} {...props} />;
 });
 
 const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
@@ -59,12 +60,15 @@ const ModalScreen: React.FC<PropTypes> = ({ title, children }) => {
     >
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton edge="start" onClick={handleClose}>
+          <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
           <Typography variant="h6">
             { title }
           </Typography>
+          <IconButton style={{ opacity: 0, pointerEvents: 'none' }}>
+            <CloseIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Divider />
