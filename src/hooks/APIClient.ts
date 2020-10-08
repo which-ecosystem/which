@@ -1,5 +1,6 @@
 import useSWR, { responseInterface } from 'swr';
 import { User, Poll, Feedback } from 'which-types';
+import axios from 'axios';
 import { get } from '../requests';
 
 type Response<T> = responseInterface<T, Error>;
@@ -23,4 +24,22 @@ export const useFeed = (): Response<Poll[]> => {
 
 export const useFeedback = (): Response<Feedback[]> => {
   return useSWR('/feedback', fetcher);
+};
+
+interface Release {
+  url: string;
+  description: string;
+  version: string;
+  name: string;
+}
+
+export const usePatchNotes = (): Response<Release> => {
+  const fetchRelease = () => axios.get('https://api.github.com/repos/which-ecosystem/which/releases/latest')
+    .then(({ data }) => ({
+      name: data.name,
+      url: data.html_url,
+      version: data.tag_name,
+      description: data.body
+    }));
+  return useSWR('/patchnotes', fetchRelease, { revalidateOnFocus: false });
 };
