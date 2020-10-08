@@ -58,6 +58,7 @@ const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isA
   return (
     <Dialog
       open={isOpen}
+      onClose={handleClose}
       onExited={onExited}
       TransitionComponent={Transition}
       PaperProps={{ className: classes.root }}
