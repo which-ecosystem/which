@@ -27,7 +27,7 @@ const Router: React.FC = React.memo(() => {
 
   return (
     <>
-      {background && ModalSwitch}
+      {ModalSwitch}
       <Switch location={background || location}>
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
