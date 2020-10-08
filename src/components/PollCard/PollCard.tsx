@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     transitionDuration: '0.5s'
   },
   description: {
-    padding: theme.spacing(0.5, 2)
+    padding: theme.spacing(1, 2)
   }
 }));
 
@@ -97,7 +97,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
     <Card elevation={3}>
       <UserStrip user={author} info={date} />
       {poll.description && (
-        <Typography gutterBottom className={classes.description}>
+        <Typography className={classes.description}>
           {poll.description}
         </Typography>
       )}

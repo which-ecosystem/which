@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Container, LinearProgress, Divider, TextField } from '@material-ui/core';
+import { Card, Container, LinearProgress, InputBase, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
 
@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: 100
   },
-  descriptionText: {
-    padding: 10
+  description: {
+    padding: theme.spacing(1, 2)
   }
 }));
 
@@ -77,28 +77,26 @@ const PollCreation: React.FC = () => {
       title="Create a poll"
       actionIcon={<SendIcon />}
       handleAction={handleSubmit}
-      isActionDisabled={!(left && right) || leftProgress > 0 || rightProgress > 0}
+      isActionDisabled={!(left && right) || leftProgress + rightProgress > 0}
     >
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
-          {user && <UserStrip user={user} info="" />}
-          <Divider />
-          <TextField
-            multiline
-            rows={2}
-            fullWidth
-            placeholder="Add a description"
-            onChange={handleDescriptionChange}
-            InputProps={{
-              className: classes.descriptionText,
-            }}
-          />
+          {user && <UserStrip user={user} />}
+          <Typography>
+            <InputBase
+              multiline
+              fullWidth
+              placeholder="Add description"
+              onChange={handleDescriptionChange}
+              className={classes.description}
+            />
+          </Typography>
           <div className={classes.images}>
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
           </div>
         </Card>
-        {(leftProgress > 0 || rightProgress > 0) && (
+        {(leftProgress + rightProgress > 0) && (
           <>
             <LinearProgress color="primary" />
             <Message
