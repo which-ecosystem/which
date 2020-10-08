@@ -13,8 +13,10 @@ import { useSnackbar } from 'notistack';
 import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
 import ModalScreen from '../../components/ModalScreen/ModalScreen';
+import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useFeed } from '../../hooks/APIClient';
+import { useAuth } from '../../hooks/useAuth';
 
 
 const useStyles = makeStyles(theme => ({
@@ -28,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 const PollCreation: React.FC = () => {
   const classes = useStyles();
   const history = useHistory();
+  const { user } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { mutate: updateFeed } = useFeed();
   const {
@@ -67,7 +70,8 @@ const PollCreation: React.FC = () => {
   return (
     <ModalScreen title="Create a poll">
       <Container maxWidth="sm" disableGutters>
-        <Card>
+        <Card elevation={3}>
+          {user && <UserStrip user={user} info="" />}
           <div className={classes.images}>
             <ImageInput callback={setLeft} progress={leftProgress} />
             <ImageInput callback={setRight} progress={rightProgress} />
