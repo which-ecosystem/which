@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default
   },
   content: {
-    padding: theme.spacing(3, 0, 0, 0)
+    padding: theme.spacing(6, 0)
   },
   toolbar: {
     display: 'flex',
@@ -55,6 +55,7 @@ const ModalScreen: React.FC<PropTypes> = ({ title, rightIcon, children }) => {
       TransitionComponent={Transition}
       PaperProps={{ className: classes.root }}
       fullScreen={isMobile}
+      maxWidth="md"
       fullWidth
     >
       <AppBar position="static">
