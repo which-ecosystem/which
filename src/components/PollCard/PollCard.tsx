@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import PercentageBar from './PercentageBar';
 import UserStrip from '../UserStrip/UserStrip';
+import DateString from '../DateString/DateString';
 import BackgroundImage from '../Image/BackgroundImage';
 import { post } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
@@ -14,14 +15,6 @@ interface PropTypes {
   poll: Poll;
   setPoll: (poll: Poll) => void;
 }
-
-const DATE_FORMAT = {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit'
-};
 
 const useStyles = makeStyles(theme => ({
   media: {
@@ -55,7 +48,6 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const { author, contents: { left, right }, vote } = poll;
   const { enqueueSnackbar } = useSnackbar();
   const { isAuthenticated } = useAuth();
-  const date: string = new Date(poll.createdAt).toLocaleString('default', DATE_FORMAT);
 
   const handleVote = (which: Which) => () => {
     if (!isAuthenticated) {
@@ -97,7 +89,7 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
 
   return (
     <Card elevation={3}>
-      <UserStrip user={author} info={date} />
+      <UserStrip user={author} info={<DateString value={poll.createdAt} />} />
       {poll.description && (
         <Typography className={classes.description}>
           {poll.description}
