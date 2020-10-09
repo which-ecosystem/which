@@ -14,7 +14,6 @@ import { post } from '../../requests';
 import { useFeed, useProfile } from '../../hooks/APIClient';
 import { useAuth } from '../../hooks/useAuth';
 
-
 const useStyles = makeStyles(theme => ({
   images: {
     height: theme.spacing(50),
@@ -25,10 +24,10 @@ const useStyles = makeStyles(theme => ({
     height: 100
   },
   description: {
+    fontSize: 14,
     padding: theme.spacing(1, 2)
   }
 }));
-
 
 const PollCreation: React.FC = () => {
   const [description, setDescription] = useState<string>('');
@@ -84,7 +83,7 @@ const PollCreation: React.FC = () => {
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
           {user && <UserStrip user={user} />}
-          <Typography>
+          <Typography component="span">
             <InputBase
               multiline
               fullWidth
