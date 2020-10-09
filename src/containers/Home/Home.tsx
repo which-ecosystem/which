@@ -9,7 +9,7 @@ import {
   useMediaQuery
 } from '@material-ui/core/';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
 
@@ -17,7 +17,7 @@ import ReviewCard from '../../components/ReviewCard/ReviewCard';
 import Image from '../../components/Image/Image';
 import ReviewForm from './ReviewForm';
 import { useAuth } from '../../hooks/useAuth';
-import { useFeedback } from '../../hooks/APIClient';
+import { useFeedback, usePatchNotes } from '../../hooks/APIClient';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing(20),
     height: theme.spacing(20)
   },
+  patchNotes: {
+    whiteSpace: 'pre-wrap'
+  },
   score: {
     fontWeight: 'bold'
   },
@@ -35,14 +38,16 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2)
   },
   reviews: {
+    margin: 'auto',
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(0, 10)
+      width: '70%'
     }
   }
 }));
 
 const Home: React.FC = () => {
   const { data: feedbacks } = useFeedback();
+  const { data: release } = usePatchNotes();
   const classes = useStyles();
   const history = useHistory();
   const { isAuthenticated, user } = useAuth();
@@ -62,11 +67,6 @@ const Home: React.FC = () => {
     history.push('/registration');
   };
 
-  const GithubLink = <Link href="https://github.com/which-ecosystem">GitHub</Link>;
-  const TypescriptLink = <Link href="https://www.typescriptlang.org/">Typescript</Link>;
-  const ReactLink = <Link href="https://reactjs.org/">React</Link>;
-  const FeathersLink = <Link href="https://feathersjs.com">Feathers</Link>;
-  const MUILink = <Link href="https://material-ui.com">Material-UI</Link>;
   const EmailLink = <Link href="mailto: eug-vs@keemail.me">eug-vs@keemail.me</Link>;
 
   const Reviews = (
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
   );
 
   const FeedbackSection = feedbacks && feedbacks.findIndex(
-    (feedback: Feedback) => feedback.author._id === user?._id
+    (feedback: Feedback) => (feedback.author._id === user?._id && feedback.version === release?.version)
   ) >= 0 ? (
     <p>
       You have already left feedback for this version.
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
           Here you can share your thougts about Which with us!
           Note that you can ony leave feedback once per application version (there will be plenty of them later).
         </p>
-        {isAuthenticated ? <ReviewForm /> : (
+        {isAuthenticated ? <ReviewForm version={release?.version || 'N/A'} /> : (
           <>
             <p> You must be authorized to leave feedback.</p>
             <Button
@@ -152,31 +152,23 @@ const Home: React.FC = () => {
                 )}
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography variant="h4"> About the project </Typography>
-              <Divider />
-              <Typography>
-                <p>
-                  The project is written in {TypescriptLink} and features {ReactLink}, {FeathersLink}, and {MUILink}.
-                  It is currently open-source and you can visit our {GithubLink} (make sure to star our repositories)!
-                </p>
-                <p>
-                  We encourage any developer to check it out. Feel free to open issues and create Pull Requests!
-                </p>
-                <p>
-                  All the development process is being tracked on the KanBan board (thanks GitHub).
-                  You can always check it to see what is the current state of the project.
-                </p>
+            {release && (
+              <Grid item>
+                <Typography variant="h4">{`What's new in ${release?.version}?`}</Typography>
+                <Divider />
+                <Typography className={classes.patchNotes}>
+                  <p>{release?.description}</p>
+                </Typography>
                 <Button
                   variant="outlined"
                   color="primary"
-                  startIcon={<TrendingUpIcon />}
-                  href="https://github.com/orgs/which-ecosystem/projects/1"
+                  startIcon={<GitHubIcon />}
+                  href={release?.url}
                 >
-                  track our progress
+                  Learn more
                 </Button>
-              </Typography>
-            </Grid>
+              </Grid>
+            )}
             <Grid item>
               <Typography variant="h4"> Leave feedback </Typography>
               <Divider />
