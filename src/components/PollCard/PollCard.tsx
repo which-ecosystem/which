@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     fontSize: 14,
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(0, 2, 1.25),
     wordWrap: 'break-word',
     whiteSpace: 'pre-wrap'
   }
