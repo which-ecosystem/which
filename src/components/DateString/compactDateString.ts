@@ -28,6 +28,7 @@ const resolve = (value: number, metricIndex = 0): string => {
 const compactDateString = (date: Date): string => {
   const now = new Date();
   const diff = (now.valueOf() - date.valueOf()) / 1000;
+  if (diff < 60) return 'just now';
   return resolve(diff);
 };
 
