@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import compactDateString from './compactDateString';
 
 interface PropTypes {
   value: Date | string;
 }
+
+const useStyles = makeStyles({
+  root: {
+    display: 'block',
+    cursor: 'pointer'
+  }
+});
 
 const DATE_FORMAT = {
   month: 'long',
@@ -13,10 +22,20 @@ const DATE_FORMAT = {
 };
 
 const DateString: React.FC<PropTypes> = ({ value }) => {
-  const date = new Date(value);
-  const formatted = date.toLocaleString('default', DATE_FORMAT);
+  const [isCompact, setIsCompact] = useState<boolean>(true);
+  const classes = useStyles();
 
-  return <>{formatted}</>;
+  const toggleScompact = useCallback(() => setIsCompact(v => !v), [setIsCompact]);
+
+  const date = useMemo(() => new Date(value), [value]);
+  const formatted = useMemo(() => date.toLocaleString('default', DATE_FORMAT), [date]);
+  const compact = useMemo(() => compactDateString(date), [date]);
+
+  return (
+    <div className={classes.root} onClick={toggleScompact}>
+      {isCompact ? compact : formatted}
+    </div>
+  );
 };
 
 export default DateString;
