@@ -71,7 +71,7 @@ const Home: React.FC = () => {
 
   const Reviews = (
     <div className={classes.reviews}>
-      {feedbacks?.map((feedback: Feedback) => <ReviewCard feedback={feedback} />)}
+      {feedbacks?.map((feedback: Feedback, index) => <ReviewCard key={index} feedback={feedback} />)}
     </div>
   );
 
@@ -130,7 +130,7 @@ const Home: React.FC = () => {
             <Grid item>
               <Typography variant="h4"> Which one to choose? </Typography>
               <Divider />
-              <Typography>
+              <Typography component="span">
                 <p>
                   Have you ever found yourself stuck between two options, not being able to choose any?
                   This is exactly the problem we are going to solve!
@@ -156,7 +156,7 @@ const Home: React.FC = () => {
               <Grid item>
                 <Typography variant="h4">{`What's new in ${release?.version}?`}</Typography>
                 <Divider />
-                <Typography className={classes.patchNotes}>
+                <Typography component="span" className={classes.patchNotes}>
                   <p>{release?.description}</p>
                 </Typography>
                 <Button

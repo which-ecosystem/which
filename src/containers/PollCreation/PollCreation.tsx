@@ -83,7 +83,7 @@ const PollCreation: React.FC = () => {
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>
           {user && <UserStrip user={user} />}
-          <Typography component='span'>
+          <Typography component="span">
             <InputBase
               multiline
               fullWidth
