@@ -7,7 +7,10 @@ import { useSnackbar } from 'notistack';
 
 import { post } from '../../requests';
 
-const version = 'v1.0.0';
+
+interface PropTypes {
+  version: string;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ReviewForm: React.FC = () => {
+const ReviewForm: React.FC<PropTypes> = ({ version }) => {
   const [contents, setContents] = useState<string>('');
   const [score, setScore] = useState<number>(0);
   const classes = useStyles();

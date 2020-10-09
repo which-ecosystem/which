@@ -4,7 +4,8 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider
+  Divider,
+  Chip
 } from '@material-ui/core/';
 import { Rating } from '@material-ui/lab';
 import { Feedback } from 'which-types';
@@ -17,7 +18,13 @@ interface PropTypes {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: theme.spacing(4, 0, 1, 0)
+    margin: theme.spacing(4, 0, 1, 0),
+    position: 'relative'
+  },
+  versionChip: {
+    position: 'absolute',
+    right: theme.spacing(2),
+    top: theme.spacing(2)
   }
 }));
 
@@ -29,6 +36,12 @@ const ReviewCard: React.FC<PropTypes> = ({ feedback }) => {
       <UserStrip
         user={feedback.author}
         info={<Rating value={feedback.score} readOnly size="small" />}
+      />
+      <Chip
+        size="small"
+        variant="outlined"
+        label={feedback.version}
+        className={classes.versionChip}
       />
       {feedback.contents && (
         <>

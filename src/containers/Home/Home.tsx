@@ -38,8 +38,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2)
   },
   reviews: {
+    margin: 'auto',
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(0, 10)
+      width: '70%'
     }
   }
 }));
@@ -75,7 +76,7 @@ const Home: React.FC = () => {
   );
 
   const FeedbackSection = feedbacks && feedbacks.findIndex(
-    (feedback: Feedback) => feedback.author._id === user?._id
+    (feedback: Feedback) => (feedback.author._id === user?._id && feedback.version === release?.version)
   ) >= 0 ? (
     <p>
       You have already left feedback for this version.
@@ -88,7 +89,7 @@ const Home: React.FC = () => {
           Here you can share your thougts about Which with us!
           Note that you can ony leave feedback once per application version (there will be plenty of them later).
         </p>
-        {isAuthenticated ? <ReviewForm /> : (
+        {isAuthenticated ? <ReviewForm version={release?.version || 'N/A'} /> : (
           <>
             <p> You must be authorized to leave feedback.</p>
             <Button

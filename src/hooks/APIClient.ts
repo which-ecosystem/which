@@ -26,7 +26,7 @@ export const useFeedback = (): Response<Feedback[]> => {
   return useSWR('/feedback', fetcher);
 };
 
-interface Release {
+export interface Release {
   url: string;
   description: string;
   version: string;
