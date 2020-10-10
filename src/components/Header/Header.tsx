@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   IconButton,
   Typography,
@@ -17,7 +17,6 @@ import { useAuth } from '../../hooks/useAuth';
 import MobileHeader from './MobileHeader';
 import BottomBar from './BottomBar';
 import BrowserHeader from './BrowserHeader';
-import Avatar from '../Avatar/Avatar';
 import Drawer from '../Drawer/Drawer';
 
 
@@ -30,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: theme.spacing(3),
     height: theme.spacing(3)
+  },
+  activeIcon: {
+    color: 'white'
   }
 }));
 
@@ -40,6 +42,14 @@ const Header: React.FC = React.memo(() => {
   const history = useHistory();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [path, setPath] = useState<string>(useLocation().pathname);
+
+
+  useEffect(() => {
+    return history.listen(location => {
+      setPath(location.pathname);
+    });
+  }, [history]);
 
   const handleHome = (): void => {
     history.push('/');
@@ -64,13 +74,13 @@ const Header: React.FC = React.memo(() => {
 
   const feed = (
     <IconButton onClick={handleFeed}>
-      <Home />
+      <Home className={path === '/feed' ? classes.activeIcon : ''} />
     </IconButton>
   );
 
   const notifications = (
     <IconButton onClick={handleNotifications}>
-      <Notifications />
+      <Notifications className={path === '/notifications' ? classes.activeIcon : ''} />
     </IconButton>
   );
 
@@ -88,11 +98,7 @@ const Header: React.FC = React.memo(() => {
 
   const profile = (
     <IconButton onClick={handleProfile}>
-      {
-        user?.avatarUrl
-          ? <Avatar className={classes.avatar} user={user} />
-          : <AccountCircle className={classes.avatar} />
-      }
+      <AccountCircle className={[classes.avatar, path.includes('/profile') ? classes.activeIcon : ''].join(' ')} />
     </IconButton>
   );
 
