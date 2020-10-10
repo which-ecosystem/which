@@ -7,7 +7,7 @@ const metrics = [
   { name: 'year', ratio: 12 }
 ];
 
-const PRECISION = 0.75;
+const PRECISION = 0.85;
 
 const resolve = (value: number, metricIndex = 0): string => {
   // Recursively divide value until it's ready to be presented as a string
