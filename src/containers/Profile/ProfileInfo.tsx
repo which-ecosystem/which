@@ -94,8 +94,8 @@ const useStyles = makeStyles(theme => ({
 
 const formatDate = (value: Date | string = ''): string => {
   const date = new Date(value);
-  const day = ('0' + date.getDate()).slice(-2);
-  const month = ('0' + date.getMonth()).slice(-2);
+  const day = (`0${date.getDate()}`).slice(-2);
+  const month = (`0${date.getMonth()}`).slice(-2);
   const year = date.getFullYear();
   return `${year}-${month}-${day}`;
 };

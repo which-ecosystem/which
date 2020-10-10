@@ -32,7 +32,7 @@ const DateString: React.FC<PropTypes> = ({ value }) => {
   const compact = useMemo(() => compactDateString(date), [date]);
 
   return (
-    <div className={classes.root} onClick={toggleScompact}>
+    <div role="presentation" className={classes.root} onClick={toggleScompact}>
       {isCompact ? compact : formatted}
     </div>
   );
