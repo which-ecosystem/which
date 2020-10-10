@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Badge, Typography, CircularProgress } from '@material-ui/core/';
 import { CameraAlt, CheckCircleOutline } from '@material-ui/icons/';
 import { makeStyles } from '@material-ui/core/styles';
@@ -92,6 +92,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+const formatDate = (value: Date | string = ''): string => {
+  const date = new Date(value);
+  const day = ('0' + date.getDate()).slice(-2);
+  const month = ('0' + date.getMonth()).slice(-2);
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+};
+
+
 const ProfileInfo: React.FC<PropTypes> = ({
   savedPolls, totalVotes, setUserInfo, userInfo
 }) => {
@@ -99,7 +108,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const { user } = useAuth();
   const [progress, setProgress] = useState<number>(0);
 
-  const dateSince = new Date(userInfo?.createdAt || '').toLocaleDateString();
+  const dateSince = useMemo(() => formatDate(userInfo?.createdAt), [userInfo]);
 
   const handleUpdateAvatar = useCallback(async (file: File) => {
     if (user) {
