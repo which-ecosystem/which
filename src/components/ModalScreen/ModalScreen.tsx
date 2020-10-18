@@ -49,19 +49,17 @@ const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isA
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
 
-  const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
-  const onExited = useCallback(() => history.goBack(), [history]);
+  const handleClose = useCallback(() => history.goBack(), [history]);
 
   const handleClickAction = useCallback(async () => {
     if (handleAction) await handleAction();
-    return handleClose();
+    return window.location.pathname.includes('/profile') ? null : handleClose();
   }, [handleAction, handleClose]);
 
   return (
     <Dialog
-      open={isOpen}
+      open={true}
       onClose={handleClose}
-      onExited={onExited}
       TransitionComponent={Transition}
       PaperProps={{ className: classes.root }}
       fullScreen={isMobile}
