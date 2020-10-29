@@ -20,6 +20,7 @@ interface PropTypes {
   actionIcon?: JSX.Element;
   handleAction?: () => void;
   isActionDisabled?: boolean;
+  handleCloseModal: ()=> void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -42,24 +43,27 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>
 ) => <Slide direction="left" ref={ref} {...props} />);
 
-const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isActionDisabled, children }) => {
+const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isActionDisabled, handleCloseModal, children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const history = useHistory();
 
-  const handleClose = useCallback(() => history.goBack(), [history]);
+
+  const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
+  const onExited = useCallback(handleCloseModal, [history, handleAction]);
 
   const handleClickAction = useCallback(async () => {
     if (handleAction) await handleAction();
-    return window.location.pathname.includes('/profile') ? null : handleClose();
+    return handleClose();
   }, [handleAction, handleClose]);
 
   return (
     <Dialog
-      open={true}
+      open={isOpen}
       onClose={handleClose}
+      onExited={onExited}
       TransitionComponent={Transition}
       PaperProps={{ className: classes.root }}
       fullScreen={isMobile}

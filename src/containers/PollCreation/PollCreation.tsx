@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useMemo } from 'react';
+import React, {ChangeEvent, useState, useMemo, useCallback} from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Container, LinearProgress, InputBase, Typography } from '@material-ui/core';
@@ -13,6 +13,7 @@ import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useFeed, useProfile } from '../../hooks/APIClient';
 import { useAuth } from '../../hooks/useAuth';
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles(theme => ({
   images: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 const PollCreation: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const classes = useStyles();
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuth();
   const { mutate: updateFeed } = useFeed();
@@ -71,6 +73,9 @@ const PollCreation: React.FC = () => {
     }
   };
 
+  const handleClose = useCallback(() => history.goBack(), [history]);
+
+
   const isSubmitting = useMemo(() => leftProgress + rightProgress > 0, [leftProgress, rightProgress]);
 
   return (
@@ -79,6 +84,7 @@ const PollCreation: React.FC = () => {
       actionIcon={<SendIcon />}
       handleAction={handleSubmit}
       isActionDisabled={!(left && right) || isSubmitting}
+      handleCloseModal={handleClose}
     >
       <Container maxWidth="sm" disableGutters>
         <Card elevation={3}>

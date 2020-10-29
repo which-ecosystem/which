@@ -6,8 +6,8 @@ import ModalScreen from "../ModalScreen/ModalScreen";
 import { getCroppedImg } from './canvasUtils'
 
 interface PropTypes {
-  location?: any;
   avatarToCrop: string;
+  setAvatarToCrop: (src: string) => void;
   callback: (file: File) => void;
 }
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const AvatarCrop: React.FC<PropTypes> = ({location, avatarToCrop, callback}) => {
+const AvatarCrop: React.FC<PropTypes> = ({ avatarToCrop, setAvatarToCrop, callback }) => {
   const classes = useStyles();
   const [crop, setCrop] = useState({x: 0, y: 0});
   const [zoom, setZoom] = useState(1);
@@ -42,12 +42,17 @@ const AvatarCrop: React.FC<PropTypes> = ({location, avatarToCrop, callback}) => 
     }
   }, [avatarToCrop, croppedAreaPixels]);
 
+  const handleCloseModal = useCallback( () => {
+    setAvatarToCrop('');
+  },[]);
+
   return (
     <ModalScreen
       title="Choose area"
       actionIcon={<SendIcon />}
       handleAction={handleLoadCroppedImage}
       isActionDisabled={false}
+      handleCloseModal={handleCloseModal}
     >
       <div className={classes.cropContainer}>
         <Cropper

@@ -129,7 +129,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        avatarToCrop && <AvatarCrop avatarToCrop={avatarToCrop} callback={handleUpdateAvatar}/>
+        avatarToCrop && <AvatarCrop avatarToCrop={avatarToCrop} setAvatarToCrop={setAvatarToCrop} callback={handleUpdateAvatar}/>
       }
       {
         !userInfo
