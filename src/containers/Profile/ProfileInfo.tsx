@@ -11,7 +11,7 @@ import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 import uploadFileToS3 from '../../utils/uploadFileToS3';
-import AvatarCrop from "../../components/AvatarCrop/AvatarCrop";
+import AvatarCropModal from '../AvatarCropModal/AvatarCropModal';
 
 interface PropTypes {
   savedPolls: number;
@@ -112,13 +112,10 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const dateSince = useMemo(() => formatDate(userInfo?.createdAt), [userInfo]);
 
   const handleUpdateAvatar = useCallback(async (file: File) => {
-    if (user) {
-      uploadFileToS3(file, 0.8, setProgress)
-        .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
-        .then(response => setUserInfo(response.data))
-        .then(() => setProgress(0));
-      setAvatarToCrop('');
-    }
+    if (user) uploadFileToS3(file, 0.8, setProgress)
+      .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
+      .then(response => setUserInfo(response.data))
+      .then(() => setProgress(0));
   }, [user, setUserInfo]);
 
   const handleCropAvatar = useCallback( async(file: File) => {
@@ -129,7 +126,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
   return (
     <div className={classes.root}>
       {
-        avatarToCrop && <AvatarCrop avatarToCrop={avatarToCrop} setAvatarToCrop={setAvatarToCrop} callback={handleUpdateAvatar}/>
+        avatarToCrop && <AvatarCropModal avatar={avatarToCrop} callback={handleUpdateAvatar}/>
       }
       {
         !userInfo

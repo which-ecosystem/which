@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   AppBar,
   Dialog,
@@ -20,7 +19,7 @@ interface PropTypes {
   actionIcon?: JSX.Element;
   handleAction?: () => void;
   isActionDisabled?: boolean;
-  handleCloseModal: ()=> void;
+  handleCloseModal?: ()=> void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -48,11 +47,9 @@ const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isA
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const history = useHistory();
-
 
   const handleClose = useCallback(() => setIsOpen(false), [setIsOpen]);
-  const onExited = useCallback(handleCloseModal, [history, handleAction]);
+  const onExited = useCallback(() => handleCloseModal && handleCloseModal(), [handleCloseModal]);
 
   const handleClickAction = useCallback(async () => {
     if (handleAction) await handleAction();
