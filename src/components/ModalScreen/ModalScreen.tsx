@@ -42,7 +42,9 @@ const Transition = React.forwardRef((
   ref: React.Ref<unknown>
 ) => <Slide direction="left" ref={ref} {...props} />);
 
-const ModalScreen: React.FC<PropTypes> = ({ title, actionIcon, handleAction, isActionDisabled, handleCloseModal, children }) => {
+const ModalScreen: React.FC<PropTypes> = (
+  { title, actionIcon, handleAction, isActionDisabled, handleCloseModal, children }
+) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const classes = useStyles();
   const theme = useTheme();

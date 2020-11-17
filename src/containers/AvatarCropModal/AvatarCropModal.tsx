@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import SendIcon from "@material-ui/icons/Send";
-import { getCroppedImg } from './canvasUtils'
+import SendIcon from '@material-ui/icons/Send';
+import { getCroppedImg } from './canvasUtils';
 
 import ImageCropAreaSelect from '../../components/ImageCropAreaSelect/ImageCropAreaSelect';
 import ModalScreen from '../../components/ModalScreen/ModalScreen';
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     // background: '#333',
     [theme.breakpoints.up('sm')]: {
       // height: 400,
-    },
+    }
   }
 }));
 
@@ -51,7 +51,7 @@ const AvatarCropModal: React.FC<PropTypes> = ({ avatar, callback }) => {
         />
       </div>
     </ModalScreen>
-  )
+  );
 };
 
 export default AvatarCropModal;

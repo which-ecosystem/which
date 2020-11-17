@@ -1,9 +1,10 @@
-import React, {ChangeEvent, useState, useMemo, useCallback} from 'react';
+import React, { ChangeEvent, useState, useMemo, useCallback } from 'react';
 import Bluebird from 'bluebird';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Container, LinearProgress, InputBase, Typography } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useSnackbar } from 'notistack';
+import { useHistory } from 'react-router';
 
 import useS3Preupload from './useS3Preupload';
 import ImageInput from './ImageInput';
@@ -13,7 +14,6 @@ import UserStrip from '../../components/UserStrip/UserStrip';
 import { post } from '../../requests';
 import { useFeed, useProfile } from '../../hooks/APIClient';
 import { useAuth } from '../../hooks/useAuth';
-import {useHistory} from "react-router";
 
 const useStyles = makeStyles(theme => ({
   images: {
