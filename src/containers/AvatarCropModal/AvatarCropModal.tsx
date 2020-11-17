@@ -22,10 +22,10 @@ const useStyles = makeStyles(theme => ({
   cropContainer: {
     position: 'relative',
     width: '100%',
-    height: '100vh',
-    background: '#333',
+    // height: '100vh',
+    // background: '#333',
     [theme.breakpoints.up('sm')]: {
-      height: 400,
+      // height: 400,
     },
   }
 }));
