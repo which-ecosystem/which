@@ -11,6 +11,7 @@ import Avatar from '../../components/Avatar/Avatar';
 import { patch } from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 import uploadFileToS3 from '../../utils/uploadFileToS3';
+import AvatarCropModal from '../AvatarCropModal/AvatarCropModal';
 
 interface PropTypes {
   savedPolls: number;
@@ -107,20 +108,26 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const classes = useStyles();
   const { user } = useAuth();
   const [progress, setProgress] = useState<number>(0);
-
+  const [avatarToCrop, setAvatarToCrop] = useState<string>('');
   const dateSince = useMemo(() => formatDate(userInfo?.createdAt), [userInfo]);
 
   const handleUpdateAvatar = useCallback(async (file: File) => {
-    if (user) {
-      uploadFileToS3(file, 0.8, setProgress)
-        .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
-        .then(response => setUserInfo(response.data))
-        .then(() => setProgress(0));
-    }
+    if (user) uploadFileToS3(file, 0.8, setProgress)
+      .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
+      .then(response => setUserInfo(response.data))
+      .then(() => setProgress(0));
   }, [user, setUserInfo]);
+
+  const handleCropAvatar = useCallback( async(file: File) => {
+    const imageSrc = URL.createObjectURL(file);
+    setAvatarToCrop(imageSrc);
+  },[]);
 
   return (
     <div className={classes.root}>
+      {
+        avatarToCrop && <AvatarCropModal avatar={avatarToCrop} callback={handleUpdateAvatar}/>
+      }
       {
         !userInfo
           ? <Skeleton animation="wave" variant="circle" width={150} height={150} className={classes.avatar} />
@@ -135,7 +142,7 @@ const ProfileInfo: React.FC<PropTypes> = ({
                   }}
                   className={classes.avatarContainer}
                   badgeContent={(
-                    <FileUpload callback={handleUpdateAvatar}>
+                    <FileUpload callback={handleCropAvatar}>
                       <div className={classes.badge}>
                         <CameraAlt />
                       </div>
