@@ -112,21 +112,23 @@ const ProfileInfo: React.FC<PropTypes> = ({
   const dateSince = useMemo(() => formatDate(userInfo?.createdAt), [userInfo]);
 
   const handleUpdateAvatar = useCallback(async (file: File) => {
-    if (user) uploadFileToS3(file, 0.8, setProgress)
-      .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
-      .then(response => setUserInfo(response.data))
-      .then(() => setProgress(0));
+    if (user) {
+      uploadFileToS3(file, 0.8, setProgress)
+        .then(avatarUrl => patch(`/users/${user._id}`, { avatarUrl }))
+        .then(response => setUserInfo(response.data))
+        .then(() => setProgress(0));
+    }
   }, [user, setUserInfo]);
 
-  const handleCropAvatar = useCallback( async(file: File) => {
+  const handleCropAvatar = useCallback(async (file: File) => {
     const imageSrc = URL.createObjectURL(file);
     setAvatarToCrop(imageSrc);
-  },[]);
+  }, []);
 
   return (
     <div className={classes.root}>
       {
-        avatarToCrop && <AvatarCropModal avatar={avatarToCrop} callback={handleUpdateAvatar}/>
+        avatarToCrop && <AvatarCropModal avatar={avatarToCrop} callback={handleUpdateAvatar} />
       }
       {
         !userInfo
