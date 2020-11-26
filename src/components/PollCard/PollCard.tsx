@@ -49,10 +49,10 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
   const classes = useStyles();
   const { author, contents: { left, right }, vote } = poll;
   const { enqueueSnackbar } = useSnackbar();
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
 
   const handleVote = (which: Which) => () => {
-    if (!isAuthenticated) {
+    if (!user) {
       enqueueSnackbar('Unauthorized users can not vote in polls', {
         variant: 'error'
       });
@@ -99,7 +99,9 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
       <UserStrip
         user={author}
         info={<DateString value={poll.createdAt} />}
-        action={<IconButton onClick={handleDelete}><DeleteIcon /></IconButton>}
+        action={author._id === user?._id ? (
+          <IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
+        ) : undefined}
       />
       {poll.description && (
         <Typography className={classes.description}>
