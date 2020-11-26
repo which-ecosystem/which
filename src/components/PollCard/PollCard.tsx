@@ -1,19 +1,20 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardActionArea, Typography } from '@material-ui/core/';
+import { Card, CardActionArea, Typography, IconButton } from '@material-ui/core/';
 import { Which, Poll } from 'which-types';
 import { useSnackbar } from 'notistack';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import PercentageBar from './PercentageBar';
 import UserStrip from '../UserStrip/UserStrip';
 import DateString from '../DateString/DateString';
 import BackgroundImage from '../Image/BackgroundImage';
-import { post } from '../../requests';
+import requests from '../../requests';
 import { useAuth } from '../../hooks/useAuth';
 
 interface PropTypes {
   poll: Poll;
-  setPoll: (poll: Poll) => void;
+  setPoll: (poll: Poll | null) => void;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -71,8 +72,13 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
       };
       setPoll(newPoll);
 
-      post('votes/', newVote);
+      requests.post('votes/', newVote);
     }
+  };
+
+  const handleDelete = async () => {
+    await requests.delete(`polls/${poll._id}`);
+    setPoll(null);
   };
 
   let leftPercentage;
@@ -90,7 +96,11 @@ const PollCard: React.FC<PropTypes> = React.memo(({ poll, setPoll }) => {
 
   return (
     <Card elevation={3}>
-      <UserStrip user={author} info={<DateString value={poll.createdAt} />} />
+      <UserStrip
+        user={author}
+        info={<DateString value={poll.createdAt} />}
+        action={<IconButton onClick={handleDelete}><DeleteIcon /></IconButton>}
+      />
       {poll.description && (
         <Typography className={classes.description}>
           {poll.description}
