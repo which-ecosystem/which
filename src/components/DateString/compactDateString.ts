@@ -22,6 +22,8 @@ const resolve = (value: number, metricIndex = 0): string => {
     const ending = isPlural ? 's' : '';
     return `${count} ${metric.name}${ending} ago`;
   }
+
+  if (metric.name === 'year') return 'A year ago';
   return resolve(newValue, metricIndex + 1);
 };
 
