@@ -15,13 +15,14 @@ const resolve = (value: number, metricIndex = 0): string => {
   const nextMetric = metrics[metricIndex + 1];
   const newValue = value / metric.ratio;
 
-  if (newValue < nextMetric.ratio * PRECISION) {
+  if (newValue < nextMetric?.ratio * PRECISION || !nextMetric) {
     const rounded = Math.round(newValue);
     const isPlural = rounded > 1;
     const count = isPlural ? rounded : 'a';
     const ending = isPlural ? 's' : '';
     return `${count} ${metric.name}${ending} ago`;
   }
+
   return resolve(newValue, metricIndex + 1);
 };
 
