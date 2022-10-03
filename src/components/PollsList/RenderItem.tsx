@@ -35,9 +35,10 @@ const RenderItem: React.FC<PropTypes> = React.memo(({
 }) => {
   const classes = useStyles();
   const poll = polls[index];
-  const setPoll = useCallback((newPoll: Poll) => {
-    const newPolls = [...polls];
-    newPolls[index] = newPoll;
+  const setPoll = useCallback((newPoll: Poll | null) => {
+    let newPolls = polls;
+    if (newPoll) newPolls[index] = newPoll;
+    else newPolls = newPolls.filter((poll, pollIndex) => pollIndex !== index);
 
     // Force-update list-size so everything re-renders
     mutate([], false);

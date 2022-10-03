@@ -9,7 +9,8 @@ import Avatar from '../Avatar/Avatar';
 
 interface PropTypes {
   user: User;
-  info?: string | JSX.Element
+  info?: string | JSX.Element;
+  action?: JSX.Element;
 }
 
 
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
+const UserStrip: React.FC<PropTypes> = ({ user, info, action }) => {
   const classes = useStyles();
   const { username, verified } = user;
 
@@ -39,7 +40,7 @@ const UserStrip: React.FC<PropTypes> = ({ user, info }) => {
     </div>
   );
 
-  return <CardHeader avatar={avatar} title={title} subheader={info} />;
+  return <CardHeader avatar={avatar} title={title} subheader={info} action={action} />;
 };
 
 export default UserStrip;
